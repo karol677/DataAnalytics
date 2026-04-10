@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Data Use & Performance Survey — E Analytics Studio</title>
+  <meta name="description" content="A short assessment to understand how your organisation collects, understands, and uses data to improve performance." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/svg/logo.svg" alt="E Analytics Studio" class="logo" width="40" height="40" />
+        <span class="brand-text">E Analytics Studio</span>
+      </a>
+      <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false">Menu</button>
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="index.html">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section aria-labelledby="title">
+      <h1 id="title">Data Use & Performance Survey</h1>
+      <p>
+        This short assessment explores how your organisation collects, understands, and uses data to improve performance.
+      </p>
+    </section>
+
+    <section aria-labelledby="form-title">
+      <h2 id="form-title">About your organisation</h2>
+
+      <form id="diagnosticForm" class="card">
+        <label>
+          <span>Organisation / Team (optional)</span><br />
+          <input name="org" type="text" placeholder="e.g., Acme Ltd" style="width:100%; margin-top:8px; padding:10px; border-radius:var(--radius); border:1px solid var(--line);" />
+        </label>
+
+        <div style="height:14px"></div>
+
+        <label>
+          <span>Your role (optional)</span><br />
+          <input name="role" type="text" placeholder="e.g., Head of Analytics" style="width:100%; margin-top:8px; padding:10px; border-radius:var(--radius); border:1px solid var(--line);" />
+        </label>
+
+        <div class="divider"></div>
+
+        <h2>Survey questions</h2>
+        <p>Please answer yes or no to each question.</p>
+
+        <div id="questions"></div>
+
+        <div class="divider"></div>
+
+        <label>
+          <input type="checkbox" name="agreement" required />
+          <span style="margin-left: 8px;">
+            I agree to share my responses to help E Analytics Studio understand general trends in how organisations use data.
+            All data is anonymised and not shared externally.
+          </span>
+        </label>
+
+        <div style="height:14px"></div>
+
+        <label>
+          <span>Email (optional — receive your results by email)</span><br />
+          <input name="email" type="email" placeholder="your@email.com" style="width:100%; margin-top:8px; padding:10px; border-radius:var(--radius); border:1px solid var(--line);" />
+        </label>
+
+        <div style="height:20px"></div>
+
+        <button class="button" type="submit">View Your Results</button>
+        <div style="margin-top:16px" class="small">
+          This assessment takes about 2 minutes. Your responses are confidential.
+        </div>
+      </form>
+    </section>
+
+    <section id="results" aria-labelledby="results-title" style="display:none;">
+      <h2 id="results-title">Your Results</h2>
+      <div class="card">
+        <p id="overall"></p>
+        <div class="divider"></div>
+        <div id="domainBreakdown"></div>
+        <div class="divider"></div>
+        <p>
+          If you'd like to discuss what this suggests or explore how we can help, you're welcome to get in touch.
+        </p>
+        <p>
+          <a class="button" href="index.html">Back to Home</a>
+          <a class="button" style="background: transparent; color: var(--accent-blue); border: 1px solid var(--accent-blue);" href="survey.html" id="retake">Retake Survey</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        <strong>E Analytics Studio</strong><br>
+        Plymouth, United Kingdom<br>
+        <a href="mailto:karol@eanalyticsstudio.com">karol@eanalyticsstudio.com</a>
+      </p>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+      <small>© <span>2026</span> E Analytics Studio.</small>
+    </div>
+  </footer>
+
+  <script src="survey.js"></script>
+
+  <script>
+    (function(){
+      var btn = document.querySelector('.nav-toggle');
+      var nav = document.getElementById('primary-nav');
+      btn && btn.addEventListener('click', function(){
+        var expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', String(!expanded));
+        nav.classList.toggle('open');
+      });
+    })();
+  </script>
+</body>
+</html>

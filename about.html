@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About — E Analytics Studio</title>
+  <meta name="description" content="Learn about Dr Karol Nedza and E Analytics Studio, focused on helping organisations use data to improve performance." />
+  <meta name="author" content="Dr Karol Nedza" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/svg/logo.svg" alt="E Analytics Studio" class="logo" width="40" height="40" />
+        <span class="brand-text">E Analytics Studio</span>
+      </a>
+      <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false">Menu</button>
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="index.html">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section aria-labelledby="page-title">
+      <h1 id="page-title">About E Analytics Studio</h1>
+    </section>
+
+    <section aria-labelledby="founder-title">
+      <h2 id="founder-title">Dr Karol Nedza</h2>
+      <p>
+        Dr Karol Nedza is a psychologist and data analyst focused on helping organisations use data more effectively.
+      </p>
+      <p>
+        With a background in behavioural science and experience across sport, health, education, and corporate environments, Dr Nedza understands both how data reveals performance and why organisations struggle to act on it.
+      </p>
+    </section>
+
+    <section aria-labelledby="studio-title">
+      <h2 id="studio-title">The Studio</h2>
+      <p>
+        E Analytics Studio was created to bridge the gap between data and real-world performance.
+      </p>
+      <p>
+        Too many organisations collect data but don't understand it. Dashboards exist but don't support decisions. Metrics are measured but not trusted. The issue is rarely a lack of numbers. It's the gap between what is measured, what is understood, and what can realistically be done with the results.
+      </p>
+      <p>
+        The studio works carefully, ethically, and with a commitment to clarity over complexity.
+      </p>
+    </section>
+
+    <section aria-labelledby="philosophy-title">
+      <h2 id="philosophy-title">Philosophy</h2>
+      <p>
+        Data should not only describe what happened.
+      </p>
+      <p>
+        It should help organisations understand what to do next.
+      </p>
+      <p>
+        That requires more than numbers. It requires clarity of thinking, understanding of context, and systems that remain useful over time.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        <strong>E Analytics Studio</strong><br>
+        Plymouth, United Kingdom<br>
+        <a href="mailto:karol@eanalyticsstudio.com">karol@eanalyticsstudio.com</a>
+      </p>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+      <small>© <span>2026</span> E Analytics Studio.</small>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      var btn = document.querySelector('.nav-toggle');
+      var nav = document.getElementById('primary-nav');
+      btn && btn.addEventListener('click', function(){
+        var expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', String(!expanded));
+        nav.classList.toggle('open');
+      });
+    })();
+  </script>
+</body>
+</html>

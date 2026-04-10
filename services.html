@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Services — E Analytics Studio</title>
+  <meta name="description" content="Data analytics, custom dashboards, and team assessment services to help organisations understand and improve performance." />
+  <meta name="author" content="Dr Karol Nedza" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/svg/logo.svg" alt="E Analytics Studio" class="logo" width="40" height="40" />
+        <span class="brand-text">E Analytics Studio</span>
+      </a>
+      <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false">Menu</button>
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="index.html">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section aria-labelledby="page-title">
+      <h1 id="page-title">Services</h1>
+      <p>
+        We help organisations understand and act on their data to improve performance.
+      </p>
+    </section>
+
+    <section aria-labelledby="service1-title">
+      <h2 id="service1-title">Data Analytics Package</h2>
+      <p>
+        A structured review of your data to understand performance drivers and gaps.
+      </p>
+      <p>
+        This package provides a comprehensive analysis of your organisation's data infrastructure, quality, and insights. We deliver a detailed report identifying opportunities for improvement and actionable next steps.
+      </p>
+    </section>
+
+    <section aria-labelledby="service2-title">
+      <h2 id="service2-title">Data Dashboard Package</h2>
+      <p>
+        A custom-built dashboard designed around your organisation's needs.
+      </p>
+      <p>
+        Building on data foundations, we create a dashboard that supports real decisions. This includes data integration, long-term data structure planning, and ongoing support to ensure your dashboard remains useful over time.
+      </p>
+    </section>
+
+    <section aria-labelledby="service3-title">
+      <h2 id="service3-title">Team Assessment Package</h2>
+      <p>
+        A structured assessment of your team using scientifically-informed measures.
+      </p>
+      <p>
+        Understanding team performance requires both metrics and behavioural insight. We provide individual and team-level assessments, behavioural analysis, and a leader dashboard to support performance conversations and decisions.
+      </p>
+    </section>
+
+    <section aria-labelledby="coming-title">
+      <h2 id="coming-title">Coming Soon</h2>
+      <p>
+        <strong>White-box analytics tools</strong> for organisations and consultants.
+      </p>
+      <p>
+        We're building tools that make data interpretation clearer and more transparent. More details coming soon.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        <strong>E Analytics Studio</strong><br>
+        Plymouth, United Kingdom<br>
+        <a href="mailto:karol@eanalyticsstudio.com">karol@eanalyticsstudio.com</a>
+      </p>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+      <small>© <span>2026</span> E Analytics Studio.</small>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      var btn = document.querySelector('.nav-toggle');
+      var nav = document.getElementById('primary-nav');
+      btn && btn.addEventListener('click', function(){
+        var expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', String(!expanded));
+        nav.classList.toggle('open');
+      });
+    })();
+  </script>
+</body>
+</html>
