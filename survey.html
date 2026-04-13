@@ -33,70 +33,218 @@
     <section aria-labelledby="title">
       <h1 id="title">Data Use & Performance Survey</h1>
       <p>
-        This short assessment explores how your organisation collects, understands, and uses data to improve performance.
+        This short assessment explores how your organisation understands, uses, and structures data to support performance.
       </p>
+      <p class="small" style="margin-top: 16px;">Estimated time: about 2 minutes</p>
     </section>
 
     <section aria-labelledby="form-title">
-      <h2 id="form-title">About your organisation</h2>
+      <h2 id="form-title" style="display: none;">About your organisation</h2>
 
+      <!-- Survey Form -->
       <form id="diagnosticForm" class="card">
-        <label>
-          <span>Organisation / Team (optional)</span><br />
-          <input name="org" type="text" placeholder="e.g., Acme Ltd" style="width:100%; margin-top:8px; padding:10px; border-radius:var(--radius); border:1px solid var(--line);" />
-        </label>
+        
+        <!-- Q1: Organisation Type (multiple choice) -->
+        <div class="form-group">
+          <label for="orgType">
+            <span class="question-number">1.</span> Which best describes your organisation?
+          </label>
+          <select id="orgType" name="orgType" required style="width:100%; margin-top:8px; padding:10px; border-radius:var(--radius); border:1px solid var(--line); font-size: 1rem;">
+            <option value="">— Select —</option>
+            <option value="self-employed">Self-employed / independent consultant</option>
+            <option value="1-9">Small business (1–9 employees)</option>
+            <option value="10-49">Small to medium business (10–49 employees)</option>
+            <option value="50-249">Medium-sized business (50–249 employees)</option>
+            <option value="250+">Large organisation / enterprise (250+ employees)</option>
+            <option value="academic">University / academic institution</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
 
-        <div style="height:14px"></div>
+        <div style="height: 20px;"></div>
 
-        <label>
-          <span>Your role (optional)</span><br />
-          <input name="role" type="text" placeholder="e.g., Head of Analytics" style="width:100%; margin-top:8px; padding:10px; border-radius:var(--radius); border:1px solid var(--line);" />
-        </label>
+        <!-- Q2: Data Setup (multiple choice) -->
+        <div class="form-group">
+          <label for="dataSetup">
+            <span class="question-number">2.</span> Which of the following best describes your current data setup?
+          </label>
+          <select id="dataSetup" name="dataSetup" required style="width:100%; margin-top:8px; padding:10px; border-radius:var(--radius); border:1px solid var(--line); font-size: 1rem;">
+            <option value="">— Select —</option>
+            <option value="spreadsheets">Mostly spreadsheets and manual records</option>
+            <option value="crm-limited">CRM or analytics platform, but limited integration</option>
+            <option value="multiple-tools">Multiple tools and data sources with some structure</option>
+            <option value="centralised">Centralised dashboard or reporting system</option>
+            <option value="mature">Mature integrated data system</option>
+            <option value="unsure">Not sure</option>
+          </select>
+        </div>
 
+        <div style="height: 30px;"></div>
         <div class="divider"></div>
+        <div style="height: 20px;"></div>
 
-        <h2>Survey questions</h2>
-        <p>Please answer yes or no to each question.</p>
+        <!-- Likert Scale Questions Q3–Q10 -->
+        <h2 style="font-size: 1.1rem; color: var(--text); margin: 0 0 24px;">Rate your agreement with each statement</h2>
+        
+        <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 24px;">
+          1 = Strongly disagree | 2 = Disagree | 3 = Neither agree nor disagree | 4 = Agree | 5 = Strongly agree
+        </p>
 
-        <div id="questions"></div>
+        <!-- Q3: Data Awareness subscale -->
+        <div class="likert-group">
+          <label class="likert-statement">
+            <span class="question-number">3.</span> We know where our key organisational data is stored.
+          </label>
+          <fieldset class="likert-scale" role="group" aria-label="Answer">
+            <label><input type="radio" name="q3_data_storage" value="1" required /> 1</label>
+            <label><input type="radio" name="q3_data_storage" value="2" /> 2</label>
+            <label><input type="radio" name="q3_data_storage" value="3" /> 3</label>
+            <label><input type="radio" name="q3_data_storage" value="4" /> 4</label>
+            <label><input type="radio" name="q3_data_storage" value="5" /> 5</label>
+          </fieldset>
+        </div>
 
+        <!-- Q4: Data Awareness subscale -->
+        <div class="likert-group">
+          <label class="likert-statement">
+            <span class="question-number">4.</span> We understand where our most important data comes from.
+          </label>
+          <fieldset class="likert-scale" role="group" aria-label="Answer">
+            <label><input type="radio" name="q4_data_source" value="1" required /> 1</label>
+            <label><input type="radio" name="q4_data_source" value="2" /> 2</label>
+            <label><input type="radio" name="q4_data_source" value="3" /> 3</label>
+            <label><input type="radio" name="q4_data_source" value="4" /> 4</label>
+            <label><input type="radio" name="q4_data_source" value="5" /> 5</label>
+          </fieldset>
+        </div>
+
+        <!-- Q5: Data Awareness subscale -->
+        <div class="likert-group">
+          <label class="likert-statement">
+            <span class="question-number">5.</span> We are confident in the quality and reliability of the data we collect.
+          </label>
+          <fieldset class="likert-scale" role="group" aria-label="Answer">
+            <label><input type="radio" name="q5_data_quality" value="1" required /> 1</label>
+            <label><input type="radio" name="q5_data_quality" value="2" /> 2</label>
+            <label><input type="radio" name="q5_data_quality" value="3" /> 3</label>
+            <label><input type="radio" name="q5_data_quality" value="4" /> 4</label>
+            <label><input type="radio" name="q5_data_quality" value="5" /> 5</label>
+          </fieldset>
+        </div>
+
+        <!-- Q6: Data Awareness subscale -->
+        <div class="likert-group">
+          <label class="likert-statement">
+            <span class="question-number">6.</span> We understand which data matters most for tracking performance.
+          </label>
+          <fieldset class="likert-scale" role="group" aria-label="Answer">
+            <label><input type="radio" name="q6_data_priority" value="1" required /> 1</label>
+            <label><input type="radio" name="q6_data_priority" value="2" /> 2</label>
+            <label><input type="radio" name="q6_data_priority" value="3" /> 3</label>
+            <label><input type="radio" name="q6_data_priority" value="4" /> 4</label>
+            <label><input type="radio" name="q6_data_priority" value="5" /> 5</label>
+          </fieldset>
+        </div>
+
+        <!-- Q7: Data Use subscale -->
+        <div class="likert-group">
+          <label class="likert-statement">
+            <span class="question-number">7.</span> We use data regularly to guide performance-related decisions.
+          </label>
+          <fieldset class="likert-scale" role="group" aria-label="Answer">
+            <label><input type="radio" name="q7_data_decisions" value="1" required /> 1</label>
+            <label><input type="radio" name="q7_data_decisions" value="2" /> 2</label>
+            <label><input type="radio" name="q7_data_decisions" value="3" /> 3</label>
+            <label><input type="radio" name="q7_data_decisions" value="4" /> 4</label>
+            <label><input type="radio" name="q7_data_decisions" value="5" /> 5</label>
+          </fieldset>
+        </div>
+
+        <!-- Q8: Data Use subscale -->
+        <div class="likert-group">
+          <label class="likert-statement">
+            <span class="question-number">8.</span> Our current dashboards or reports help us make clearer decisions.
+          </label>
+          <fieldset class="likert-scale" role="group" aria-label="Answer">
+            <label><input type="radio" name="q8_dashboards" value="1" required /> 1</label>
+            <label><input type="radio" name="q8_dashboards" value="2" /> 2</label>
+            <label><input type="radio" name="q8_dashboards" value="3" /> 3</label>
+            <label><input type="radio" name="q8_dashboards" value="4" /> 4</label>
+            <label><input type="radio" name="q8_dashboards" value="5" /> 5</label>
+          </fieldset>
+        </div>
+
+        <!-- Q9: Data Use subscale -->
+        <div class="likert-group">
+          <label class="likert-statement">
+            <span class="question-number">9.</span> We review performance data consistently over time, rather than only occasionally.
+          </label>
+          <fieldset class="likert-scale" role="group" aria-label="Answer">
+            <label><input type="radio" name="q9_consistency" value="1" required /> 1</label>
+            <label><input type="radio" name="q9_consistency" value="2" /> 2</label>
+            <label><input type="radio" name="q9_consistency" value="3" /> 3</label>
+            <label><input type="radio" name="q9_consistency" value="4" /> 4</label>
+            <label><input type="radio" name="q9_consistency" value="5" /> 5</label>
+          </fieldset>
+        </div>
+
+        <!-- Q10: Data Use subscale -->
+        <div class="likert-group">
+          <label class="likert-statement">
+            <span class="question-number">10.</span> We can translate our data into clear actions for improving performance.
+          </label>
+          <fieldset class="likert-scale" role="group" aria-label="Answer">
+            <label><input type="radio" name="q10_actions" value="1" required /> 1</label>
+            <label><input type="radio" name="q10_actions" value="2" /> 2</label>
+            <label><input type="radio" name="q10_actions" value="3" /> 3</label>
+            <label><input type="radio" name="q10_actions" value="4" /> 4</label>
+            <label><input type="radio" name="q10_actions" value="5" /> 5</label>
+          </fieldset>
+        </div>
+
+        <div style="height: 30px;"></div>
         <div class="divider"></div>
+        <div style="height: 20px;"></div>
 
-        <label>
-          <input type="checkbox" name="agreement" required />
-          <span style="margin-left: 8px;">
-            I agree to share my responses to help E Analytics Studio understand general trends in how organisations use data.
-            All data is anonymised and not shared externally.
-          </span>
+        <!-- Data Use Agreement -->
+        <div class="consent-section">
+          <h3 style="font-size: 1rem; color: var(--text); margin: 0 0 12px;">Data use agreement</h3>
+          <p style="color: var(--muted); font-size: 0.9rem; margin: 0 0 16px; line-height: 1.6;">
+            I agree to share my responses to help E Analytics Studio understand general trends in how organisations use data. Responses may be used in anonymised analysis and reporting. If I choose to leave my email, it may be used to send my survey summary and related follow-up communication from E Analytics Studio.
+          </p>
+          <label style="display: flex; align-items: flex-start; margin-bottom: 16px;">
+            <input type="checkbox" name="agreement" required style="margin-top: 4px; margin-right: 8px;" />
+            <span style="color: var(--text); font-size: 0.95rem;">I agree to the data use terms above</span>
+          </label>
+        </div>
+
+        <!-- Email Field (Optional) -->
+        <label class="form-group">
+          <span style="color: var(--text); font-weight: 500;">Email (optional — receive your results by email)</span><br />
+          <input name="email" type="email" placeholder="your@email.com" style="width:100%; margin-top:8px; padding:10px; border-radius:var(--radius); border:1px solid var(--line); font-size: 1rem;" />
         </label>
 
-        <div style="height:14px"></div>
+        <div style="height: 24px;"></div>
 
-        <label>
-          <span>Email (optional — receive your results by email)</span><br />
-          <input name="email" type="email" placeholder="your@email.com" style="width:100%; margin-top:8px; padding:10px; border-radius:var(--radius); border:1px solid var(--line);" />
-        </label>
-
-        <div style="height:20px"></div>
-
-        <button class="button" type="submit">View Your Results</button>
-        <div style="margin-top:16px" class="small">
+        <button class="button" type="submit">View My Results</button>
+        <div style="margin-top: 16px;" class="small">
           This assessment takes about 2 minutes. Your responses are confidential.
         </div>
       </form>
     </section>
 
-    <section id="results" aria-labelledby="results-title" style="display:none;">
+    <!-- Results Section (hidden until form submission) -->
+    <section id="results" aria-labelledby="results-title" style="display: none;">
       <h2 id="results-title">Your Results</h2>
       <div class="card">
-        <p id="overall"></p>
+        <p id="overall" style="margin-top: 0;"></p>
         <div class="divider"></div>
         <div id="domainBreakdown"></div>
         <div class="divider"></div>
         <p>
           If you'd like to discuss what this suggests or explore how we can help, you're welcome to get in touch.
         </p>
-        <p>
+        <p style="margin-bottom: 0;">
           <a class="button" href="index.html">Back to Home</a>
           <a class="button" style="background: transparent; color: var(--accent-blue); border: 1px solid var(--accent-blue);" href="survey.html" id="retake">Retake Survey</a>
         </p>

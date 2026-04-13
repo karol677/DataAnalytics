@@ -439,6 +439,65 @@ footer{
   max-width: 600px;
 }
 
+/* Testimonial Section */
+.testimonial-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+}
+
+.testimonial-content {
+  text-align: center;
+  max-width: 760px;
+  padding: 0 18px;
+}
+
+.testimonial-label {
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 0 0 16px;
+}
+
+.testimonial-quote {
+  margin: 0;
+  padding: 32px;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.testimonial-quote p {
+  margin: 0 0 24px;
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.testimonial-footer {
+  display: block;
+  color: var(--text);
+  font-style: normal;
+  font-size: 0.95rem;
+}
+
+.testimonial-footer strong {
+  display: block;
+  font-weight: 600;
+  color: var(--accent-blue);
+  margin-bottom: 4px;
+}
+
+.testimonial-detail {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 /* Survey CTA Section (Services page) */
 .survey-cta-section {
   display: flex;
@@ -574,6 +633,105 @@ form input[type="checkbox"] {
   accent-color: var(--accent-blue);
 }
 
+form select {
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  color: var(--text);
+  accent-color: var(--accent-blue);
+}
+
+/* Survey-specific form elements */
+.form-group {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  color: var(--text);
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.question-number {
+  color: var(--accent-blue);
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* Likert scale (5-point) styling */
+.likert-group {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.likert-group:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.likert-statement {
+  display: block;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.likert-scale {
+  display: flex;
+  justify-content: flex-start;
+  gap: 16px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+}
+
+.likert-scale label {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.likert-scale input[type="radio"] {
+  margin: 0 6px 0 0;
+  cursor: pointer;
+}
+
+/* Consent section styling */
+.consent-section {
+  margin-bottom: 24px;
+}
+
+.consent-section h3 {
+  margin: 0 0 12px;
+}
+
+.consent-section label {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.consent-section input[type="checkbox"] {
+  margin: 4px 8px 0 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.consent-section span {
+  flex: 1;
+}
+
 @media (max-width: 768px) {
   .services-cards {
     grid-template-columns: 1fr;
@@ -652,5 +810,48 @@ form input[type="checkbox"] {
     content: '✓ ';
     color: var(--accent-green);
     margin-right: 6px;
+  }
+
+  .testimonial-section {
+    padding: 36px 0;
+  }
+
+  .testimonial-quote {
+    padding: 24px;
+  }
+
+  .testimonial-quote p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .testimonial-footer strong {
+    font-size: 0.9rem;
+  }
+
+  /* Survey form responsive styles */
+  .likert-scale {
+    gap: 12px;
+  }
+
+  .likert-scale label {
+    font-size: 0.85rem;
+  }
+
+  .likert-statement {
+    font-size: 0.9rem;
+  }
+
+  .consent-section h3 {
+    font-size: 0.95rem;
+  }
+
+  .consent-section p {
+    font-size: 0.85rem;
+  }
+
+  form select {
+    font-size: 0.95rem;
   }
 }
