@@ -89,46 +89,56 @@
       <figure class="intro-image" style="background-image: url('assets/img/light%20and%20lines%20of%20architecture.jpg')"></figure>
     </section>
 
+    <!-- Client Testimonial (moved earlier for trust-building) -->
+    <section aria-labelledby="testimonial-title" class="testimonial-section testimonial-early">
+      <div class="testimonial-content">
+        <p class="testimonial-label">Client feedback</p>
+        <blockquote class="testimonial-quote">
+          <p>
+            Karol conducted a detailed analysis and validation of the Most Sustainable Workplace Index survey questionnaire. This strengthened the robustness of our diagnostics and ensured that the insights we provide to clients are precise and closely aligned with their needs. Despite the complexity of the topic, working with Karol was straightforward and focused. He has a calm and reassuring way of working with data and a real talent for making complex topics easier to follow and understand. I particularly valued his efficiency and his commitment to delivering the best possible outcome for us as the client.
+          </p>
+          <footer class="testimonial-footer">
+            <strong>Gosia</strong>
+          </footer>
+        </blockquote>
+      </div>
+    </section>
+
     <section id="services" aria-labelledby="services-title">
       <h2 id="services-title">Our Services</h2>
-      
-      <div class="services-cards">
-        <!-- Data Analytics Package background (14% opacity) -->
-        <div class="service-card" style="background-image: url('assets/img/data.jpg')">
-          <h3>Data Analytics Package</h3>
-          <p>Understand what your data is telling you.</p>
-          <ul>
-            <li>Data infrastructure review</li>
-            <li>Data quality assessment</li>
-            <li>In-depth analysis</li>
-            <li>Detailed report with insights</li>
-          </ul>
+
+      <div class="service-interactive">
+        <!-- LEFT: interactive tiles -->
+        <div class="service-tiles" role="list">
+          <button class="service-tile" data-key="analytics" aria-pressed="false">
+            <div class="tile-media" style="background-image:url('assets/img/data.jpg')" aria-hidden="true"></div>
+            <div class="tile-body">
+              <h3>Data Analytics Package</h3>
+              <p class="small">Understand what your data is telling you.</p>
+            </div>
+          </button>
+
+          <button class="service-tile" data-key="dashboard" aria-pressed="false">
+            <div class="tile-media" style="background-image:url('assets/img/data-dark.jpg')" aria-hidden="true"></div>
+            <div class="tile-body">
+              <h3>Data Dashboard Package</h3>
+              <p class="small">Turn your data into a working system.</p>
+            </div>
+          </button>
+
+          <button class="service-tile" data-key="team" aria-pressed="false">
+            <div class="tile-media" style="background-image:url('assets/img/team.jpg')" aria-hidden="true"></div>
+            <div class="tile-body">
+              <h3>Team Assessment Package</h3>
+              <p class="small">Understand and improve team performance.</p>
+            </div>
+          </button>
         </div>
 
-        <!-- Data Dashboard Package background (16% opacity) -->
-        <div class="service-card" style="background-image: url('assets/img/data-dark.jpg')">
-          <h3>Data Dashboard Package</h3>
-          <p>Turn your data into a working system.</p>
-          <ul>
-            <li>Everything in Analytics</li>
-            <li>Custom dashboard</li>
-            <li>Long-term data structure</li>
-            <li>Integration with existing systems</li>
-          </ul>
-        </div>
-
-        <!-- Team Assessment Package background (12% opacity) -->
-        <div class="service-card" style="background-image: url('assets/img/team.jpg')">
-          <h3>Team Assessment Package</h3>
-          <p>Understand and improve team performance.</p>
-          <ul>
-            <li>Scientifically-led assessment</li>
-            <li>Individual + team insights</li>
-            <li>Behavioural analysis</li>
-            <li>Leader dashboard</li>
-          </ul>
-          <p><a href="team-performance.html" class="link">Learn more →</a></p>
-        </div>
+        <!-- RIGHT: timeline / process panel -->
+        <aside class="timeline-panel" aria-live="polite">
+          <!-- timeline content injected by JS -->
+        </aside>
       </div>
     </section>
 
@@ -171,21 +181,7 @@
       </p>
     </section>
 
-    <!-- Client Testimonial Section -->
-    <section aria-labelledby="testimonial-title" class="testimonial-section">
-      <div class="testimonial-content">
-        <p class="testimonial-label">Client feedback</p>
-        <blockquote class="testimonial-quote">
-          <p>
-            Karol conducted a detailed analysis and validation of the Most Sustainable Workplace Index survey questionnaire. This strengthened the robustness of our diagnostics and ensured that the insights we provide to clients are precise and closely aligned with their needs. Despite the complexity of the topic, working with Karol was straightforward and focused. He has a calm and reassuring way of working with data and a real talent for making complex topics easier to follow and understand. I particularly valued his efficiency and his commitment to delivering the best possible outcome for us as the client.
-          </p>
-          <footer class="testimonial-footer">
-            <strong>Gosia</strong><br>
-            <span class="testimonial-detail">Previous client</span>
-          </footer>
-        </blockquote>
-      </div>
-    </section>
+    <!-- testimonial removed (moved earlier) -->
   </main>
 
   <footer class="site-footer">
@@ -216,6 +212,93 @@
         this.setAttribute('aria-expanded', String(!expanded));
         nav.classList.toggle('open');
       });
+    })();
+  </script>
+
+  <script>
+    // Interactive service tiles: updates the timeline panel when tiles are selected.
+    (function(){
+      var services = {
+        analytics: {
+          title: 'How the Data Analytics Package works',
+          steps: [
+            {title:'Initial consultation', text:'Understand the organisation, goals, and current frustrations with data.'},
+            {title:'Data infrastructure and source review', text:'Assess where data is stored, how it is collected, and what is currently available.'},
+            {title:'Data quality and characteristics assessment', text:'Review reliability, structure, completeness, and usefulness of the data.'},
+            {title:'Stakeholder discussion', text:'Speak with relevant people to understand how data is currently interpreted and used.'},
+            {title:'In-depth analysis', text:'Analyse patterns, gaps, performance signals, and potential drivers.'},
+            {title:'Detailed report', text:'Deliver a structured report covering methods, results, insights, and recommendations.'},
+            {title:'Optional follow-up discussion', text:'Review the findings and identify the most useful next step.'}
+          ]
+        },
+        dashboard: {
+          title: 'How the Data Dashboard Package works',
+          steps: [
+            {title:'Initial consultation', text:'Clarify what decisions the dashboard needs to support.'},
+            {title:'Review of current data setup', text:'Understand existing systems, dashboards, and data flows.'},
+            {title:'Data quality and infrastructure assessment', text:'Identify gaps and improvements needed before dashboard build.'},
+            {title:'Long-term needs discussion', text:'Define what the organisation needs now and what it may need later.'},
+            {title:'Dashboard structure and design', text:'Build a personalised dashboard around the most useful metrics and views.'},
+            {title:'Integration and implementation', text:'Optionally connect the dashboard to an existing system or website.'},
+            {title:'Review and refinement', text:'Adjust layout, signals, and reporting based on real use.'}
+          ]
+        },
+        team: {
+          title: 'How the Team Assessment Package works',
+          steps: [
+            {title:'Initial consultation', text:'Understand the team, context, and current performance concerns.'},
+            {title:'Team and company needs discussion', text:'Clarify what the business wants to improve and what the team experiences currently.'},
+            {title:'Scientifically-led assessment setup', text:'Select and structure the right measures for the team and individuals.'},
+            {title:'Assessment rollout', text:'Collect responses and performance-related inputs.'},
+            {title:'Analysis and interpretation', text:'Identify patterns in team dynamics, strengths, risks, and performance barriers.'},
+            {title:'Reporting', text:'Deliver reports for teams, individuals, and leaders as appropriate.'},
+            {title:'Dashboard for leaders', text:'Provide a clear overview to support monitoring and next-step decisions.'}
+          ]
+        }
+      };
+
+      var tiles = Array.from(document.querySelectorAll('.service-tile'));
+      var panel = document.querySelector('.timeline-panel');
+
+      function renderTimeline(key){
+        var data = services[key];
+        if(!data) return;
+        // animate out/in
+        panel.classList.remove('fade-in');
+        panel.classList.add('fade-out');
+        setTimeout(function(){
+          panel.innerHTML = '';
+          var h = document.createElement('h3'); h.className='timeline-title'; h.textContent = data.title; panel.appendChild(h);
+          var ol = document.createElement('ol'); ol.className='timeline-steps';
+          data.steps.forEach(function(s){
+            var li = document.createElement('li'); li.className='timeline-step';
+            var st = document.createElement('h4'); st.textContent = s.title; li.appendChild(st);
+            var sp = document.createElement('p'); sp.textContent = s.text; li.appendChild(sp);
+            ol.appendChild(li);
+          });
+          panel.appendChild(ol);
+          panel.classList.remove('fade-out');
+          panel.classList.add('fade-in');
+        }, 220);
+      }
+
+      function setActive(keyEl){
+        tiles.forEach(function(t){
+          var is = (t === keyEl);
+          t.setAttribute('aria-pressed', String(is));
+          t.classList.toggle('active', is);
+        });
+      }
+
+      // Attach handlers
+      tiles.forEach(function(t){
+        t.addEventListener('click', function(){ setActive(t); renderTimeline(t.dataset.key); });
+        t.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); t.click(); } });
+      });
+
+      // Default selected state (Data Analytics Package)
+      var defaultTile = document.querySelector('.service-tile[data-key="analytics"]');
+      if(defaultTile){ defaultTile.classList.add('active'); defaultTile.setAttribute('aria-pressed','true'); renderTimeline('analytics'); }
     })();
   </script>
 </body>
