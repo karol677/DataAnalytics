@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Case Study: Behavioural Snapshot — E Analytics Studio</title>
+  <meta name="description" content="Prototype behavioural snapshot of major technology companies — KPI strip, company comparison, charts, and narrative insight." />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Use Inter for modern UI -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Chart.js + Annotation plugin (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.1/dist/chartjs-plugin-annotation.min.js"></script>
+
+  <style>
+    /* Page-scoped styles for the dashboard case study */
+    body { font-family: 'Inter', system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif; }
+    .case-hero{padding:28px 18px 8px}
+    .case-hero h1{margin:0 0 6px;font-size:1.9rem;color:var(--text)}
+    .case-hero p{margin:0;color:var(--muted);max-width:70ch}
+
+    .kpi-strip{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+    .kpi{background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(246,247,248,0.9));border:1px solid rgba(31,31,31,0.06);padding:14px 16px;border-radius:12px;min-width:160px;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(31,41,55,0.04)}
+    .kpi .value{font-weight:700;font-size:1.12rem;color:var(--text)}
+    .kpi .label{font-size:0.88rem;color:var(--muted);margin-top:6px}
+
+    .content-grid{display:grid;grid-template-columns:1fr 360px;gap:22px;margin-top:26px}
+
+    /* Table styles */
+    .company-table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+    .company-table th,.company-table td{padding:10px 12px;text-align:left;border-bottom:1px solid rgba(0,0,0,0.04)}
+    .company-table th{background:transparent;color:var(--muted);font-weight:600;font-size:0.9rem}
+    .company-table tbody tr:hover{background:rgba(79,123,167,0.03)}
+
+    /* Charts */
+    .chart{background:linear-gradient(180deg, #FFFFFF, #FBFCFD);border:1px solid rgba(31,31,31,0.06);border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(79,123,167,0.04)}
+    .chart canvas{width:100% !important; height:220px !important}
+
+    .narrative .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px}
+
+    @media (max-width:980px){.content-grid{grid-template-columns:1fr}.case-hero h1{font-size:1.45rem}}
+    /* Controls */
+    .controls{display:flex;gap:12px;align-items:center;margin-top:12px}
+    .btn-group{display:inline-flex;background:transparent;border-radius:8px;overflow:hidden}
+    .btn-group button{border:1px solid rgba(31,31,31,0.06);background:transparent;padding:8px 12px;font-weight:600;cursor:pointer}
+    .btn-group button.active{background:linear-gradient(90deg,#203A6B,#345B8E);color:#fff;border-color:transparent}
+    .toggle{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border-radius:999px;background:rgba(31,31,31,0.04)}
+    .insights {margin-top:12px}
+    .insights .card{padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfcfd);border:1px solid rgba(31,31,31,0.04)}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="header-inner container">
+      <a href="index.html" class="site-brand" aria-label="E Analytics Studio home">
+        <img src="assets/img/logo.svg" alt="E Analytics Studio logo" class="site-logo" height="34" />
+        <span class="site-title">E Analytics Studio</span>
+      </a>
+      <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+      <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="dashboards.html">Dashboards</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <!-- Case-study header -->
+    <section class="case-hero" aria-labelledby="case-title">
+      <h1 id="case-title">Case Study: Behavioural Snapshot of Major Technology Companies</h1>
+      <p>This prototype dashboard shows how public company, leadership, and hiring-related indicators can be structured into a single comparative view. The aim is not to predict markets, but to surface behavioural signals for monitoring and comparison.</p>
+
+      <!-- KPI strip (populated by JS) -->
+      <div class="controls">
+        <div class="btn-group" role="tablist" aria-label="Timeframe selector">
+          <button class="time-btn active" data-range="1D">1D</button>
+          <button class="time-btn" data-range="1W">1W</button>
+          <button class="time-btn" data-range="1M">1M</button>
+          <button class="time-btn" data-range="1Y">1Y</button>
+        </div>
+
+        <div style="margin-left:12px" class="toggle">
+          <label style="font-size:0.9rem;color:var(--muted);">Metric</label>
+          <select id="metricSelect" style="border:0;background:transparent;font-weight:600">
+            <option value="price">Price</option>
+            <option value="volume">Volume</option>
+            <option value="volatility">Volatility</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="kpi-strip" id="kpiStrip" aria-hidden="false"></div>
+    </section>
+
+    <section class="content" aria-label="Dashboard content">
+      <div class="content-grid">
+        <!-- Left: main panel with table and charts -->
+        <div>
+          <!-- Price / timeseries chart (main) -->
+          <div class="chart" aria-labelledby="price-title">
+            <h3 id="price-title" style="margin:0 0 8px;font-size:1rem">Price trend (prototype)</h3>
+            <canvas id="priceChart"></canvas>
+          </div>
+
+          <div class="chart" aria-labelledby="table-title" style="margin-top:14px">
+            <h3 id="table-title" style="margin:0 0 8px;font-size:1rem">Company comparison</h3>
+            <div style="overflow:auto">
+              <table class="company-table" id="companyTable">
+                <thead>
+                  <tr>
+                    <th>Company</th>
+                    <th>Ticker</th>
+                    <th>Sector</th>
+                    <th>Market cap</th>
+                    <th>Employees</th>
+                    <th>CEO</th>
+                    <th>CEO tenure (yrs)</th>
+                    <th>1Y change</th>
+                    <th>Hiring</th>
+                    <th>Rev / emp</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
+            <div class="chart" id="tenureChart">
+              <h4 style="margin:0 0 8px;font-size:0.96rem">CEO tenure by company</h4>
+              <canvas id="tenureChartCanvas"></canvas>
+            </div>
+
+            <div class="chart" id="scatterChart">
+              <h4 style="margin:0 0 8px;font-size:0.96rem">Employees vs Revenue per employee</h4>
+              <canvas id="scatterChartCanvas"></canvas>
+            </div>
+          </div>
+
+          <div class="chart" style="margin-top:12px">
+            <h4 style="margin:0 0 8px;font-size:0.96rem">Hiring signal vs 1Y stock change</h4>
+            <canvas id="hiringChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Right: narrative / insights panel -->
+        <aside class="narrative" aria-label="Narrative and insights">
+          <div class="card">
+            <h4 style="margin:0 0 8px">Prototype narrative hook</h4>
+            <p style="margin:0;color:var(--muted);font-size:0.95rem">Hover or explore the table and charts to see short narrative summaries. These snapshots summarise leadership stability, hiring posture, and market momentum together.</p>
+          </div>
+          <div id="narratives"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section style="margin-top:26px;text-align:center">
+      <h3 style="margin:0 0 8px">From public signals to structured insight</h3>
+      <p style="max-width:64ch;margin:0 auto 12px;color:var(--muted)">This example shows how multiple public indicators can be organised into a cleaner comparative view. The same logic can be adapted to organisations, portfolios, and internal decision systems.</p>
+      <a class="button" href="index.html">Explore E Analytics Studio</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        <strong>E Analytics Studio</strong><br>
+        Plymouth, United Kingdom<br>
+        <a href="mailto:karol@eanalyticsstudio.com">karol@eanalyticsstudio.com</a>
+      </p>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="dashboards.html">Dashboards</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+      <small>© <span>2026</span> E Analytics Studio.</small>
+    </div>
+  </footer>
+
+  <script>
+  /*
+    Enhanced dashboard using Chart.js
+    - main price timeseries (responsive, animated, annotations)
+    - KPI cards updated from sample data
+    - tenure, scatter, hiring charts implemented with Chart.js
+    - timeframe and metric controls update main chart
+  */
+
+  (function(){
+    // --- sample base dataset (same as before) ---
+    var data = [
+      {company:'Apple', ticker:'AAPL', sector:'Technology', marketCap:2600000, employees:154000, CEO:'Tim Cook', ceoTenure:10.5, oneYearChange:28.4, hiringSignal:42, leadershipStability:88, revenuePerEmployee:1700000, narrative:'Large-scale employer with steady leadership and healthy revenue per head.'},
+      {company:'Microsoft', ticker:'MSFT', sector:'Technology', marketCap:2400000, employees:220000, CEO:'Satya Nadella', ceoTenure:8.0, oneYearChange:38.1, hiringSignal:51, leadershipStability:90, revenuePerEmployee:1350000, narrative:'Strong cloud momentum and steady hiring posture.'},
+      {company:'Alphabet', ticker:'GOOGL', sector:'Technology', marketCap:1500000, employees:190000, CEO:'Sundar Pichai', ceoTenure:7.2, oneYearChange:22.7, hiringSignal:46, leadershipStability:85, revenuePerEmployee:1200000, narrative:'Solid advertising recovery and selective hiring.'},
+      {company:'Amazon', ticker:'AMZN', sector:'Consumer', marketCap:1000000, employees:1600000, CEO:'Andy Jassy', ceoTenure:3.0, oneYearChange:12.5, hiringSignal:60, leadershipStability:72, revenuePerEmployee:180000, narrative:'Very large workforce; hiring posture remains elevated in specific areas.'},
+      {company:'Meta', ticker:'META', sector:'Technology', marketCap:700000, employees:60000, CEO:'Mark Zuckerberg', ceoTenure:17.0, oneYearChange:45.0, hiringSignal:30, leadershipStability:92, revenuePerEmployee:3200000, narrative:'High revenue per employee, conservative hiring trend.'},
+      {company:'Nvidia', ticker:'NVDA', sector:'Semiconductors', marketCap:1200000, employees:26000, CEO:'Jensen Huang', ceoTenure:30.0, oneYearChange:160.0, hiringSignal:55, leadershipStability:95, revenuePerEmployee:7500000, narrative:'Exceptional revenue density and strong momentum.'}
+    ];
+
+    // Utilities
+    function fmtNumber(n){ return n>=1000 ? (n/1000).toFixed(0)+'k' : String(n); }
+    function fmtMoney(n){ return '£' + (n>=1000000 ? (n/1000000).toFixed(1)+'M' : (n/1000).toFixed(0)+'k'); }
+
+    // KPIs
+    var avg = data.reduce(function(acc,d){ acc.ceoTenure+=d.ceoTenure; acc.oneYearChange+=d.oneYearChange; acc.hiringSignal+=d.hiringSignal; acc.revPerEmp+=d.revenuePerEmployee; return acc; },{ceoTenure:0, oneYearChange:0, hiringSignal:0, revPerEmp:0});
+    avg.ceoTenure = (avg.ceoTenure/data.length).toFixed(1);
+    avg.oneYearChange = (avg.oneYearChange/data.length).toFixed(1);
+    avg.hiringSignal = (avg.hiringSignal/data.length).toFixed(0);
+    avg.revPerEmp = Math.round(avg.revPerEmp/data.length);
+
+    var kpiStrip = document.getElementById('kpiStrip');
+    kpiStrip.innerHTML = '';
+    function addKPI(label,value,muted){
+      var el = document.createElement('div'); el.className='kpi';
+      el.innerHTML = '<div class="value">'+value+'</div><div class="label">'+label+'</div>';
+      kpiStrip.appendChild(el);
+    }
+    addKPI('Avg CEO tenure', avg.ceoTenure + ' yrs');
+    addKPI('Avg 1Y change', avg.oneYearChange + '%');
+    addKPI('Avg hiring signal', avg.hiringSignal);
+    addKPI('Avg revenue / emp', fmtMoney(avg.revPerEmp));
+
+    // Render table
+    var tbody = document.querySelector('#companyTable tbody');
+    data.forEach(function(d){
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>'+d.company+'</td>'+
+                     '<td>'+d.ticker+'</td>'+
+                     '<td>'+d.sector+'</td>'+
+                     '<td>'+fmtNumber(d.marketCap)+'</td>'+
+                     '<td>'+fmtNumber(d.employees)+'</td>'+
+                     '<td>'+d.CEO+'</td>'+
+                     '<td>'+d.ceoTenure+'</td>'+
+                     '<td>'+(d.oneYearChange)+'%</td>'+
+                     '<td>'+d.hiringSignal+'</td>'+
+                     '<td>'+fmtMoney(d.revenuePerEmployee)+'</td>';
+      tr.addEventListener('mouseenter', function(){ showNarrative(d); selectCompany(d.ticker); });
+      tbody.appendChild(tr);
+    });
+
+    function showNarrative(d){
+      var n = document.getElementById('narratives');
+      n.innerHTML = '<div class="card"><strong>'+d.company+' ('+d.ticker+')</strong><p style="margin:8px 0 0;color:var(--muted)">'+d.narrative+'</p></div>';
+    }
+
+    // --- Generate synthetic timeseries for each company for demo purposes ---
+    function generateSeries(points, base, volatility){
+      var arr = [], v = base;
+      for(var i=0;i<points;i++){
+        // random walk
+        v = Math.max(1, v * (1 + (Math.random()-0.48) * volatility));
+        arr.push(Math.round(v*100)/100);
+      }
+      return arr;
+    }
+
+    var timeseries = {};
+    // pick a base price per company
+    data.forEach(function(d,i){ timeseries[d.ticker] = {
+      '1D': generateSeries(24, (50 + i*30), 0.01),
+      '1W': generateSeries(7, (50 + i*30), 0.03),
+      '1M': generateSeries(30, (50 + i*30), 0.04),
+      '1Y': generateSeries(52, (50 + i*30), 0.06)
+    }; });
+
+    // helper to build labels for timeframe
+    function labelsFor(range){
+      if(range==='1D') return Array.from({length:24},(_,i)=> (i+' h'));
+      if(range==='1W') return ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      if(range==='1M') return Array.from({length:30},(_,i)=> 'D'+(i+1));
+      return Array.from({length:52},(_,i)=> 'W'+(i+1));
+    }
+
+    // --- Chart.js instances ---
+    Chart.register(ChartAnnotation.Annotation);
+
+    var activeTicker = 'NVDA';
+    var priceCtx = document.getElementById('priceChart').getContext('2d');
+    var priceChart = new Chart(priceCtx, {
+      type: 'line',
+      data: { labels: labelsFor('1D'), datasets: [{ label: activeTicker, data: timeseries[activeTicker]['1D'], borderColor:'#203A6B', backgroundColor:'rgba(32,58,107,0.08)', tension:0.25, pointRadius:3, pointHoverRadius:6 }] },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{
+          legend:{display:false},
+          tooltip:{mode:'index',intersect:false,callbacks:{label:function(ctx){ return ctx.dataset.label+': '+ctx.formattedValue; }}},
+          annotation:{annotations:{
+            a1:{type:'line',xMin:2,xMax:2,borderColor:'#FF6B6B',borderWidth:2,label:{content:'Earnings',enabled:true,position:'start'}},
+            a2:{type:'line',xMin:10,xMax:10,borderColor:'#7F93AD',borderWidth:1,label:{content:'Product launch',enabled:true,position:'start'}}
+          }}
+        },
+        scales:{
+          x:{display:true,title:{display:true,text:'Time'}},
+          y:{display:true,title:{display:true,text:'Price (GBP)'}}
+        },
+        animation:{duration:700,easing:'easeOutCubic'}
+      }
+    });
+
+    // tenure bar chart
+    var tenureCtx = document.getElementById('tenureChartCanvas').getContext('2d');
+    var tenureChart = new Chart(tenureCtx, {
+      type:'bar', data:{ labels: data.map(d=>d.ticker), datasets:[{label:'CEO tenure (yrs)',data:data.map(d=>d.ceoTenure),backgroundColor:'#4F7BA7',borderRadius:8}] },
+      options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.formattedValue+' yrs';}}}},scales:{y:{title:{display:true,text:'Years'}}}
+    });
+
+    // scatter: employees vs revenue per employee
+    var scatterCtx = document.getElementById('scatterChartCanvas').getContext('2d');
+    var scatterChart = new Chart(scatterCtx, {
+      type:'scatter', data:{ datasets: [{ label:'Companies', data: data.map(d=>({x:d.employees,y:d.revenuePerEmployee,r:6,label:d.ticker})), backgroundColor:'#5A8A6F'}] },
+      options:{responsive:true, plugins:{tooltip:{callbacks:{label:function(ctx){ var o=ctx.raw; return o.label+': '+fmtNumber(o.x)+' employees, '+fmtMoney(o.y); }}} ,legend:{display:false}}, scales:{x:{title:{display:true,text:'Employees'}}, y:{title:{display:true,text:'Revenue per employee'}} }
+    });
+
+    // hiring vs 1Y change scatter
+    var hiringCtx = document.getElementById('hiringChartCanvas').getContext('2d');
+    var hiringChart = new Chart(hiringCtx, {
+      type:'scatter', data:{ datasets:[{ label:'Hiring vs 1Y', data: data.map(d=>({x:d.hiringSignal,y:d.oneYearChange,label:d.ticker})), backgroundColor:'#7F93AD' }] },
+      options:{responsive:true, plugins:{tooltip:{callbacks:{label:function(ctx){ var o=ctx.raw; return o.label+': Hiring '+o.x+', 1Y '+o.y+'%'; }}} ,legend:{display:false}}, scales:{x:{title:{display:true,text:'Hiring signal'}}, y:{title:{display:true,text:'1Y % change'}} }
+    });
+
+    // timeframe and metric controls
+    document.querySelectorAll('.time-btn').forEach(function(btn){ btn.addEventListener('click', function(){ document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); updateTimeframe(this.dataset.range); }); });
+    document.getElementById('metricSelect').addEventListener('change', function(){ updateMetric(this.value); });
+
+    function updateTimeframe(range){
+      var labels = labelsFor(range);
+      var newData = timeseries[activeTicker][range];
+      priceChart.data.labels = labels;
+      priceChart.data.datasets[0].data = newData;
+      // adjust annotations positions (example static anchors moved for demo)
+      priceChart.options.plugins.annotation.annotations.a1.xMin = Math.max(1, Math.floor(newData.length*0.1));
+      priceChart.options.plugins.annotation.annotations.a1.xMax = priceChart.options.plugins.annotation.annotations.a1.xMin;
+      priceChart.options.plugins.annotation.annotations.a2.xMin = Math.max(2, Math.floor(newData.length*0.4));
+      priceChart.options.plugins.annotation.annotations.a2.xMax = priceChart.options.plugins.annotation.annotations.a2.xMin;
+      priceChart.update();
+    }
+
+    function updateMetric(metric){
+      // For demo purposes, change chart color/label to reflect metric
+      if(metric==='price'){ priceChart.data.datasets[0].label = activeTicker; priceChart.data.datasets[0].borderColor = '#203A6B'; }
+      if(metric==='volume'){ priceChart.data.datasets[0].label = activeTicker+' volume'; priceChart.data.datasets[0].borderColor = '#2C9DA6'; }
+      if(metric==='volatility'){ priceChart.data.datasets[0].label = activeTicker+' volatility'; priceChart.data.datasets[0].borderColor = '#7F93AD'; }
+      priceChart.update();
+    }
+
+    // allow selecting company to update main price chart
+    function selectCompany(ticker){ activeTicker = ticker; // if no timeseries for ticker, fallback to first
+      if(!timeseries[activeTicker]) activeTicker = data[0].ticker;
+      var range = document.querySelector('.time-btn.active').dataset.range || '1D';
+      priceChart.data.datasets[0].label = activeTicker;
+      priceChart.data.datasets[0].data = timeseries[activeTicker][range];
+      priceChart.update();
+    }
+
+    // show initial narrative and select company
+    showNarrative(data[0]); selectCompany('NVDA');
+
+    // redraw charts on resize to keep crispness
+    window.addEventListener('resize', function(){ priceChart.resize(); tenureChart.resize(); scatterChart.resize(); hiringChart.resize(); });
+
+  })();
+  </script>
+</body>
+</html>
