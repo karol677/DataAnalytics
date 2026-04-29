@@ -9,7 +9,8 @@
   <!-- Use Inter for modern UI -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Chart.js + Annotation plugin (CDN) -->
+  <!-- PapaParse + Chart.js + Annotation plugin (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.1/dist/chartjs-plugin-annotation.min.js"></script>
 
@@ -48,6 +49,11 @@
     .toggle{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border-radius:999px;background:rgba(31,31,31,0.04)}
     .insights {margin-top:12px}
     .insights .card{padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfcfd);border:1px solid rgba(31,31,31,0.04)}
+    .dashboard-demo-frame{position:relative;margin-top:24px;border:1px solid rgba(32,58,107,0.08);border-radius:24px;background:linear-gradient(180deg,#f8fbff,#ffffff);box-shadow:0 28px 70px rgba(32,58,107,0.08);padding:24px}
+    .dashboard-demo-label{position:absolute;top:-14px;left:24px;background:#203A6B;color:#fff;padding:6px 12px;border-radius:999px;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;box-shadow:0 12px 28px rgba(32,58,107,0.16)}
+    .dashboard-demo-frame .chart{background:rgba(255,255,255,0.92);border-color:rgba(32,58,107,0.12)}
+    .dashboard-demo-frame .company-table th{color:#203A6B}
+    .info-tip{display:inline-block;margin-left:6px;color:#203A6B;font-size:0.95rem;cursor:help}
   </style>
 </head>
 <body>
@@ -63,8 +69,9 @@
       <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="dashboards.html">Dashboards</a></li>
+          <li><a href="dashboards.html">Case Studies</a></li>
           <li><a href="services.html">Services</a></li>
+          <li><a href="survey.html">Survey</a></li>
           <li><a href="about.html">About</a></li>
         </ul>
       </nav>
@@ -79,14 +86,7 @@
 
       <!-- KPI strip (populated by JS) -->
       <div class="controls">
-        <div class="btn-group" role="tablist" aria-label="Timeframe selector">
-          <button class="time-btn active" data-range="1D">1D</button>
-          <button class="time-btn" data-range="1W">1W</button>
-          <button class="time-btn" data-range="1M">1M</button>
-          <button class="time-btn" data-range="1Y">1Y</button>
-        </div>
-
-        <div style="margin-left:12px" class="toggle">
+        <div class="toggle">
           <label style="font-size:0.9rem;color:var(--muted);">Metric</label>
           <select id="metricSelect" style="border:0;background:transparent;font-weight:600">
             <option value="price">Price</option>
@@ -99,7 +99,9 @@
       <div class="kpi-strip" id="kpiStrip" aria-hidden="false"></div>
     </section>
 
-    <section class="content" aria-label="Dashboard content">
+    <div class="dashboard-demo-frame">
+      <div class="dashboard-demo-label">Interactive dashboard demo</div>
+      <section class="content" aria-label="Dashboard content">
       <div class="content-grid">
         <!-- Left: main panel with table and charts -->
         <div>
@@ -122,9 +124,9 @@
                     <th>Employees</th>
                     <th>CEO</th>
                     <th>CEO tenure (yrs)</th>
-                    <th>1Y change</th>
-                    <th>Hiring</th>
-                    <th>Rev / emp</th>
+                    <th title="One-year stock movement as a market momentum signal.">1Y change <span class="info-tip">ℹ</span></th>
+                    <th title="Relative hiring posture on a 0-100 scale.">Hiring <span class="info-tip">ℹ</span></th>
+                    <th title="Revenue per employee, a productivity proxy.">Rev / emp <span class="info-tip">ℹ</span></th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -134,7 +136,7 @@
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
             <div class="chart" id="tenureChart">
-              <h4 style="margin:0 0 8px;font-size:0.96rem">CEO tenure by company</h4>
+              <h4 style="margin:0 0 8px;font-size:0.96rem">CEO tenure by company <span class="info-tip" title="Long-tenured CEOs can signal leadership continuity and lower organisational risk.">ℹ</span></h4>
               <canvas id="tenureChartCanvas"></canvas>
             </div>
 
@@ -144,10 +146,6 @@
             </div>
           </div>
 
-          <div class="chart" style="margin-top:12px">
-            <h4 style="margin:0 0 8px;font-size:0.96rem">Hiring signal vs 1Y stock change</h4>
-            <canvas id="hiringChartCanvas"></canvas>
-          </div>
         </div>
 
         <!-- Right: narrative / insights panel -->
@@ -160,6 +158,7 @@
         </aside>
       </div>
     </section>
+    </div>
 
     <!-- CTA -->
     <section style="margin-top:26px;text-align:center">
@@ -189,187 +188,375 @@
   </footer>
 
   <script>
-  /*
-    Enhanced dashboard using Chart.js
-    - main price timeseries (responsive, animated, annotations)
-    - KPI cards updated from sample data
-    - tenure, scatter, hiring charts implemented with Chart.js
-    - timeframe and metric controls update main chart
-  */
+  document.addEventListener('DOMContentLoaded', function(){
+    console.log('NASDAQ dashboard script started');
 
-  (function(){
-    // --- sample base dataset (same as before) ---
-    var data = [
-      {company:'Apple', ticker:'AAPL', sector:'Technology', marketCap:2600000, employees:154000, CEO:'Tim Cook', ceoTenure:10.5, oneYearChange:28.4, hiringSignal:42, leadershipStability:88, revenuePerEmployee:1700000, narrative:'Large-scale employer with steady leadership and healthy revenue per head.'},
-      {company:'Microsoft', ticker:'MSFT', sector:'Technology', marketCap:2400000, employees:220000, CEO:'Satya Nadella', ceoTenure:8.0, oneYearChange:38.1, hiringSignal:51, leadershipStability:90, revenuePerEmployee:1350000, narrative:'Strong cloud momentum and steady hiring posture.'},
-      {company:'Alphabet', ticker:'GOOGL', sector:'Technology', marketCap:1500000, employees:190000, CEO:'Sundar Pichai', ceoTenure:7.2, oneYearChange:22.7, hiringSignal:46, leadershipStability:85, revenuePerEmployee:1200000, narrative:'Solid advertising recovery and selective hiring.'},
-      {company:'Amazon', ticker:'AMZN', sector:'Consumer', marketCap:1000000, employees:1600000, CEO:'Andy Jassy', ceoTenure:3.0, oneYearChange:12.5, hiringSignal:60, leadershipStability:72, revenuePerEmployee:180000, narrative:'Very large workforce; hiring posture remains elevated in specific areas.'},
-      {company:'Meta', ticker:'META', sector:'Technology', marketCap:700000, employees:60000, CEO:'Mark Zuckerberg', ceoTenure:17.0, oneYearChange:45.0, hiringSignal:30, leadershipStability:92, revenuePerEmployee:3200000, narrative:'High revenue per employee, conservative hiring trend.'},
-      {company:'Nvidia', ticker:'NVDA', sector:'Semiconductors', marketCap:1200000, employees:26000, CEO:'Jensen Huang', ceoTenure:30.0, oneYearChange:160.0, hiringSignal:55, leadershipStability:95, revenuePerEmployee:7500000, narrative:'Exceptional revenue density and strong momentum.'}
-    ];
+    var csvPath = 'data_dashboard/nasdaq_behavioral_dashboard_raw_data.csv';
+    var annotationPlugin = window['chartjs-plugin-annotation'] || window.ChartAnnotation;
+    var priceChart = null;
+    var tenureChart = null;
+    var scatterChart = null;
+    var dashboardData = [];
+    var activeTicker = null;
+    var activeMetric = 'price';
+    var controlsBound = false;
 
-    // Utilities
-    function fmtNumber(n){ return n>=1000 ? (n/1000).toFixed(0)+'k' : String(n); }
-    function fmtMoney(n){ return '£' + (n>=1000000 ? (n/1000000).toFixed(1)+'M' : (n/1000).toFixed(0)+'k'); }
-
-    // KPIs
-    var avg = data.reduce(function(acc,d){ acc.ceoTenure+=d.ceoTenure; acc.oneYearChange+=d.oneYearChange; acc.hiringSignal+=d.hiringSignal; acc.revPerEmp+=d.revenuePerEmployee; return acc; },{ceoTenure:0, oneYearChange:0, hiringSignal:0, revPerEmp:0});
-    avg.ceoTenure = (avg.ceoTenure/data.length).toFixed(1);
-    avg.oneYearChange = (avg.oneYearChange/data.length).toFixed(1);
-    avg.hiringSignal = (avg.hiringSignal/data.length).toFixed(0);
-    avg.revPerEmp = Math.round(avg.revPerEmp/data.length);
-
-    var kpiStrip = document.getElementById('kpiStrip');
-    kpiStrip.innerHTML = '';
-    function addKPI(label,value,muted){
-      var el = document.createElement('div'); el.className='kpi';
-      el.innerHTML = '<div class="value">'+value+'</div><div class="label">'+label+'</div>';
-      kpiStrip.appendChild(el);
-    }
-    addKPI('Avg CEO tenure', avg.ceoTenure + ' yrs');
-    addKPI('Avg 1Y change', avg.oneYearChange + '%');
-    addKPI('Avg hiring signal', avg.hiringSignal);
-    addKPI('Avg revenue / emp', fmtMoney(avg.revPerEmp));
-
-    // Render table
-    var tbody = document.querySelector('#companyTable tbody');
-    data.forEach(function(d){
-      var tr = document.createElement('tr');
-      tr.innerHTML = '<td>'+d.company+'</td>'+
-                     '<td>'+d.ticker+'</td>'+
-                     '<td>'+d.sector+'</td>'+
-                     '<td>'+fmtNumber(d.marketCap)+'</td>'+
-                     '<td>'+fmtNumber(d.employees)+'</td>'+
-                     '<td>'+d.CEO+'</td>'+
-                     '<td>'+d.ceoTenure+'</td>'+
-                     '<td>'+(d.oneYearChange)+'%</td>'+
-                     '<td>'+d.hiringSignal+'</td>'+
-                     '<td>'+fmtMoney(d.revenuePerEmployee)+'</td>';
-      tr.addEventListener('mouseenter', function(){ showNarrative(d); selectCompany(d.ticker); });
-      tbody.appendChild(tr);
-    });
-
-    function showNarrative(d){
-      var n = document.getElementById('narratives');
-      n.innerHTML = '<div class="card"><strong>'+d.company+' ('+d.ticker+')</strong><p style="margin:8px 0 0;color:var(--muted)">'+d.narrative+'</p></div>';
-    }
-
-    // --- Generate synthetic timeseries for each company for demo purposes ---
-    function generateSeries(points, base, volatility){
-      var arr = [], v = base;
-      for(var i=0;i<points;i++){
-        // random walk
-        v = Math.max(1, v * (1 + (Math.random()-0.48) * volatility));
-        arr.push(Math.round(v*100)/100);
+    var requiredIds = ['kpiStrip', 'priceChart', 'companyTable', 'tenureChartCanvas', 'scatterChartCanvas', 'metricSelect', 'narratives'];
+    for (var i = 0; i < requiredIds.length; i++) {
+      if (!document.getElementById(requiredIds[i])) {
+        showFallback('Missing dashboard element: #' + requiredIds[i]);
+        return;
       }
-      return arr;
     }
 
-    var timeseries = {};
-    // pick a base price per company
-    data.forEach(function(d,i){ timeseries[d.ticker] = {
-      '1D': generateSeries(24, (50 + i*30), 0.01),
-      '1W': generateSeries(7, (50 + i*30), 0.03),
-      '1M': generateSeries(30, (50 + i*30), 0.04),
-      '1Y': generateSeries(52, (50 + i*30), 0.06)
-    }; });
-
-    // helper to build labels for timeframe
-    function labelsFor(range){
-      if(range==='1D') return Array.from({length:24},(_,i)=> (i+' h'));
-      if(range==='1W') return ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-      if(range==='1M') return Array.from({length:30},(_,i)=> 'D'+(i+1));
-      return Array.from({length:52},(_,i)=> 'W'+(i+1));
+    if (typeof Papa === 'undefined') {
+      showFallback('PapaParse failed to load. CSV parsing cannot start.');
+      return;
     }
 
-    // --- Chart.js instances ---
-    Chart.register(ChartAnnotation.Annotation);
+    if (typeof Chart === 'undefined') {
+      showFallback('Chart.js failed to load. Charts cannot be created.');
+      return;
+    }
 
-    var activeTicker = 'NVDA';
-    var priceCtx = document.getElementById('priceChart').getContext('2d');
-    var priceChart = new Chart(priceCtx, {
-      type: 'line',
-      data: { labels: labelsFor('1D'), datasets: [{ label: activeTicker, data: timeseries[activeTicker]['1D'], borderColor:'#203A6B', backgroundColor:'rgba(32,58,107,0.08)', tension:0.25, pointRadius:3, pointHoverRadius:6 }] },
-      options: {
-        responsive:true, maintainAspectRatio:false,
-        plugins:{
-          legend:{display:false},
-          tooltip:{mode:'index',intersect:false,callbacks:{label:function(ctx){ return ctx.dataset.label+': '+ctx.formattedValue; }}},
-          annotation:{annotations:{
-            a1:{type:'line',xMin:2,xMax:2,borderColor:'#FF6B6B',borderWidth:2,label:{content:'Earnings',enabled:true,position:'start'}},
-            a2:{type:'line',xMin:10,xMax:10,borderColor:'#7F93AD',borderWidth:1,label:{content:'Product launch',enabled:true,position:'start'}}
-          }}
-        },
-        scales:{
-          x:{display:true,title:{display:true,text:'Time'}},
-          y:{display:true,title:{display:true,text:'Price (GBP)'}}
-        },
-        animation:{duration:700,easing:'easeOutCubic'}
+    if (annotationPlugin) {
+      Chart.register(annotationPlugin);
+    } else {
+      console.warn('chartjs-plugin-annotation is not available; continuing without annotations.');
+    }
+
+    var statusEl = document.createElement('div');
+    statusEl.id = 'nasdaqStatus';
+    statusEl.style.color = 'var(--muted)';
+    statusEl.style.marginTop = '10px';
+    statusEl.textContent = 'Loading dashboard data...';
+    document.querySelector('.case-hero').appendChild(statusEl);
+
+    console.log('Loading CSV: data_dashboard/nasdaq_behavioral_dashboard_raw_data.csv');
+    Papa.parse(csvPath, {
+      download: true,
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: true,
+      complete: function(result) {
+        var rows = (result.data || []).filter(function(row) {
+          return row && row['Company'] && row['Ticker'];
+        });
+        console.log('row count', rows.length);
+        console.log('first parsed row', rows[0] || null);
+
+        if (result.errors && result.errors.length) {
+          console.warn('NASDAQ CSV parse warnings', result.errors);
+        }
+
+        if (!rows.length) {
+          showFallback('No usable rows found in ' + csvPath);
+          return;
+        }
+
+        dashboardData = rows.map(mapRow);
+        activeTicker = dashboardData[0].ticker;
+
+        console.log('Rendering NASDAQ charts');
+        renderDashboard();
+        statusEl.textContent = 'NASDAQ dashboard ready';
+        statusEl.style.color = 'var(--muted)';
+        console.log('NASDAQ dashboard ready');
+      },
+      error: function(error) {
+        showFallback('Failed to load CSV: ' + csvPath + (error && error.message ? ' (' + error.message + ')' : ''));
       }
     });
 
-    // tenure bar chart
-    var tenureCtx = document.getElementById('tenureChartCanvas').getContext('2d');
-    var tenureChart = new Chart(tenureCtx, {
-      type:'bar', data:{ labels: data.map(d=>d.ticker), datasets:[{label:'CEO tenure (yrs)',data:data.map(d=>d.ceoTenure),backgroundColor:'#4F7BA7',borderRadius:8}] },
-      options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.formattedValue+' yrs';}}}},scales:{y:{title:{display:true,text:'Years'}}}
-    });
+    function mapRow(row) {
+      return {
+        company: row['Company'],
+        ticker: row['Ticker'],
+        sector: row['Sector'],
+        marketCap: Number(row['Market Cap (USD tn)']),
+        employees: Number(row['Employees']),
+        ceo: row['CEO'],
+        ceoTenure: Number(row['CEO Tenure (yrs)']),
+        revenue: Number(row['TTM Revenue (USD bn)']),
+        oneYearChange: Number(row['1Y Stock Change (%)']),
+        hiringSignal: Number(row['Hiring Signal (0-100)']),
+        leadershipStability: Number(row['Leadership Stability (0-100)']),
+        revenuePerEmployee: Number(row['Revenue / Employee ($k)']),
+        narrative: row['Prototype Narrative Hook']
+      };
+    }
 
-    // scatter: employees vs revenue per employee
-    var scatterCtx = document.getElementById('scatterChartCanvas').getContext('2d');
-    var scatterChart = new Chart(scatterCtx, {
-      type:'scatter', data:{ datasets: [{ label:'Companies', data: data.map(d=>({x:d.employees,y:d.revenuePerEmployee,r:6,label:d.ticker})), backgroundColor:'#5A8A6F'}] },
-      options:{responsive:true, plugins:{tooltip:{callbacks:{label:function(ctx){ var o=ctx.raw; return o.label+': '+fmtNumber(o.x)+' employees, '+fmtMoney(o.y); }}} ,legend:{display:false}}, scales:{x:{title:{display:true,text:'Employees'}}, y:{title:{display:true,text:'Revenue per employee'}} }
-    });
+    function showFallback(message) {
+      var fallbackStatus = document.getElementById('nasdaqStatus');
+      if (!fallbackStatus) {
+        fallbackStatus = document.createElement('div');
+        fallbackStatus.id = 'nasdaqStatus';
+        fallbackStatus.style.marginTop = '10px';
+        document.querySelector('.case-hero').appendChild(fallbackStatus);
+      }
+      fallbackStatus.style.color = '#b00020';
+      fallbackStatus.textContent = message;
+      document.getElementById('kpiStrip').innerHTML = '<div class="kpi"><div class="value">Unavailable</div><div class="label">NASDAQ dashboard data</div></div>';
+      document.querySelector('#companyTable tbody').innerHTML = '<tr><td colspan="10">Unable to load NASDAQ dashboard data.</td></tr>';
+      document.getElementById('narratives').innerHTML = '<div class="card"><p style="margin:0;color:var(--muted)">Dashboard data could not be loaded.</p></div>';
+    }
 
-    // hiring vs 1Y change scatter
-    var hiringCtx = document.getElementById('hiringChartCanvas').getContext('2d');
-    var hiringChart = new Chart(hiringCtx, {
-      type:'scatter', data:{ datasets:[{ label:'Hiring vs 1Y', data: data.map(d=>({x:d.hiringSignal,y:d.oneYearChange,label:d.ticker})), backgroundColor:'#7F93AD' }] },
-      options:{responsive:true, plugins:{tooltip:{callbacks:{label:function(ctx){ var o=ctx.raw; return o.label+': Hiring '+o.x+', 1Y '+o.y+'%'; }}} ,legend:{display:false}}, scales:{x:{title:{display:true,text:'Hiring signal'}}, y:{title:{display:true,text:'1Y % change'}} }
-    });
+    function renderDashboard() {
+      renderKpis();
+      renderTable();
+      renderNarrative(dashboardData[0]);
+      renderCharts();
+      bindControls();
+    }
 
-    // timeframe and metric controls
-    document.querySelectorAll('.time-btn').forEach(function(btn){ btn.addEventListener('click', function(){ document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); updateTimeframe(this.dataset.range); }); });
-    document.getElementById('metricSelect').addEventListener('change', function(){ updateMetric(this.value); });
+    function renderKpis() {
+      var totals = dashboardData.reduce(function(acc, item) {
+        acc.ceoTenure += item.ceoTenure;
+        acc.oneYearChange += item.oneYearChange;
+        acc.hiringSignal += item.hiringSignal;
+        acc.revenuePerEmployee += item.revenuePerEmployee;
+        return acc;
+      }, { ceoTenure: 0, oneYearChange: 0, hiringSignal: 0, revenuePerEmployee: 0 });
 
-    function updateTimeframe(range){
-      var labels = labelsFor(range);
-      var newData = timeseries[activeTicker][range];
-      priceChart.data.labels = labels;
-      priceChart.data.datasets[0].data = newData;
-      // adjust annotations positions (example static anchors moved for demo)
-      priceChart.options.plugins.annotation.annotations.a1.xMin = Math.max(1, Math.floor(newData.length*0.1));
-      priceChart.options.plugins.annotation.annotations.a1.xMax = priceChart.options.plugins.annotation.annotations.a1.xMin;
-      priceChart.options.plugins.annotation.annotations.a2.xMin = Math.max(2, Math.floor(newData.length*0.4));
-      priceChart.options.plugins.annotation.annotations.a2.xMax = priceChart.options.plugins.annotation.annotations.a2.xMin;
+      var count = dashboardData.length;
+      var kpiStrip = document.getElementById('kpiStrip');
+      kpiStrip.innerHTML = '';
+      addKpi('Avg CEO tenure', (totals.ceoTenure / count).toFixed(1) + ' yrs');
+      addKpi('Avg 1Y change', (totals.oneYearChange / count).toFixed(1) + '%');
+      addKpi('Avg hiring signal', (totals.hiringSignal / count).toFixed(0));
+      addKpi('Avg revenue / emp', fmtUsdThousands(totals.revenuePerEmployee / count));
+    }
+
+    function addKpi(label, value) {
+      var el = document.createElement('div');
+      el.className = 'kpi';
+      el.innerHTML = '<div class="value">' + value + '</div><div class="label">' + label + '</div>';
+      document.getElementById('kpiStrip').appendChild(el);
+    }
+
+    function renderTable() {
+      var tbody = document.querySelector('#companyTable tbody');
+      tbody.innerHTML = '';
+
+      dashboardData.forEach(function(item) {
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td>' + item.company + '</td>' +
+          '<td>' + item.ticker + '</td>' +
+          '<td>' + item.sector + '</td>' +
+          '<td>$' + item.marketCap.toFixed(2) + 'tn</td>' +
+          '<td>' + fmtInteger(item.employees) + '</td>' +
+          '<td>' + item.ceo + '</td>' +
+          '<td>' + item.ceoTenure + '</td>' +
+          '<td>' + item.oneYearChange + '%</td>' +
+          '<td>' + item.hiringSignal + '</td>' +
+          '<td>' + fmtUsdThousands(item.revenuePerEmployee) + '</td>';
+        tr.addEventListener('mouseenter', function() {
+          activeTicker = item.ticker;
+          renderNarrative(item);
+          updateMainChart();
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderNarrative(item) {
+      document.getElementById('narratives').innerHTML = '<div class="card"><strong>' + item.company + ' (' + item.ticker + ')</strong><p style="margin:8px 0 0;color:var(--muted)">' + item.narrative + '</p></div>';
+    }
+
+    function renderCharts() {
+      var labels = dashboardData.map(function(item) { return item.ticker; });
+      var selectedMetric = getMetricConfig(activeMetric);
+
+      if (priceChart) {
+        priceChart.destroy();
+      }
+      priceChart = new Chart(document.getElementById('priceChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: selectedMetric.label,
+            data: dashboardData.map(function(item) { return item[selectedMetric.key]; }),
+            backgroundColor: dashboardData.map(function(item) { return item.ticker === activeTicker ? 'rgba(32,58,107,0.85)' : 'rgba(32,58,107,0.35)'; }),
+            borderColor: dashboardData.map(function(item) { return item.ticker === activeTicker ? '#203A6B' : '#7F93AD'; }),
+            borderWidth: 1.5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return selectedMetric.tooltipLabel(context.raw);
+                }
+              }
+            },
+            annotation: {
+              annotations: annotationPlugin ? {
+                selectedCompany: {
+                  type: 'line',
+                  xMin: activeTicker,
+                  xMax: activeTicker,
+                  borderColor: '#FF6B6B',
+                  borderWidth: 2,
+                  label: {
+                    enabled: true,
+                    content: activeTicker,
+                    position: 'start'
+                  }
+                }
+              } : {}
+            }
+          },
+          scales: {
+            x: { display: true, title: { display: true, text: 'Company' } },
+            y: { display: true, title: { display: true, text: selectedMetric.axisLabel } }
+          }
+        }
+      });
+
+      if (tenureChart) {
+        tenureChart.destroy();
+      }
+      tenureChart = new Chart(document.getElementById('tenureChartCanvas').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'CEO tenure (yrs)',
+            data: dashboardData.map(function(item) { return item.ceoTenure; }),
+            backgroundColor: '#4F7BA7',
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) { return context.formattedValue + ' yrs'; }
+              }
+            }
+          },
+          scales: {
+            y: { title: { display: true, text: 'Years' } }
+          }
+        }
+      });
+
+      if (scatterChart) {
+        scatterChart.destroy();
+      }
+      scatterChart = new Chart(document.getElementById('scatterChartCanvas').getContext('2d'), {
+        type: 'scatter',
+        data: {
+          datasets: [{
+            label: 'Companies',
+            data: dashboardData.map(function(item) {
+              return { x: item.employees, y: item.revenuePerEmployee, label: item.ticker };
+            }),
+            backgroundColor: '#5A8A6F'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  var point = context.raw;
+                  return point.label + ': ' + fmtInteger(point.x) + ' employees, ' + fmtUsdThousands(point.y);
+                }
+              }
+            }
+          },
+          scales: {
+            x: { title: { display: true, text: 'Employees' } },
+            y: { title: { display: true, text: 'Revenue per employee ($k)' } }
+          }
+        }
+      });
+    }
+
+    function bindControls() {
+      if (controlsBound) {
+        return;
+      }
+
+      document.getElementById('metricSelect').addEventListener('change', function() {
+        activeMetric = this.value;
+        updateMainChart();
+      });
+
+      controlsBound = true;
+    }
+
+    function updateMainChart() {
+      if (!priceChart) {
+        return;
+      }
+
+      var selectedMetric = getMetricConfig(activeMetric);
+      priceChart.data.datasets[0].label = selectedMetric.label;
+      priceChart.data.datasets[0].data = dashboardData.map(function(item) {
+        return item[selectedMetric.key];
+      });
+      priceChart.data.datasets[0].backgroundColor = dashboardData.map(function(item) {
+        return item.ticker === activeTicker ? 'rgba(32,58,107,0.85)' : 'rgba(32,58,107,0.35)';
+      });
+      priceChart.data.datasets[0].borderColor = dashboardData.map(function(item) {
+        return item.ticker === activeTicker ? '#203A6B' : '#7F93AD';
+      });
+      priceChart.options.scales.y.title.text = selectedMetric.axisLabel;
+
+      if (annotationPlugin && priceChart.options.plugins.annotation && priceChart.options.plugins.annotation.annotations.selectedCompany) {
+        priceChart.options.plugins.annotation.annotations.selectedCompany.xMin = activeTicker;
+        priceChart.options.plugins.annotation.annotations.selectedCompany.xMax = activeTicker;
+        priceChart.options.plugins.annotation.annotations.selectedCompany.label.content = activeTicker;
+      }
+
       priceChart.update();
     }
 
-    function updateMetric(metric){
-      // For demo purposes, change chart color/label to reflect metric
-      if(metric==='price'){ priceChart.data.datasets[0].label = activeTicker; priceChart.data.datasets[0].borderColor = '#203A6B'; }
-      if(metric==='volume'){ priceChart.data.datasets[0].label = activeTicker+' volume'; priceChart.data.datasets[0].borderColor = '#2C9DA6'; }
-      if(metric==='volatility'){ priceChart.data.datasets[0].label = activeTicker+' volatility'; priceChart.data.datasets[0].borderColor = '#7F93AD'; }
-      priceChart.update();
+    function getMetricConfig(metric) {
+      if (metric === 'volume') {
+        return {
+          key: 'employees',
+          label: 'Employees',
+          axisLabel: 'Employees',
+          tooltipLabel: function(value) { return fmtInteger(value) + ' employees'; }
+        };
+      }
+      if (metric === 'volatility') {
+        return {
+          key: 'oneYearChange',
+          label: '1Y stock change (%)',
+          axisLabel: '1Y stock change (%)',
+          tooltipLabel: function(value) { return value + '% 1Y change'; }
+        };
+      }
+      return {
+        key: 'marketCap',
+        label: 'Market cap (USD tn)',
+        axisLabel: 'Market cap (USD tn)',
+        tooltipLabel: function(value) { return '$' + Number(value).toFixed(2) + 'tn market cap'; }
+      };
     }
 
-    // allow selecting company to update main price chart
-    function selectCompany(ticker){ activeTicker = ticker; // if no timeseries for ticker, fallback to first
-      if(!timeseries[activeTicker]) activeTicker = data[0].ticker;
-      var range = document.querySelector('.time-btn.active').dataset.range || '1D';
-      priceChart.data.datasets[0].label = activeTicker;
-      priceChart.data.datasets[0].data = timeseries[activeTicker][range];
-      priceChart.update();
+    function fmtInteger(value) {
+      return Number(value).toLocaleString();
     }
 
-    // show initial narrative and select company
-    showNarrative(data[0]); selectCompany('NVDA');
-
-    // redraw charts on resize to keep crispness
-    window.addEventListener('resize', function(){ priceChart.resize(); tenureChart.resize(); scatterChart.resize(); hiringChart.resize(); });
-
-  })();
+    function fmtUsdThousands(value) {
+      return '$' + Math.round(Number(value)).toLocaleString() + 'k';
+    }
+  });
   </script>
 </body>
 </html>

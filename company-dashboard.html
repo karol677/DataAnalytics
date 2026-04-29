@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Case Study: Company Performance — E Analytics Studio</title>
+  <meta name="description" content="Single-company performance dashboard with event overlays and prototype forecasting." />
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Libraries: PapaParse for CSV, Chart.js + annotation plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.1/dist/chartjs-plugin-annotation.min.js"></script>
+
+  <style>
+    body{font-family:Inter, system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif;background:#fbfbfb;color:#1f1f1f}
+    .case-hero{padding:28px 18px 8px}
+    .case-hero h1{margin:0 0 6px;font-size:1.9rem;color:#111}
+    .case-hero p{margin:0;color:#616161;max-width:70ch}
+
+    /* premium accent */
+    :root{--accent:#a67c2a;--accent-muted:rgba(166,124,42,0.08)}
+
+    .kpi-strip{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+    .kpi{background:#fff;border:1px solid rgba(0,0,0,0.04);padding:14px 16px;border-radius:12px;min-width:140px;display:flex;flex-direction:column}
+    .kpi .value{font-weight:700;font-size:1.12rem;color:#111}
+    .kpi .label{font-size:0.88rem;color:#6b6b6b;margin-top:6px}
+
+    .content-grid{display:grid;grid-template-columns:1fr 360px;gap:22px;margin-top:26px}
+    .chart{background:linear-gradient(180deg,#fff,#fcfbf9);border:1px solid rgba(0,0,0,0.04);border-radius:12px;padding:12px;box-shadow:0 12px 32px rgba(10,10,10,0.03)}
+    .chart canvas{width:100% !important;height:260px !important}
+
+    .forecast-note{font-size:0.9rem;color:#666;margin-top:8px}
+    .insight .card{background:#fff;border:1px solid rgba(0,0,0,0.04);padding:12px;border-radius:10px}
+    .dashboard-demo-frame{position:relative;margin-top:24px;border:1px solid rgba(166,124,42,0.18);border-radius:24px;background:linear-gradient(180deg,#fbf6ee,#fffdf9);box-shadow:0 26px 60px rgba(166,124,42,0.1);padding:24px}
+    .dashboard-demo-label{position:absolute;top:-14px;left:24px;background:#a67c2a;color:#fff;padding:6px 12px;border-radius:999px;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;box-shadow:0 12px 24px rgba(166,124,42,0.16)}
+    .dashboard-demo-frame .chart{background:rgba(255,251,245,0.95);border-color:rgba(166,124,42,0.12)}
+    .info-tip{display:inline-block;margin-left:6px;color:#a67c2a;font-size:0.95rem;cursor:help}
+
+    @media (max-width:980px){.content-grid{grid-template-columns:1fr}.chart canvas{height:220px !important}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="header-inner container">
+      <a href="index.html" class="site-brand" aria-label="E Analytics Studio home">
+        <img src="assets/img/logo.svg" alt="E Analytics Studio logo" class="site-logo" height="34" />
+        <span class="site-title">E Analytics Studio</span>
+      </a>
+      <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+      <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="dashboards.html">Case Studies</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="case-hero" aria-labelledby="case-title">
+      <h1 id="case-title">Single Company Performance Dashboard</h1>
+      <p>A growing company wants to understand how performance changes after specific business decisions — such as hiring a marketer, changing SEO strategy, restructuring the sales team, or launching a campaign. This dashboard shows how performance can be monitored over time with key events layered onto the data.</p>
+
+      <div class="kpi-strip" id="kpis"></div>
+    </section>
+
+    <div class="dashboard-demo-frame">
+      <div class="dashboard-demo-label">Interactive dashboard demo</div>
+      <section class="content" aria-label="Dashboard content">
+      <div class="content-grid">
+        <div>
+          <div class="chart" aria-labelledby="performance-title">
+            <h3 id="performance-title" style="margin:0 0 8px">Performance over time <span class="info-tip" title="This line chart shows the selected metric over time with event annotations layered in.">ℹ</span></h3>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+              <label style="color:#666;font-weight:600" title="Switch between revenue, sales, and pipeline views to understand performance from different angles.">Metric</label>
+              <select id="metricSelect" style="border:0;background:transparent;font-weight:600">
+                <option value="Revenue ($)">Revenue</option>
+                <option value="Sales Closed">Sales Closed</option>
+                <option value="Pipeline Value ($)">Pipeline</option>
+              </select>
+            </div>
+            <canvas id="performanceChart"></canvas>
+            <div class="forecast-note" title="The dashed line shows forecast values based on the prototype CSV projection.">Forecast shown for illustration only (prototype).</div>
+          </div>
+
+          <div class="chart" style="margin-top:14px">
+            <h3 style="margin:0 0 8px">Monthly table</h3>
+            <div style="overflow:auto">
+              <table class="company-table" id="monthlyTable"><thead><tr><th>Month</th><th>Revenue</th><th>Sales</th><th>Pipeline</th><th>Conversion</th><th>Notes</th></tr></thead><tbody></tbody></table>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="insight" aria-label="Insights and forecast">
+          <div class="card" id="insightCard">
+            <h4 style="margin:0 0 8px">Insights</h4>
+            <p id="insightText" style="margin:0;color:#666">Loading data…</p>
+          </div>
+
+          <div class="card" style="margin-top:12px">
+            <h4 style="margin:0 0 8px">Forecast (prototype)</h4>
+            <canvas id="forecastChart" style="height:140px"></canvas>
+            <p style="margin-top:8px;color:#666;font-size:0.9rem">Forecast sourced from static CSV; use this as a conceptual example.</p>
+          </div>
+
+          <div style="margin-top:14px;text-align:center">
+            <a class="button" href="mailto:karol@eanalyticsstudio.com?subject=Dashboard%20Project%20Enquiry">Discuss a Dashboard Project</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong>E Analytics Studio</strong><br/>Plymouth, United Kingdom</p>
+    </div>
+  </footer>
+
+  <script>
+  (function(){
+    var monthlyCSV = 'data_dashboard/company_performance_sales_dashboard_monthly_data.csv';
+    var forecastCSV = 'data_dashboard/company_performance_sales_dashboard_forecast.csv';
+    var eventsCSV = 'data_dashboard/company_performance_sales_dashboard_event_log.csv';
+    var annotationPlugin = window['chartjs-plugin-annotation'] || window.ChartAnnotation;
+    var performanceChartInstance = null;
+    var forecastChartInstance = null;
+    var controlsMounted = false;
+
+    function fmtMoney(n){ return n>=1000000 ? '£'+(n/1000000).toFixed(1)+'M' : '£'+Number(n).toLocaleString(); }
+    function safeText(value){ return value == null || value === '' ? '—' : String(value); }
+
+    var statusEl = document.createElement('div');
+    statusEl.id = 'dataStatus';
+    statusEl.style.color = '#b00020';
+    statusEl.style.marginTop = '10px';
+    document.querySelector('.case-hero').appendChild(statusEl);
+
+    if (typeof Papa === 'undefined') {
+      showFallback('PapaParse failed to load. CSV parsing cannot start.');
+      return;
+    }
+
+    if (typeof Chart === 'undefined') {
+      showFallback('Chart.js failed to load. Charts cannot be created.');
+      return;
+    }
+
+    if (annotationPlugin) {
+      Chart.register(annotationPlugin);
+    } else {
+      console.warn('chartjs-plugin-annotation is not available; event markers will be skipped.');
+    }
+
+    Promise.all([
+      loadCsv(monthlyCSV, 'Month'),
+      loadCsv(forecastCSV, 'Month'),
+      loadCsv(eventsCSV, 'Event Date')
+    ]).then(function(results){
+      render(results[0], results[1], results[2]);
+    }).catch(function(error){
+      console.error('Company dashboard data load failed:', error);
+      showFallback(error && error.message ? error.message : 'Failed to load dashboard data.');
+    });
+
+    function loadCsv(path, requiredField) {
+      return new Promise(function(resolve, reject){
+        console.log('Loading CSV: ' + path);
+        Papa.parse(path, {
+          download: true,
+          header: true,
+          dynamicTyping: true,
+          skipEmptyLines: true,
+          complete: function(res){
+            var rows = (res.data || []).filter(function(row){
+              return row && row[requiredField] !== null && row[requiredField] !== undefined && row[requiredField] !== '';
+            });
+            console.log('row count', rows.length);
+            console.log('first parsed row', rows[0] || null);
+            if (res.errors && res.errors.length) {
+              console.warn('CSV parse warnings for ' + path, res.errors);
+            }
+            if (!rows.length) {
+              reject(new Error('No usable rows found in ' + path));
+              return;
+            }
+            resolve(rows);
+          },
+          error: function(err){
+            reject(new Error('Failed to load CSV: ' + path + (err && err.message ? ' (' + err.message + ')' : '')));
+          }
+        });
+      });
+    }
+
+    function showFallback(message){
+      statusEl.innerText = message;
+      document.getElementById('insightText').innerText = 'Data not available.';
+      document.querySelector('#monthlyTable tbody').innerHTML = '<tr><td colspan="6">Unable to load company dashboard data.</td></tr>';
+      document.getElementById('kpis').innerHTML = '<div class="kpi"><div class="value">Unavailable</div><div class="label">Company dashboard data</div></div>';
+    }
+
+    function render(monthly, forecast, events){
+      statusEl.innerText = '';
+      monthly.sort(function(a,b){ return new Date(a.Month) - new Date(b.Month); });
+
+      var latest = monthly[monthly.length-1] || {};
+      var kpiEl = document.getElementById('kpis'); kpiEl.innerHTML='';
+      addKPI('Latest revenue', fmtMoney(latest['Revenue ($)'] || 0));
+      addKPI('Sales closed', latest['Sales Closed'] || 0);
+      addKPI('Pipeline', fmtMoney(latest['Pipeline Value ($)'] || 0));
+      addKPI('Conversion', (latest['Conversion Rate (%)']||0)+'%');
+      addKPI('Avg deal', fmtMoney(latest['Avg Deal Size ($)']||0));
+      addKPI('Retention', (latest['Retention Rate (%)']||0)+'%');
+
+      var tbody=document.querySelector('#monthlyTable tbody'); tbody.innerHTML='';
+      monthly.forEach(function(r){ var tr=document.createElement('tr'); tr.innerHTML = '<td>'+r.Month.slice(0,10)+'</td><td>'+fmtMoney(r['Revenue ($)'])+'</td><td>'+r['Sales Closed']+'</td><td>'+fmtMoney(r['Pipeline Value ($)'])+'</td><td>'+(r['Conversion Rate (%)']||'')+'%</td><td>'+(r.Notes||'')+'</td>'; tbody.appendChild(tr); });
+
+      var labels = monthly.map(r=>r.Month.slice(0,10));
+      var revenueSeries = monthly.map(r=>Number(r['Revenue ($)']));
+      var salesSeries = monthly.map(r=>Number(r['Sales Closed']));
+      var pipelineSeries = monthly.map(r=>Number(r['Pipeline Value ($)']));
+
+      var fLabels = forecast.map(r=>r.Month);
+      var revenueForecastSeries = forecast.map(r=>Number(r['Forecast Revenue ($)']));
+      var salesForecastSeries = forecast.map(r=>Number(r['Forecast Sales Closed'] || 0));
+      var emptyForecastSeries = forecast.map(function(){ return null; });
+
+      var ctx = document.getElementById('performanceChart').getContext('2d');
+      if (performanceChartInstance) {
+        performanceChartInstance.destroy();
+      }
+      performanceChartInstance = new Chart(ctx, {
+        type:'line',
+        data:{ labels: labels.concat(fLabels), datasets:[ {label:'Actual Revenue', data: revenueSeries.concat(Array(fLabels.length).fill(null)), borderColor: getComputedStyle(document.documentElement).getPropertyValue('--accent')||'#a67c2a', backgroundColor:'rgba(166,124,42,0.06)', tension:0.25, fill:true, pointRadius:3 }, {label:'Forecast', data: Array(revenueSeries.length).fill(null).concat(revenueForecastSeries), borderColor:'#8c6b2a', borderDash:[6,4], backgroundColor:'rgba(140,107,42,0.04)', tension:0.2, fill:false } ] },
+        options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:true}, tooltip:{mode:'index',intersect:false}, annotation:{annotations:{}} }, scales:{x:{display:true}, y:{display:true, title:{display:true,text:'Revenue (£)'}} } }
+      });
+
+      if (annotationPlugin) {
+        events.forEach(function(ev,i){
+          try{
+            var eventLabel = String(ev['Event Date']).slice(0,10);
+            var idx = labels.findIndex(function(label){ return label.indexOf(eventLabel) === 0; });
+            if(idx===-1){
+              idx = labels.findIndex(function(label){ return label.slice(0,7) === eventLabel.slice(0,7); });
+            }
+            if(idx>=0){
+              performanceChartInstance.options.plugins.annotation.annotations['e'+i] = {
+                type:'line',
+                xMin:labels[idx],
+                xMax:labels[idx],
+                borderColor:'#d46b2a',
+                borderWidth:2,
+                label:{content:ev['Change Type']+': '+safeText(ev.Detail), enabled:true, position:'start'}
+              };
+            }
+          }catch(e){
+            console.warn('event mapping', e);
+          }
+        });
+      }
+      performanceChartInstance.update();
+
+      if (!controlsMounted) {
+        var controlsWrap = document.createElement('div');
+        controlsWrap.style.marginTop='10px';
+        controlsWrap.innerHTML = '<label style="margin-right:8px"><input id="toggleForecast" type="checkbox" checked /> Show forecast</label> <label style="margin-left:8px"><input id="toggleEvents" type="checkbox" checked /> Show events</label>';
+        document.querySelector('.chart').insertBefore(controlsWrap, document.querySelector('.chart').children[2]);
+        document.getElementById('toggleForecast').addEventListener('change', function(){
+          var ds = performanceChartInstance.data.datasets[1];
+          ds.hidden = !this.checked;
+          performanceChartInstance.update();
+        });
+        document.getElementById('toggleEvents').addEventListener('change', function(){
+          Object.keys(performanceChartInstance.options.plugins.annotation.annotations).forEach(function(k){
+            if(k.indexOf('e')===0) {
+              performanceChartInstance.options.plugins.annotation.annotations[k].display = this.checked;
+            }
+          }.bind(this));
+          performanceChartInstance.update();
+        });
+        controlsMounted = true;
+      }
+
+      var fctx = document.getElementById('forecastChart').getContext('2d');
+      if (forecastChartInstance) {
+        forecastChartInstance.destroy();
+      }
+      forecastChartInstance = new Chart(fctx,{ type:'line', data:{ labels:fLabels, datasets:[{label:'Forecast revenue', data:revenueForecastSeries, borderColor:'#a67c2a', backgroundColor:'rgba(166,124,42,0.08)', tension:0.2, fill:true}] }, options:{plugins:{legend:{display:false}}, scales:{y:{display:false}, x:{display:true}} } });
+
+      var peakIdx = revenueSeries.indexOf(Math.max.apply(null,revenueSeries));
+      var insight = 'Strongest growth observed around '+labels[peakIdx]+'.';
+      if(events.length){ insight += ' Key events such as '+events.map(e=>e['Change Type']).slice(0,3).join(', ')+' are shown on the chart.'; }
+      document.getElementById('insightText').innerText = insight;
+
+      var metricSelect = document.getElementById('metricSelect');
+      metricSelect.onchange = function(){
+        var m = this.value;
+        var series = revenueSeries;
+        var forecastSeries = revenueForecastSeries;
+        var yAxisLabel = 'Revenue (£)';
+        if (m === 'Sales Closed') {
+          series = salesSeries;
+          forecastSeries = salesForecastSeries;
+          yAxisLabel = 'Sales Closed';
+        } else if (m === 'Pipeline Value ($)') {
+          series = pipelineSeries;
+          forecastSeries = emptyForecastSeries;
+          yAxisLabel = 'Pipeline (£)';
+        }
+        performanceChartInstance.data.datasets[0].label = m;
+        performanceChartInstance.data.datasets[0].data = series.concat(Array(fLabels.length).fill(null));
+        performanceChartInstance.data.datasets[1].data = Array(series.length).fill(null).concat(forecastSeries);
+        performanceChartInstance.options.scales.y.title.text = yAxisLabel;
+        performanceChartInstance.update();
+      };
+    }
+
+    function addKPI(label,value){ var el=document.createElement('div'); el.className='kpi'; el.innerHTML='<div class="value">'+value+'</div><div class="label">'+label+'</div>'; document.getElementById('kpis').appendChild(el); }
+
+  })();
+  </script>
+  <script>
+  (function(){
+    var btn = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('primary-nav');
+    btn && btn.addEventListener('click', function(){
+      var expanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('open');
+    });
+  })();
+  </script>
+</body>
+</html>

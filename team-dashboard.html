@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Case Study: Team Performance — E Analytics Studio</title>
+  <meta name="description" content="Team performance dashboard showing weekly trends, interventions and member-level summaries." />
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.1/dist/chartjs-plugin-annotation.min.js"></script>
+
+  <style>
+    body{font-family:Inter, system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif;background:#f7f9fb;color:#102027}
+    .case-hero{padding:28px 18px 8px}
+    .case-hero h1{margin:0 0 6px;font-size:1.9rem;color:#092032}
+    .case-hero p{margin:0;color:#4b6570;max-width:70ch}
+
+    :root{--accent-blue:#2c9da6;--accent-green:#3b7f5a}
+
+    .kpi-strip{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .kpi{background:#fff;border:1px solid rgba(0,0,0,0.04);padding:12px;border-radius:10px;min-width:120px}
+    .kpi .value{font-weight:700;color:#072226}
+
+    .content-grid{display:grid;grid-template-columns:1fr 380px;gap:20px;margin-top:22px}
+    .chart{background:#fff;border-radius:10px;padding:12px;border:1px solid rgba(0,0,0,0.04)}
+    .chart canvas{width:100% !important;height:240px !important}
+
+    .member-table{width:100%;border-collapse:collapse}
+    .member-table th,.member-table td{padding:8px;border-bottom:1px solid rgba(0,0,0,0.04)}
+    .dashboard-demo-frame{position:relative;margin-top:24px;border:1px solid rgba(44,157,166,0.16);border-radius:24px;background:linear-gradient(180deg,#f2f6f7,#ffffff);box-shadow:0 26px 60px rgba(44,157,166,0.1);padding:24px}
+    .dashboard-demo-label{position:absolute;top:-14px;left:24px;background:#2c9da6;color:#fff;padding:6px 12px;border-radius:999px;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;box-shadow:0 12px 24px rgba(44,157,166,0.16)}
+    .dashboard-demo-frame .chart{background:#fff;border-color:rgba(44,157,166,0.1)}
+    .info-tip{display:inline-block;margin-left:6px;color:#2c9da6;font-size:0.95rem;cursor:help}
+
+    @media (max-width:980px){.content-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="header-inner container">
+      <a href="index.html" class="site-brand" aria-label="E Analytics Studio home">
+        <img src="assets/img/logo.svg" alt="E Analytics Studio logo" class="site-logo" height="34" />
+        <span class="site-title">E Analytics Studio</span>
+      </a>
+      <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+      <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="dashboards.html">Case Studies</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="case-hero" aria-labelledby="case-title">
+      <h1 id="case-title">Team Performance Dashboard</h1>
+      <p>A leader wants to understand how a team is performing over time — not through a one-off survey, but through repeated measurement. This dashboard shows how team dynamics, confidence, communication, and performance signals can be tracked after specific interventions.</p>
+
+      <div class="kpi-strip" id="teamKpis"></div>
+    </section>
+
+    <div class="dashboard-demo-frame">
+      <div class="dashboard-demo-label">Interactive dashboard demo</div>
+      <section class="content" aria-label="Team dashboard content">
+      <div class="content-grid">
+        <div>
+          <div class="chart">
+            <h3 style="margin:0 0 8px">Performance Index (weekly) <span class="info-tip" title="This trend line shows how the team’s overall performance score changes week by week.">ℹ</span></h3>
+            <canvas id="trendChart"></canvas>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+            <div class="chart">
+              <h4 style="margin:0 0 8px">Trust <span class="info-tip" title="Trust measures how reliable and aligned the team feels during execution.">ℹ</span></h4>
+              <canvas id="trustChart"></canvas>
+            </div>
+            <div class="chart">
+              <h4 style="margin:0 0 8px">Burnout Risk</h4>
+              <canvas id="burnoutChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart" style="margin-top:12px">
+            <h4 style="margin:0 0 8px">Team interventions <span class="info-tip" title="Intervention markers show when key changes were introduced and how they align with performance shifts.">ℹ</span></h4>
+            <div id="interventionsList" style="color:#4b6570;font-size:0.95rem"></div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="chart">
+            <h4 style="margin:0 0 8px">Team overview</h4>
+            <div style="overflow:auto">
+              <table class="member-table" id="membersTable"><thead><tr><th>Name</th><th>Role</th><th>Tenure</th><th>Readiness</th><th title="How confident each team member feels about their current work and direction.">Confidence <span class="info-tip">ℹ</span></th></tr></thead><tbody></tbody></table>
+            </div>
+          </div>
+
+          <div class="chart" style="margin-top:12px">
+            <h4 style="margin:0 0 8px">Insights</h4>
+            <p id="teamInsight" style="color:#4b6570">Loading…</p>
+          </div>
+
+          <div style="margin-top:12px;text-align:center"><a class="button" href="services.html#team-assessment">Explore Team Assessment</a></div>
+        </aside>
+      </div>
+    </section>
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="container"><p><strong>E Analytics Studio</strong></p></div></footer>
+
+  <script>
+  (function(){
+    var btn = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('primary-nav');
+    btn && btn.addEventListener('click', function(){
+      var expanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('open');
+    });
+  })();
+  </script>
+  <script>
+  (function(){
+    var weeklyCSV = 'data_dashboard/team_performance_dashboard_weekly_data.csv';
+    var membersCSV = 'data_dashboard/team_performance_dashboard_team_members.csv';
+    var interventionsCSV = 'data_dashboard/team_performance_dashboard_interventions.csv';
+    var annotationPlugin = window['chartjs-plugin-annotation'] || window.ChartAnnotation;
+    var trendChartInstance = null;
+    var trustChartInstance = null;
+    var burnoutChartInstance = null;
+    var controlsMounted = false;
+
+    var teamStatusEl = document.createElement('div');
+    teamStatusEl.id = 'teamDataStatus';
+    teamStatusEl.style.color = '#b00020';
+    teamStatusEl.style.marginTop = '10px';
+    document.querySelector('.case-hero').appendChild(teamStatusEl);
+
+    if (typeof Papa === 'undefined') {
+      showTeamFallback('PapaParse failed to load. CSV parsing cannot start.');
+      return;
+    }
+
+    if (typeof Chart === 'undefined') {
+      showTeamFallback('Chart.js failed to load. Charts cannot be created.');
+      return;
+    }
+
+    if (annotationPlugin) {
+      Chart.register(annotationPlugin);
+    } else {
+      console.warn('chartjs-plugin-annotation is not available; intervention markers will be skipped.');
+    }
+
+    Promise.all([
+      loadCsv(weeklyCSV, 'Week Start'),
+      loadCsv(membersCSV, 'Name'),
+      loadCsv(interventionsCSV, 'Date')
+    ]).then(function(results){
+      render(results[0], results[1], results[2]);
+    }).catch(function(error){
+      console.error('Team dashboard data load failed:', error);
+      showTeamFallback(error && error.message ? error.message : 'Failed to load team dashboard data.');
+    });
+
+    function loadCsv(path, requiredField) {
+      return new Promise(function(resolve, reject){
+        console.log('Loading CSV: ' + path);
+        Papa.parse(path,{
+          download:true,
+          header:true,
+          dynamicTyping:true,
+          skipEmptyLines:true,
+          complete:function(r){
+            var rows = (r.data || []).filter(function(row){
+              return row && row[requiredField] !== null && row[requiredField] !== undefined && row[requiredField] !== '';
+            });
+            console.log('row count', rows.length);
+            console.log('first parsed row', rows[0] || null);
+            if (r.errors && r.errors.length) {
+              console.warn('CSV parse warnings for ' + path, r.errors);
+            }
+            if (!rows.length) {
+              reject(new Error('No usable rows found in ' + path));
+              return;
+            }
+            resolve(rows);
+          },
+          error:function(err){
+            reject(new Error('Failed to load CSV: ' + path + (err && err.message ? ' (' + err.message + ')' : '')));
+          }
+        });
+      });
+    }
+
+    function showTeamFallback(message){
+      teamStatusEl.innerText = message;
+      document.getElementById('teamInsight').innerText='Failed to load team data.';
+      document.querySelector('#membersTable tbody').innerHTML='<tr><td colspan="5">Unable to load team dashboard data.</td></tr>';
+      document.getElementById('interventionsList').innerText='Intervention data unavailable.';
+      document.getElementById('teamKpis').innerHTML='<div class="kpi"><div class="value">Unavailable</div><div class="label">Team dashboard data</div></div>';
+    }
+
+    function render(weekly, members, interventions){
+      teamStatusEl.innerText = '';
+      weekly.sort(function(a,b){ return new Date(a['Week Start']) - new Date(b['Week Start']); });
+      var labels = weekly.map(r=> r['Week Start'].slice(0,10));
+      var perf = weekly.map(r=> Number(r['Performance Index']));
+      var trust = weekly.map(r=> Number(r.Trust));
+      var burnout = weekly.map(r=> Number(r['Burnout Risk']));
+      var communication = weekly.map(r=> Number(r.Communication));
+      var roleClarity = weekly.map(r=> Number(r['Role Clarity']));
+
+      var tctx = document.getElementById('trendChart').getContext('2d');
+      if (trendChartInstance) {
+        trendChartInstance.destroy();
+      }
+      trendChartInstance = new Chart(tctx,{ type:'line', data:{ labels:labels, datasets:[{label:'Performance Index', data:perf, borderColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-blue')||'#2c9da6', backgroundColor:'rgba(44,157,166,0.06)', tension:0.25, fill:true}] }, options:{responsive:true, maintainAspectRatio:false, plugins:{annotation:{annotations:{}}}, scales:{y:{title:{display:true,text:'Index'}}}} });
+
+      if (annotationPlugin) {
+        interventions.forEach(function(iv,i){
+          var interventionDate = String(iv.Date).slice(0,10);
+          var idx = labels.findIndex(function(label){ return label.indexOf(interventionDate) === 0; });
+          if(idx===-1) idx = labels.findIndex(function(label){ return label.slice(0,7) === interventionDate.slice(0,7); });
+          if(idx>=0){
+            trendChartInstance.options.plugins.annotation.annotations['iv'+i] = { type:'line', xMin:labels[idx], xMax:labels[idx], borderColor:'#ff7f50', borderWidth:2, label:{content:iv.Change, enabled:true, position:'start'} };
+          }
+        });
+      }
+      trendChartInstance.update();
+
+      if (!controlsMounted) {
+        var controlRow = document.createElement('div');
+        controlRow.style.margin='10px 0';
+        controlRow.innerHTML = '<label style="margin-right:8px" title="Choose a team dimension to plot on the trend line.">Domain <select id="domainSelect"><option value="Performance Index">Performance Index</option><option value="Trust">Trust</option><option value="Communication">Communication</option><option value="Role Clarity">Role Clarity</option></select></label> <label style="margin-left:12px"><input id="toggleInterventions" type="checkbox" checked /> Show interventions</label> <label style="margin-left:12px"><input id="memberViewToggle" type="checkbox" checked /> Show members</label>';
+        document.querySelector('.content .chart').parentNode.insertBefore(controlRow, document.querySelector('.content .chart').nextSibling);
+        document.getElementById('domainSelect').addEventListener('change', function(){ updateDomain(this.value); });
+        document.getElementById('toggleInterventions').addEventListener('change', function(){
+          Object.keys(trendChartInstance.options.plugins.annotation.annotations).forEach(function(k){
+            if(k.indexOf('iv')===0) trendChartInstance.options.plugins.annotation.annotations[k].display = this.checked;
+          }.bind(this));
+          trendChartInstance.update();
+        });
+        document.getElementById('memberViewToggle').addEventListener('change', function(){ document.getElementById('membersTable').style.display = this.checked? 'table' : 'none'; });
+        controlsMounted = true;
+      }
+
+      function updateDomain(domain){
+        var ds = perf;
+        if(domain==='Trust') ds=trust;
+        else if(domain==='Role Clarity') ds=roleClarity;
+        else if(domain==='Communication') ds=communication;
+        trendChartInstance.data.datasets[0].data = ds;
+        trendChartInstance.data.datasets[0].label = domain;
+        trendChartInstance.update();
+      }
+
+      if (trustChartInstance) {
+        trustChartInstance.destroy();
+      }
+      trustChartInstance = new Chart(document.getElementById('trustChart').getContext('2d'), { type:'line', data:{ labels:labels, datasets:[{label:'Trust', data:trust, borderColor:'#3b7f5a', tension:0.25, fill:false}] }, options:{plugins:{legend:{display:false}}, maintainAspectRatio:false}});
+      if (burnoutChartInstance) {
+        burnoutChartInstance.destroy();
+      }
+      burnoutChartInstance = new Chart(document.getElementById('burnoutChart').getContext('2d'), { type:'line', data:{ labels:labels, datasets:[{label:'Burnout', data:burnout, borderColor:'#d46b2a', tension:0.25, fill:false}] }, options:{plugins:{legend:{display:false}}, maintainAspectRatio:false}});
+
+      var latest = weekly[weekly.length-1] || {};
+      var kEl = document.getElementById('teamKpis'); kEl.innerHTML=''; addKPI('Performance', latest['Performance Index']); addKPI('Trust', latest.Trust); addKPI('Communication', latest.Communication); addKPI('Role clarity', latest['Role Clarity']); addKPI('Burnout risk', latest['Burnout Risk']);
+
+      var tbody = document.querySelector('#membersTable tbody'); tbody.innerHTML=''; members.forEach(function(m){ var tr=document.createElement('tr'); tr.innerHTML='<td>'+m.Name+'</td><td>'+m.Role+'</td><td>'+m['Tenure (months)']+'</td><td>'+m.Readiness+'</td><td>'+m.Confidence+'</td>'; tbody.appendChild(tr); });
+
+      var ivList = document.getElementById('interventionsList'); ivList.innerHTML=''; interventions.forEach(function(iv){ var d=document.createElement('div'); d.innerHTML = '<strong>'+iv.Date+'</strong>: '+iv.Change+' — '+iv['Expected team effect']; ivList.appendChild(d); });
+
+      var improving = perf[perf.length-1] > perf[Math.max(0,perf.length-6)] ? 'Performance improving in recent weeks.' : 'Performance stable or declining; consider interventions.';
+      var insight = improving + ' Interventions are highlighted on the timeline.';
+      document.getElementById('teamInsight').innerText = insight;
+    }
+
+    function addKPI(label,value){ var el=document.createElement('div'); el.className='kpi'; el.innerHTML='<div class="value">'+(value === null || value === undefined || value === '' ? '—' : value)+'</div><div class="label">'+label+'</div>'; document.getElementById('teamKpis').appendChild(el); }
+
+  })();
+  </script>
+</body>
+</html>
