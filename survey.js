@@ -15,8 +15,8 @@
 // - Configure the endpoint URL in the SHEETS_ENDPOINT constant below
 // ============================================================
 
-// Google Sheets Integration: Configure your endpoint URL here
-const SHEETS_ENDPOINT = ""; // Insert your Google Apps Script web app URL
+// Google Sheets Integration: Google Apps Script web app endpoint
+const SHEETS_ENDPOINT = "https://script.google.com/macros/s/AKfycbyqiSs6wZuUIAiklSoshDU52eKB9I0CcpIDkhDHIY58FxE5bx0Lt2d1gmQQMY1ZNlcd/exec";
 
 // Form element references
 const formEl = document.getElementById("diagnosticForm");
@@ -56,15 +56,15 @@ function score(formData) {
   );
 
   // Calculate averages (1-5 scale)
-  const dataAwarenessAvg = dataAwarenessScores.length > 0 
-    ? (dataAwarenessScores.reduce((a, b) => a + b, 0) / dataAwarenessScores.length).toFixed(2)
+  const dataAwarenessAvg = dataAwarenessScores.length > 0
+    ? roundScore(dataAwarenessScores.reduce((a, b) => a + b, 0) / dataAwarenessScores.length)
     : 0;
-  const dataUseAvg = dataUseScores.length > 0 
-    ? (dataUseScores.reduce((a, b) => a + b, 0) / dataUseScores.length).toFixed(2)
+  const dataUseAvg = dataUseScores.length > 0
+    ? roundScore(dataUseScores.reduce((a, b) => a + b, 0) / dataUseScores.length)
     : 0;
 
   // Overall score (average of both subscales)
-  const overallScore = ((parseFloat(dataAwarenessAvg) + parseFloat(dataUseAvg)) / 2).toFixed(2);
+  const overallScore = roundScore((dataAwarenessAvg + dataUseAvg) / 2);
 
   return {
     overall: overallScore,
@@ -75,26 +75,25 @@ function score(formData) {
   };
 }
 
+function roundScore(value) {
+  return Number(value.toFixed(2));
+}
+
 function getResultLevel(overallScore) {
   const score = parseFloat(overallScore);
-  if (score >= 4) {
+  if (score >= 3.7) {
     return {
-      level: "Advanced",
+      level: "Data-Ready Organisation",
       description: "Your organisation has strong data practices and uses data effectively to support performance decisions."
     };
-  } else if (score >= 3) {
+  } else if (score >= 2.5) {
     return {
-      level: "Developing",
+      level: "Emerging Data System",
       description: "Your organisation is building data capability and making progress on using data to guide decisions."
-    };
-  } else if (score >= 2) {
-    return {
-      level: "Emerging",
-      description: "Your organisation is starting to use data but there are gaps in how data is collected, understood, and applied."
     };
   } else {
     return {
-      level: "Foundational",
+      level: "Fragmented Data",
       description: "Your organisation has significant opportunities to strengthen how data is managed and used for decision-making."
     };
   }
@@ -125,6 +124,69 @@ function renderResults(scores) {
   `;
 }
 
+function buildPayload(formData, scores) {
+  const result = getResultLevel(scores.overall);
+
+  return {
+    org_type: formData.get("orgType") || "",
+    data_setup: formData.get("dataSetup") || "",
+    awareness_storage: Number(formData.get("q3_data_storage")) || 0,
+    awareness_source: Number(formData.get("q4_data_source")) || 0,
+    awareness_quality: Number(formData.get("q5_data_quality")) || 0,
+    awareness_priority: Number(formData.get("q6_data_priority")) || 0,
+    use_decisions: Number(formData.get("q7_data_decisions")) || 0,
+    use_dashboard: Number(formData.get("q8_dashboards")) || 0,
+    use_review: Number(formData.get("q9_consistency")) || 0,
+    use_actions: Number(formData.get("q10_actions")) || 0,
+    score_awareness: scores.dataAwarenessAvg,
+    score_use: scores.dataUseAvg,
+    score_total: scores.overall,
+    result_level: result.level,
+    email_optional: formData.get("email") || "",
+    consent_data_use: formEl.agreement.checked,
+    user_agent: window.navigator.userAgent,
+    page_url: window.location.href
+  };
+}
+
+function showSaveMessage(message, isError) {
+  const card = resultsEl.querySelector(".card");
+  if (!card) return;
+
+  const existing = document.getElementById("submissionStatus");
+  if (existing) existing.remove();
+
+  const note = document.createElement("div");
+  note.id = "submissionStatus";
+  note.className = "small";
+  note.style.marginTop = "16px";
+  note.style.color = isError ? "#9A3412" : "var(--accent-green)";
+  note.style.fontWeight = "500";
+  note.textContent = message;
+  card.appendChild(note);
+}
+
+function submitToSheets(payload) {
+  console.log("Survey payload:", payload);
+
+  return fetch(SHEETS_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "content-type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(payload)
+  }).then(response => {
+    console.log("Survey response:", response);
+    if (!response.ok) {
+      throw new Error("Network response was not ok: " + response.status);
+    }
+    return response.text();
+  }).then(text => {
+    console.log("Survey response body:", text);
+    return text;
+  });
+}
+
 // ============================================================
 // Form Submission Handler
 // ============================================================
@@ -141,6 +203,7 @@ formEl.addEventListener("submit", (e) => {
   // Collect form data
   const formData = new FormData(formEl);
   const scores = score(formData);
+  const payload = buildPayload(formData, scores);
 
   // Render results
   renderResults(scores);
@@ -150,75 +213,17 @@ formEl.addEventListener("submit", (e) => {
   resultsEl.style.display = "block";
   window.scrollTo({ top: 0, behavior: "smooth" });
 
-  // ============================================================
-  // GOOGLE SHEETS INTEGRATION
-  // ============================================================
-  // If SHEETS_ENDPOINT is configured, send the survey response
-  // to a Google Apps Script that writes to Google Sheets.
-  // The payload includes all responses, scores, and metadata.
-  // ============================================================
-  
-  if (SHEETS_ENDPOINT) {
-    try {
-      const payload = {
-        timestamp: new Date().toISOString(),
-        
-        // Company Characteristics (Q1-Q2)
-        orgType: formData.get("orgType") || "",
-        dataSetup: formData.get("dataSetup") || "",
-        
-        // Likert responses (Q3-Q10)
-        // Data Awareness subscale
-        dataStorage: formData.get("q3_data_storage") || "",
-        dataSource: formData.get("q4_data_source") || "",
-        dataQuality: formData.get("q5_data_quality") || "",
-        dataPriority: formData.get("q6_data_priority") || "",
-        
-        // Data Use subscale
-        dataDecisions: formData.get("q7_data_decisions") || "",
-        dashboards: formData.get("q8_dashboards") || "",
-        dataConsistency: formData.get("q9_consistency") || "",
-        dataActions: formData.get("q10_actions") || "",
-        
-        // Lead capture
-        email: formData.get("email") || "",
-        
-        // Calculated scores
-        overallScore: scores.overall,
-        dataAwarenessScore: scores.dataAwarenessAvg,
-        dataUseScore: scores.dataUseAvg,
-        resultLevel: getResultLevel(scores.overall).level
-      };
-
-      fetch(SHEETS_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }).then(res => {
-        if (!res.ok) throw new Error("Network response was not ok");
-        return res.text();
-      }).then(txt => {
-        console.log("Survey response saved to Sheets:", txt);
-        
-        // If email was provided, show confirmation
-        if (payload.email) {
-          const note = document.createElement("div");
-          note.className = "small";
-          note.style.marginTop = "16px";
-          note.style.color = "var(--accent-green)";
-          note.style.fontWeight = "500";
-          note.textContent = "✓ Your results have been sent to " + payload.email + ".";
-          resultsEl.querySelector(".card").appendChild(note);
-        }
-      }).catch(err => {
-        console.warn("Could not save to Sheets:", err);
-        // Silently fail - don't interrupt user experience
-      });
-    } catch (err) {
-      console.error("Survey submission error:", err);
-      // Silently fail - don't interrupt user experience
-    }
-  }
+  submitToSheets(payload)
+    .then(() => {
+      showSaveMessage("Your responses were saved.", false);
+    })
+    .catch(error => {
+      console.error("Survey submission error:", error);
+      showSaveMessage(
+        "Your result is shown below, but the response could not be saved. Please contact karol@eanalyticsstudio.com.",
+        true
+      );
+    });
 });
 
 // Retake survey button
@@ -229,4 +234,3 @@ if (retakeBtn) {
     location.reload();
   });
 }
-

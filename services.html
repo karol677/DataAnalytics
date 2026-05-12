@@ -3,10 +3,62 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Services — E Analytics Studio</title>
-  <meta name="description" content="Data analytics, custom dashboards, and team assessment services to help organisations understand and improve performance." />
+  <title>How It Works — E Analytics Studio</title>
+  <meta name="description" content="How E Analytics Studio works: from data assessment to dashboards and insights." />
   <meta name="author" content="Dr Karol Nedza" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .nav-contact {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--accent-blue);
+      border: 1px solid var(--accent-blue);
+      color: #fff !important;
+      font-weight: 600;
+    }
+    .nav-contact:hover {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      color: #fff !important;
+    }
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-top: 18px;
+    }
+    .process-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .process-card .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: rgba(79,123,167,0.12);
+      color: var(--accent-blue);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .process-card h3 {
+      margin-bottom: 6px;
+    }
+    .survey-cta-content {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
@@ -24,10 +76,11 @@
       <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="dashboards.html">Case Studies</a></li>
-          <li><a href="index.html#services">Services</a></li>
+          <li><a href="dashboards.html">Examples of Work</a></li>
+          <li><a href="services.html">How It Works</a></li>
           <li><a href="survey.html">Survey</a></li>
           <li><a href="about.html">About</a></li>
+          <li><a class="nav-contact" href="mailto:karol@eanalyticsstudio.com?subject=E%20Analytics%20Studio%20Enquiry">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -35,85 +88,82 @@
 
   <main id="main" class="container">
     <section aria-labelledby="page-title">
-      <h1 id="page-title">Services</h1>
-      <p>
-        We help organisations understand and act on their data to improve performance.
-      </p>
+      <h1 id="page-title">How It Works</h1>
+      <p>From messy data to clearer decisions — a simple staged process.</p>
     </section>
 
-    <!-- Data Analytics Service Card with Image Background -->
-    <section aria-labelledby="service1-title" class="service-card-section service-card-1">
-      <!-- Data Analytics Package background image (14% opacity) -->
-      <div class="service-image" style="background-image: url('assets/img/data.jpg')"></div>
-      <div class="service-content">
-        <h2 id="service1-title">Data Analytics Package</h2>
-        <p>
-          A structured review of your data to understand performance drivers and gaps.
-        </p>
-        <p>
-          This package provides a comprehensive analysis of your organisation's data infrastructure, quality, and insights. We deliver a detailed report identifying opportunities for improvement and actionable next steps.
-        </p>
+    <section aria-labelledby="intro-title">
+      <h2 id="intro-title">How It Works</h2>
+      <p>We start by understanding your current data before recommending dashboards, reports, or systems. The process is designed to be clear, staged, and easy to follow.</p>
+    </section>
+
+    <section aria-labelledby="process-title">
+      <h2 id="process-title">The Process</h2>
+      <div class="process-grid">
+        <div class="process-card">
+          <div class="step-number">1</div>
+          <h3>Start with the survey</h3>
+          <p>A short survey helps identify how your organisation currently uses data and where the main gaps may be.</p>
+        </div>
+        <div class="process-card">
+          <div class="step-number">2</div>
+          <h3>Receive a follow-up</h3>
+          <p>We review your answers and, where appropriate, send a short summary within 24–48 hours, along with a link to book a free 15-minute consultation.</p>
+        </div>
+        <div class="process-card">
+          <div class="step-number">3</div>
+          <h3>Free 15-minute consultation</h3>
+          <p>We discuss your results, your goals, and whether a deeper data assessment is the right next step.</p>
+        </div>
+        <div class="process-card">
+          <div class="step-number">4</div>
+          <h3>Data Assessment</h3>
+          <p>We review your current data sources, assess quality and structure, and speak with key people where needed.</p>
+        </div>
+        <div class="process-card">
+          <div class="step-number">5</div>
+          <h3>Short report and recommendations</h3>
+          <p>You receive a clear overview of your current data state, key gaps, and what should happen next.</p>
+        </div>
+        <div class="process-card">
+          <div class="step-number">6</div>
+          <h3>Improve and interpret</h3>
+          <p>If needed, we help improve data quality, infrastructure, and the way data is used for performance decisions.</p>
+        </div>
+        <div class="process-card">
+          <div class="step-number">7</div>
+          <h3>Build what is needed</h3>
+          <p>If a dashboard or ongoing system is appropriate, we build it around your actual needs.</p>
+        </div>
+        <div class="process-card">
+          <div class="step-number">8</div>
+          <h3>Ongoing optimisation</h3>
+          <p>Where appropriate, we can continue with reporting, dashboard upkeep, and testing different methods or funnels.</p>
+        </div>
       </div>
     </section>
 
-    <!-- Data Dashboard Service Card with Image Background -->
-    <section aria-labelledby="service2-title" class="service-card-section service-card-2">
-      <!-- Data Dashboard Package background image (16% opacity) -->
-      <div class="service-image" style="background-image: url('assets/img/data-dark.jpg')"></div>
-      <div class="service-content">
-        <h2 id="service2-title">Data Dashboard Package</h2>
-        <p>
-          A custom-built dashboard designed around your organisation's needs.
-        </p>
-        <p>
-          Building on data foundations, we create a dashboard that supports real decisions. This includes data integration, long-term data structure planning, and ongoing support to ensure your dashboard remains useful over time.
-        </p>
-      </div>
+    <section aria-labelledby="addons-title">
+      <h2 id="addons-title">Optional Add-ons</h2>
+      <ul>
+        <li>Custom scientific measures</li>
+        <li>Market / category research</li>
+        <li>Dashboard education</li>
+        <li>Ongoing insight review</li>
+        <li>Funnel / method testing</li>
+      </ul>
     </section>
 
-    <!-- Team Assessment Service Card with Image Background -->
-    <section id="team-assessment" aria-labelledby="service3-title" class="service-card-section service-card-3">
-      <!-- Team Assessment Package background image (12% opacity) -->
-      <div class="service-image" style="background-image: url('assets/img/team.jpg')"></div>
-      <div class="service-content">
-        <h2 id="service3-title">Team Assessment Package</h2>
-        <p>
-          A structured assessment of your team using scientifically-informed measures.
-        </p>
-        <p>
-          Understanding team performance requires both metrics and behavioural insight. We provide individual and team-level assessments, behavioural analysis, and a leader dashboard to support performance conversations and decisions.
-        </p>
-      </div>
+    <section aria-labelledby="simple-title">
+      <h2 id="simple-title">Simple, staged, and practical</h2>
+      <p>You do not need to commit to a complex build straight away. We begin with clarity, then recommend the right next step based on evidence.</p>
     </section>
 
-    <section aria-labelledby="coming-title">
-      <h2 id="coming-title">Coming Soon</h2>
-      <p>
-        <strong>White-box analytics tools</strong> for organisations and consultants.
-      </p>
-      <p>
-        We're building tools that make data interpretation clearer and more transparent. More details coming soon.
-      </p>
-    </section>
-
-    <!-- Call-to-action section: Take our Survey -->
     <section aria-labelledby="survey-cta-title" class="survey-cta-section">
       <div class="survey-cta-content">
-        <h2 id="survey-cta-title">Take Our Survey</h2>
-        <p>
-          If you want to understand how effectively your organisation currently uses data to support performance, start with our short survey.
-        </p>
-        <p class="survey-cta-description">
-          It is designed to help you reflect on:
-        </p>
-        <ul class="survey-cta-list">
-          <li>where your data lives</li>
-          <li>how it is used</li>
-          <li>whether it supports decisions</li>
-          <li>where the main gaps may be</li>
-        </ul>
-        <a class="button" href="survey.html">Start the Survey</a>
-        <p class="survey-cta-note">Short diagnostic • Clear summary • No obligation</p>
+        <h2 id="survey-cta-title">Start with the survey</h2>
+        <p>The easiest way to begin is with a short Data Use & Performance Survey.</p>
+        <a class="button" href="survey.html">Take the Survey</a>
       </div>
     </section>
   </main>

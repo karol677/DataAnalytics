@@ -3,9 +3,27 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Case Study: Behavioural Snapshot — E Analytics Studio</title>
+  <title>Examples of Work: Behavioural Snapshot — E Analytics Studio</title>
   <meta name="description" content="Prototype behavioural snapshot of major technology companies — KPI strip, company comparison, charts, and narrative insight." />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .nav-contact {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--accent-blue);
+      border: 1px solid var(--accent-blue);
+      color: #fff !important;
+      font-weight: 600;
+    }
+    .nav-contact:hover {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      color: #fff !important;
+    }
+  </style>
   <!-- Use Inter for modern UI -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -15,7 +33,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.1/dist/chartjs-plugin-annotation.min.js"></script>
 
   <style>
-    /* Page-scoped styles for the dashboard case study */
+    /* Page-scoped styles for the dashboard examples of work */
     body { font-family: 'Inter', system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif; }
     .case-hero{padding:28px 18px 8px}
     .case-hero h1{margin:0 0 6px;font-size:1.9rem;color:var(--text)}
@@ -69,19 +87,20 @@
       <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="dashboards.html">Case Studies</a></li>
-          <li><a href="services.html">Services</a></li>
+          <li><a href="dashboards.html">Examples of Work</a></li>
+          <li><a href="services.html">How It Works</a></li>
           <li><a href="survey.html">Survey</a></li>
           <li><a href="about.html">About</a></li>
+          <li><a class="nav-contact" href="mailto:karol@eanalyticsstudio.com?subject=E%20Analytics%20Studio%20Enquiry">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <main id="main" class="container">
-    <!-- Case-study header -->
+    <!-- Examples-of-work header -->
     <section class="case-hero" aria-labelledby="case-title">
-      <h1 id="case-title">Case Study: Behavioural Snapshot of Major Technology Companies</h1>
+      <h1 id="case-title">Examples of Work: Behavioural Snapshot of Major Technology Companies</h1>
       <p>This prototype dashboard shows how public company, leadership, and hiring-related indicators can be structured into a single comparative view. The aim is not to predict markets, but to surface behavioural signals for monitoring and comparison.</p>
 
       <!-- KPI strip (populated by JS) -->
