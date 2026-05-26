@@ -152,6 +152,7 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 26px;
       margin-top: 28px;
+      align-items: stretch;
     }
     .how-card .step-number {
       display: inline-flex;
@@ -168,6 +169,13 @@
     .how-card h3 {
       margin-bottom: 8px;
       font-size: 1.12rem;
+    }
+    .how-time {
+      display: block;
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
     }
     .how-card p,
     .survey-home-cta p {
@@ -206,37 +214,190 @@
       font-size: clamp(1.75rem, 3vw, 2.4rem);
       line-height: 1.15;
     }
+    .section-note {
+      margin: 0 auto 28px;
+      max-width: 62ch;
+      color: var(--muted);
+    }
+    .trust-card,
+    .process-preview,
+    .proof-section,
+    .about-karol-section {
+      max-width: 1040px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .trust-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 42px;
+      box-shadow: 0 22px 60px rgba(31, 41, 55, 0.07);
+    }
+    .process-preview {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 46px 38px;
+      text-align: center;
+      box-shadow: 0 20px 56px rgba(31, 41, 55, 0.05);
+    }
+    .process-preview p {
+      max-width: 64ch;
+      margin-left: auto;
+      margin-right: auto;
+      color: var(--muted);
+    }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 26px;
+    }
+    .proof-tile {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 24px;
+      color: #334155;
+      line-height: 1.65;
+      box-shadow: 0 16px 42px rgba(31, 41, 55, 0.04);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+      gap: 32px;
+      align-items: start;
+    }
+    .about-bio {
+      display: grid;
+      gap: 20px;
+      line-height: 1.8;
+      color: #243044;
+    }
+    .about-bio p {
+      max-width: 68ch;
+      margin: 0;
+    }
+    .about-photo-screen {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      box-shadow: 0 20px 50px rgba(31, 41, 55, 0.08);
+      background: #f8f9fb;
+    }
+    .about-photo-screen img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .about-photo-screen img.active {
+      opacity: 1;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 24px;
+      align-items: start;
+      margin-top: 24px;
+    }
+    .contact-form {
+      padding: 34px;
+      border-radius: 18px;
+    }
+    .contact-form label {
+      display: block;
+      margin-bottom: 16px;
+      font-weight: 600;
+      color: #102027;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-top: 10px;
+      font: inherit;
+      background: #fff;
+      color: #102027;
+    }
+    .contact-form textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+    .contact-info {
+      padding: 34px;
+      border-radius: 18px;
+    }
+    .contact-info a {
+      color: var(--accent-blue);
+      font-weight: 600;
+    }
     main > section {
       margin-bottom: 92px;
     }
     .hero-with-image {
-      min-height: 560px;
-      gap: 42px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 1.05fr);
+      align-items: center;
+      gap: 40px;
       padding-top: 46px;
       padding-bottom: 80px;
-      text-align: center;
+      text-align: left;
     }
     .hero-content {
-      max-width: 650px;
-      margin: 0 auto;
+      max-width: 620px;
+      margin: 0;
       padding-right: 0;
+      text-align: left;
     }
     .hero-content h1 {
       font-size: clamp(2.6rem, 6vw, 5rem);
       line-height: 1;
       letter-spacing: -0.04em;
+      margin-top: 14px;
     }
     .hero-content > p {
-      max-width: 54ch;
-      margin-left: auto;
-      margin-right: auto;
+      max-width: 58ch;
+      margin: 24px 0 0;
+    }
+    .hero-support {
+      margin-top: 18px;
+      color: var(--muted);
+      max-width: 58ch;
     }
     .hero-actions {
       display: flex;
-      justify-content: center;
-      gap: 12px;
+      justify-content: flex-start;
+      gap: 14px;
       flex-wrap: wrap;
       margin-top: 28px;
+    }
+    .hero-image-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 22px 60px rgba(31, 41, 55, 0.08);
+    }
+    .hero-image-card img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      border-radius: 18px;
     }
     .hero-image,
     .intro-image {
@@ -265,6 +426,7 @@
         min-height: auto;
         padding-top: 28px;
         padding-bottom: 56px;
+        grid-template-columns: 1fr;
       }
       .problem-copy,
       .founder-copy,
@@ -280,6 +442,17 @@
       }
       .logo-placeholder {
         min-height: auto;
+      }
+      .proof-grid,
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      .trust-card,
+      .process-preview {
+        padding: 30px 24px;
+      }
+      .about-photo-screen {
+        max-width: 100%;
       }
       main > section {
         margin-bottom: 72px;
@@ -317,10 +490,8 @@
       <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="dashboards.html">Examples of Work</a></li>
           <li><a href="services.html">How It Works</a></li>
           <li><a href="survey.html">Survey</a></li>
-          <li><a href="about.html">About</a></li>
           <li><a class="nav-contact" href="mailto:karol@eanalyticsstudio.com?subject=E%20Analytics%20Studio%20Enquiry">Contact</a></li>
         </ul>
       </nav>
@@ -330,126 +501,123 @@
   <main id="main" class="container">
     <section aria-labelledby="hero-title" class="hero hero-with-image">
       <div class="hero-content">
-        <p class="kicker">Technology meets behavioural data expertise</p>
-        <h1 id="hero-title">Turn messy data into behavioural insight.</h1>
-        <p>E Analytics Studio helps organisations understand what their data is really saying about performance, behaviour, and decision-making — then turns it into systems they can use.</p>
+        <h1 id="hero-title">You already have the data. Start using it.</h1>
+        <p>Unused data does not help you win clients, improve performance, or make better decisions. E Analytics Studio helps you review the data you already collect, identify what is useful, fix what is missing, and turn it into clear insight you can act on.</p>
         <div class="hero-actions">
           <a class="button" href="survey.html">Take the Survey</a>
-          <a class="button" style="background: transparent; color: var(--accent-blue); border: 1px solid var(--accent-blue);" href="dashboards.html">View Examples of Work</a>
+          <a class="button" style="background: transparent; color: var(--accent-blue); border: 1px solid var(--accent-blue);" href="services.html">How It Works</a>
         </div>
       </div>
-      <!-- Hero background image -->
-      <div class="hero-image" style="background-image: url('assets/img/buidling%20insight.jpg')"></div>
+      <div class="hero-image-card">
+        <img src="assets/img/IMG_8639.JPG" alt="Dr Karol Nedza speaking to a group" />
+      </div>
     </section>
 
-    <section aria-labelledby="video-title" class="video-section">
-      <div class="section-intro">
-        <h2 id="video-title">See how data becomes insight</h2>
-        <p>A short walkthrough of how E Analytics Studio turns backend data into visible, actionable behavioural insight.</p>
-      </div>
+    <section class="video-section" aria-label="Video walkthrough">
+      <p class="section-note">A short walkthrough of how E Analytics Studio turns backend data into visible, usable behavioural insight.</p>
       <div class="video-grid">
         <div class="video-card">
           <video class="front-video" controls playsinline preload="metadata">
-            <source src="assets/img/front_video.mp4" type="video/mp4">
+            <source src="assets/img/new_video.mp4" type="video/mp4">
             Your browser does not support the video tag.
           </video>
         </div>
       </div>
     </section>
 
-    <section aria-labelledby="problem-title">
-      <div class="problem-stat">
-        <div class="problem-copy">
-          <h2 id="problem-title">Most organisations collect more data than they use.</h2>
-          <p>Dashboards exist, spreadsheets grow, reports are produced — but data often fails to become clear insight or confident decisions. The opportunity is not more data, but better interpretation.</p>
-          <p class="footnote">Source: industry estimates on unused company data / dark data.</p>
-        </div>
-        <div class="stat-card">
-          <p class="stat-callout">60–73%</p>
-          <p style="margin:0;">of company data is sometimes estimated to go unused for analysis, reporting, or decisions.</p>
-        </div>
-      </div>
-    </section>
-
     <section aria-labelledby="testimonial-title" class="testimonial-section testimonial-early">
-      <div class="testimonial-content">
-        <div class="section-intro">
-          <p class="testimonial-label">Client feedback</p>
-          <h2 id="testimonial-title">Trusted for clear, rigorous analysis</h2>
+      <div class="trust-card">
+      <div class="section-intro">
+        <p class="testimonial-label">Client feedback</p>
+        <h2 id="testimonial-title">Clients love us</h2>
+      </div>
+      <div class="testimonial-layout">
+        <div class="logo-placeholder">
+          <img class="client-logo" src="assets/img/client_logo.png" alt="Client logo" />
         </div>
-        <p class="small">Previous client feedback reflects the core of the E Analytics Studio approach: rigorous analysis, clear communication, and making complex data easier to understand.</p>
-        <div class="testimonial-layout">
-          <div class="logo-placeholder">
-            <img class="client-logo" src="assets/img/client_logo.png" alt="Client logo" />
-          </div>
+        <div>
           <blockquote class="testimonial-quote">
             <p>
               Karol conducted a detailed analysis and validation of the Most Sustainable Workplace Index survey questionnaire. This strengthened the robustness of our diagnostics and ensured that the insights we provide to clients are precise and closely aligned with their needs. Despite the complexity of the topic, working with Karol was straightforward and focused. He has a calm and reassuring way of working with data and a real talent for making complex topics easier to follow and understand. I particularly valued his efficiency and his commitment to delivering the best possible outcome for us as the client.
             </p>
-            <footer class="testimonial-footer">
-              <strong>Gosia Henderson</strong>
-            </footer>
           </blockquote>
+          <footer class="testimonial-footer">
+            <strong>Gosia Henderson</strong>
+          </footer>
         </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="process-preview" aria-labelledby="process-preview-title">
+      <h2 id="process-preview-title">Want to see the full process?</h2>
+      <p>The process starts with a short survey, then moves into data assessment, recommendations, and only then dashboards or systems if they are useful.</p>
+      <p><a class="button" href="services.html">See How It Works</a></p>
+    </section>
+
+    <section class="proof-section" aria-labelledby="proof-title">
+      <div class="section-intro">
+        <h2 id="proof-title">What this work has involved</h2>
+      </div>
+      <div class="proof-grid">
+        <div class="proof-tile">Validated and refined behavioural diagnostic tools for client-facing use</div>
+        <div class="proof-tile">Led survey, data, and technology delivery for large-scale professional wellbeing research</div>
+        <div class="proof-tile">Analysed operational data to support measurable performance improvement</div>
+        <div class="proof-tile">Reviewed data quality, infrastructure, and reporting needs across multi-partner projects</div>
+        <div class="proof-tile">Built dashboard-ready data structures for performance, impact, and decision-making</div>
+        <div class="proof-tile">Connected internal data with market/category insight for growth decisions</div>
       </div>
     </section>
 
     <section aria-labelledby="survey-title" class="survey-home-cta">
       <h2 id="survey-title">Start with the Data Use &amp; Performance Survey</h2>
-      <p>Not sure where to begin? Start with a short survey. It helps you reflect on how your organisation currently uses data, where the gaps may be, and whether a deeper data assessment would save time and improve decision-making.</p>
-      <p>I’ll review your responses and, where appropriate, send a short follow-up within 24–48 hours.</p>
+      <p>Not sure where to begin? Start with a short survey. It helps you reflect on how your organisation currently uses data, where gaps may exist, and whether a deeper data assessment could save time and improve decisions.</p>
       <p><a class="button" href="survey.html">Take the Survey</a></p>
     </section>
 
-    <section id="how-it-works" aria-labelledby="how-title">
-      <div class="section-intro">
-        <h2 id="how-title">How it works</h2>
-        <p>We start by understanding your current data before recommending dashboards, reports, or systems.</p>
-      </div>
-      <div class="how-grid">
-        <div class="how-card">
-          <div class="step-number">1</div>
-          <h3>Start with the survey</h3>
-          <p>Complete a short Data Use &amp; Performance Survey to reflect on how your organisation currently uses data.</p>
+    <section id="about-karol" class="about-karol-section" aria-labelledby="about-karol-title">
+      <div class="about-grid">
+        <div class="about-bio">
+          <h2 id="about-karol-title">About Karol</h2>
+          <p>Dr Karol Nedza built E Analytics Studio around a simple idea: most organisations already have data, but very few are using it to understand behaviour, performance, and decision-making properly.</p>
+          <p>Karol’s background combines PhD-level behavioural science, applied data analysis, research methods, and international consultancy. He has taught psychology, research methods, and data analysis for nearly a decade, completed multiple applied research and consultancy projects, and worked with organisations across healthcare, education, business, and performance settings.</p>
+          <p>His strength is translating complex human problems into measurable systems — and translating data back into clear, practical insight for decision-makers.</p>
+          <p>Outside of work, Karol is driven by movement, challenge, and curiosity — from coastal running, lifting, hiking, and surfing to writing philosophical essays and poetry about modern life, identity, and human behaviour. His work is grounded in the belief that the best decisions come from combining rigorous thinking with a life fully lived.</p>
         </div>
-        <div class="how-card">
-          <div class="step-number">2</div>
-          <h3>Receive a summary</h3>
-          <p>We review your responses and, where appropriate, send a short follow-up within 24–48 hours.</p>
-        </div>
-        <div class="how-card">
-          <div class="step-number">3</div>
-          <h3>Book a free 15-minute consultation</h3>
-          <p>We discuss your results, your context, and whether a deeper data assessment is useful.</p>
-        </div>
-        <div class="how-card">
-          <div class="step-number">4</div>
-          <h3>Begin with a Data Assessment</h3>
-          <p>If there is a fit, we review your current data sources, speak with key people, and identify gaps, risks, and opportunities.</p>
-        </div>
-        <div class="how-card">
-          <div class="step-number">5</div>
-          <h3>Improve and interpret</h3>
-          <p>We help improve data quality, analyse what the data means, and translate findings into clear recommendations.</p>
-        </div>
-        <div class="how-card">
-          <div class="step-number">6</div>
-          <h3>Build what is needed</h3>
-          <p>If a dashboard or ongoing system is useful, we build it around your actual needs — not assumptions.</p>
+        <div class="about-photo-screen" aria-label="Karol Nedza photo gallery">
+          <img class="active" src="assets/img/IMG_6303.jpg" alt="Dr Karol Nedza" />
+          <img src="assets/img/IMG_8639.JPG" alt="Dr Karol Nedza speaking to a group" />
+          <img src="assets/img/IMG_9394.jpg" alt="Dr Karol Nedza" />
+          <img src="assets/img/IMG_1395.HEIC" alt="Dr Karol Nedza" />
+          <img src="assets/img/IMG_5371.HEIC" alt="Dr Karol Nedza" />
         </div>
       </div>
     </section>
 
-    <section aria-labelledby="founder-title" class="founder-section">
-      <div class="founder-grid-home">
-        <div class="founder-photo-card">
-          <img class="founder-photo" src="assets/img/Karol.jpg" alt="Dr Karol Nedza" />
-        </div>
-        <div class="founder-copy">
-          <h2 id="founder-title">About Karol</h2>
-          <p>E Analytics Studio is led by Dr Karol Nedza, a psychologist and data analyst who works at the intersection of behavioural science, research methods, and data systems.</p>
-          <p>My work focuses on helping organisations move from scattered information to clear, practical insight, especially where performance depends on human behaviour, decision-making, teams, and change over time.</p>
-          <p><em>I translate human behaviour into data systems — and data systems into human behaviour.</em></p>
+    <section aria-labelledby="contact-title" class="contact-section">
+      <div class="section-intro">
+        <h2 id="contact-title">Get in touch</h2>
+        <p>If you have data but are not sure what it can tell you, send a short message and I’ll come back to you.</p>
+      </div>
+      <div class="contact-grid">
+        <form id="contact-form" class="contact-form" onsubmit="return sendContactEmail(event)">
+          <label>Name
+            <input type="text" name="name" placeholder="Your name" required>
+          </label>
+          <label>Email
+            <input type="email" name="email" placeholder="you@example.com" required>
+          </label>
+          <label>Organisation
+            <input type="text" name="organisation" placeholder="Organisation">
+          </label>
+          <label>Message
+            <textarea name="message" placeholder="What would you like help with?" required></textarea>
+          </label>
+          <button class="button" type="submit">Send Message</button>
+        </form>
+        <div class="contact-info">
+          <p>You can also email directly:</p>
+          <a href="mailto:karol@eanalyticsstudio.com">karol@eanalyticsstudio.com</a>
         </div>
       </div>
     </section>
@@ -465,9 +633,9 @@
       <nav aria-label="Footer">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">Services</a></li>
+          <li><a href="services.html">How It Works</a></li>
           <li><a href="survey.html">Survey</a></li>
-          <li><a href="about.html">About</a></li>
+          <li><a href="mailto:karol@eanalyticsstudio.com?subject=E%20Analytics%20Studio%20Enquiry">Contact</a></li>
         </ul>
       </nav>
       <small>© <span>2026</span> E Analytics Studio.</small>
@@ -483,6 +651,35 @@
         this.setAttribute('aria-expanded', String(!expanded));
         nav.classList.toggle('open');
       });
+    })();
+
+    function sendContactEmail(event) {
+      event.preventDefault();
+      var form = event.target;
+      var name = encodeURIComponent(form.name.value.trim());
+      var email = encodeURIComponent(form.email.value.trim());
+      var organisation = encodeURIComponent(form.organisation.value.trim());
+      var message = encodeURIComponent(form.message.value.trim());
+      var body = 'Name: ' + name + '%0D%0AEmail: ' + email + '%0D%0AOrganisation: ' + organisation + '%0D%0A%0D%0A' + message;
+      var mailto = 'mailto:karol@eanalyticsstudio.com?subject=' + encodeURIComponent('E Analytics Studio Enquiry') + '&body=' + body;
+      window.location.href = mailto;
+      return false;
+    }
+
+    (function(){
+      var gallery = document.querySelectorAll('.about-photo-screen img');
+      if (!gallery.length) return;
+      var current = 0;
+      function showImage(index) {
+        gallery.forEach(function(img, i){
+          img.classList.toggle('active', i === index);
+        });
+      }
+      setInterval(function(){
+        current = (current + 1) % gallery.length;
+        showImage(current);
+      }, 4000);
+      showImage(current);
     })();
   </script>
 

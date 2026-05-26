@@ -26,30 +26,42 @@
     }
     .process-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 24px;
       margin-top: 18px;
+      align-items: stretch;
     }
     .process-card {
       background: #fff;
       border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 24px;
+      border-radius: 16px;
+      padding: 28px;
+      min-height: 220px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
     .process-card .step-number {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
+      width: 38px;
+      height: 38px;
       border-radius: 999px;
-      background: rgba(79,123,167,0.12);
+      background: rgba(79,123,167,0.14);
       color: var(--accent-blue);
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
     .process-card h3 {
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+    }
+    .process-time {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
     }
     .survey-cta-content {
       background: #fff;
@@ -57,6 +69,79 @@
       border-radius: 12px;
       padding: 30px;
       text-align: center;
+    }
+    .stage-flow {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+      margin-top: 26px;
+      counter-reset: stage;
+    }
+    .stage-card {
+      position: relative;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 18px 48px rgba(31, 41, 55, 0.05);
+    }
+    .stage-card::before {
+      counter-increment: stage;
+      content: counter(stage);
+      display: inline-flex;
+      width: 38px;
+      height: 38px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: rgba(79,123,167,0.14);
+      color: var(--accent-blue);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .stage-card:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -18px;
+      top: 44px;
+      color: var(--accent-blue);
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+    .stage-card h3 {
+      margin-top: 0;
+      color: #0B1F3A;
+    }
+    .stage-card h4 {
+      margin: 22px 0 8px;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .stage-card p,
+    .stage-card li {
+      color: var(--muted);
+    }
+    .stage-card ul {
+      margin-top: 8px;
+    }
+    .stage-card .outcome {
+      color: var(--text);
+      font-weight: 600;
+    }
+    @media (max-width: 900px) {
+      .stage-flow,
+      .process-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .stage-card::after {
+        display: none;
+      }
+    }
+    @media (max-width: 640px) {
+      .stage-flow,
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -76,10 +161,8 @@
       <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="dashboards.html">Examples of Work</a></li>
           <li><a href="services.html">How It Works</a></li>
           <li><a href="survey.html">Survey</a></li>
-          <li><a href="about.html">About</a></li>
           <li><a class="nav-contact" href="mailto:karol@eanalyticsstudio.com?subject=E%20Analytics%20Studio%20Enquiry">Contact</a></li>
         </ul>
       </nav>
@@ -89,56 +172,120 @@
   <main id="main" class="container">
     <section aria-labelledby="page-title">
       <h1 id="page-title">How It Works</h1>
-      <p>From messy data to clearer decisions — a simple staged process.</p>
+      <p>A staged process from unused data to clearer decisions.</p>
+      <p>You do not need to start with a dashboard. We begin by understanding what data you already have, whether it can be trusted, and what decisions it should support.</p>
     </section>
 
-    <section aria-labelledby="intro-title">
-      <h2 id="intro-title">How It Works</h2>
-      <p>We start by understanding your current data before recommending dashboards, reports, or systems. The process is designed to be clear, staged, and easy to follow.</p>
+    <section aria-labelledby="stage-title">
+      <h2 id="stage-title">Three connected stages</h2>
+      <div class="stage-flow">
+        <article class="stage-card">
+          <h3>Data Assessment Report</h3>
+          <h4>Who it is for</h4>
+          <p>Organisations with data in spreadsheets, CRM systems, dashboards, reports, or website analytics, but no clear view of what it means or what to trust.</p>
+          <h4>What you get</h4>
+          <ul>
+            <li>review of current data sources</li>
+            <li>data quality and gap assessment</li>
+            <li>stakeholder conversations where needed</li>
+            <li>short report with recommendations</li>
+            <li>clear next-step roadmap</li>
+          </ul>
+          <h4>Outcome</h4>
+          <p class="outcome">You know what data you have, what is useful, what is missing, and what should happen next.</p>
+        </article>
+
+        <article class="stage-card">
+          <h3>Market, Metrics &amp; Behavioural Insight</h3>
+          <h4>Who it is for</h4>
+          <p>Businesses that need richer data, clearer customer understanding, better metrics, or market/category insight before making growth decisions.</p>
+          <h4>What you get</h4>
+          <ul>
+            <li>market/category research where useful</li>
+            <li>behavioural interpretation of customers or teams</li>
+            <li>new metrics or intentional data collection</li>
+            <li>website, positioning, or performance recommendations</li>
+            <li>clearer hypotheses to test</li>
+          </ul>
+          <h4>Outcome</h4>
+          <p class="outcome">You know what to measure next, what changes to test, and where growth or performance improvement may come from.</p>
+        </article>
+
+        <article class="stage-card">
+          <h3>Behavioural Data System &amp; Dashboard</h3>
+          <h4>Who it is for</h4>
+          <p>Leaders who need ongoing tracking, dashboards, intervention measurement, or evidence of change over time.</p>
+          <h4>What you get</h4>
+          <ul>
+            <li>custom dashboard or system design</li>
+            <li>repeated measurement structure</li>
+            <li>performance or behaviour tracking</li>
+            <li>insight panels and interpretation</li>
+            <li>maintenance or ongoing review where needed</li>
+          </ul>
+          <h4>Outcome</h4>
+          <p class="outcome">You get a decision-support system that tracks what changes and helps you decide what to improve next.</p>
+        </article>
+      </div>
     </section>
 
     <section aria-labelledby="process-title">
       <h2 id="process-title">The Process</h2>
+      <p>The 9-step process supports the journey from assessment to insight to systems, so dashboards only happen when they are the useful next step.</p>
       <div class="process-grid">
         <div class="process-card">
           <div class="step-number">1</div>
           <h3>Start with the survey</h3>
-          <p>A short survey helps identify how your organisation currently uses data and where the main gaps may be.</p>
+          <p class="process-time">Estimated time: 2–3 minutes</p>
+          <p>Complete a short Data Use &amp; Performance Survey to reflect on how your organisation currently uses data.</p>
         </div>
         <div class="process-card">
           <div class="step-number">2</div>
           <h3>Receive a follow-up</h3>
-          <p>We review your answers and, where appropriate, send a short summary within 24–48 hours, along with a link to book a free 15-minute consultation.</p>
+          <p class="process-time">Estimated time: within 24–48 hours</p>
+          <p>We review your responses and, where appropriate, send a short summary with a link to book a free 15-minute consultation.</p>
         </div>
         <div class="process-card">
           <div class="step-number">3</div>
           <h3>Free 15-minute consultation</h3>
-          <p>We discuss your results, your goals, and whether a deeper data assessment is the right next step.</p>
+          <p class="process-time">Estimated time: 15 minutes</p>
+          <p>We discuss your results, your goals, and whether a deeper Data Clarity Assessment is useful.</p>
         </div>
         <div class="process-card">
           <div class="step-number">4</div>
-          <h3>Data Assessment</h3>
-          <p>We review your current data sources, assess quality and structure, and speak with key people where needed.</p>
+          <h3>Data access and confidentiality</h3>
+          <p class="process-time">Estimated time: 1–3 days</p>
+          <p>We agree what data can be reviewed, whether an NDA is needed, and whether any sensitive data is involved.</p>
         </div>
         <div class="process-card">
           <div class="step-number">5</div>
-          <h3>Short report and recommendations</h3>
-          <p>You receive a clear overview of your current data state, key gaps, and what should happen next.</p>
+          <h3>Data source review</h3>
+          <p class="process-time">Estimated time: 3–5 working days</p>
+          <p>We review existing sources such as spreadsheets, CRM exports, website analytics, survey data, reports, and dashboards.</p>
         </div>
         <div class="process-card">
           <div class="step-number">6</div>
-          <h3>Improve and interpret</h3>
-          <p>If needed, we help improve data quality, infrastructure, and the way data is used for performance decisions.</p>
+          <h3>Data quality and gap assessment</h3>
+          <p class="process-time">Estimated time: 3–5 working days</p>
+          <p>We assess completeness, consistency, reliability, missing fields, duplication, accessibility, and usefulness for decision-making.</p>
         </div>
         <div class="process-card">
           <div class="step-number">7</div>
-          <h3>Build what is needed</h3>
-          <p>If a dashboard or ongoing system is appropriate, we build it around your actual needs.</p>
+          <h3>Intentional data collection or additional metrics</h3>
+          <p class="process-time">Estimated time: optional, 1–2 weeks</p>
+          <p>If important information is missing, we recommend additional metrics, survey questions, or custom scientific measures.</p>
         </div>
         <div class="process-card">
           <div class="step-number">8</div>
-          <h3>Ongoing optimisation</h3>
-          <p>Where appropriate, we can continue with reporting, dashboard upkeep, and testing different methods or funnels.</p>
+          <h3>Report and recommendations</h3>
+          <p class="process-time">Estimated time: 1 week</p>
+          <p>You receive a clear report showing current data strengths, gaps, risks, missed opportunities, and recommended next steps.</p>
+        </div>
+        <div class="process-card">
+          <div class="step-number">9</div>
+          <h3>Build, test, and track</h3>
+          <p class="process-time">Estimated time: project-dependent</p>
+          <p>If useful, we move on to dashboards, market insight, tracking systems, or ongoing measurement that supports better decisions.</p>
         </div>
       </div>
     </section>
@@ -156,7 +303,8 @@
 
     <section aria-labelledby="simple-title">
       <h2 id="simple-title">Simple, staged, and practical</h2>
-      <p>You do not need to commit to a complex build straight away. We begin with clarity, then recommend the right next step based on evidence.</p>
+      <p>Start with clarity. Build only what is useful. You do not need to commit to a complex build straight away.</p>
+      <p>We begin with evidence, then recommend the right next step based on what the data shows.</p>
     </section>
 
     <section aria-labelledby="survey-cta-title" class="survey-cta-section">
@@ -178,9 +326,9 @@
       <nav aria-label="Footer">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">Services</a></li>
+          <li><a href="services.html">How It Works</a></li>
           <li><a href="survey.html">Survey</a></li>
-          <li><a href="about.html">About</a></li>
+          <li><a href="mailto:karol@eanalyticsstudio.com?subject=E%20Analytics%20Studio%20Enquiry">Contact</a></li>
         </ul>
       </nav>
       <small>© <span>2026</span> E Analytics Studio.</small>

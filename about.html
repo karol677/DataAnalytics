@@ -24,6 +24,56 @@
       border-color: var(--accent-green);
       color: #fff !important;
     }
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+      gap: 32px;
+      align-items: start;
+      margin-top: 22px;
+    }
+    .about-bio {
+      display: grid;
+      gap: 20px;
+      line-height: 1.8;
+      color: #243044;
+    }
+    .about-bio p {
+      max-width: 68ch;
+      margin: 0;
+    }
+    .about-photo-screen {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      box-shadow: 0 20px 50px rgba(31, 41, 55, 0.08);
+      background: #f8f9fb;
+    }
+    .about-photo-screen img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .about-photo-screen img.active {
+      opacity: 1;
+    }
+    @media (max-width: 880px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      .about-photo-screen {
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -42,10 +92,8 @@
       <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="dashboards.html">Examples of Work</a></li>
           <li><a href="services.html">How It Works</a></li>
           <li><a href="survey.html">Survey</a></li>
-          <li><a href="about.html">About</a></li>
           <li><a class="nav-contact" href="mailto:karol@eanalyticsstudio.com?subject=E%20Analytics%20Studio%20Enquiry">Contact</a></li>
         </ul>
       </nav>
@@ -57,40 +105,28 @@
       <h1 id="page-title">About E Analytics Studio</h1>
     </section>
 
-    <section aria-labelledby="founder-title">
-      <h2 id="founder-title">Dr Karol Nedza</h2>
-      <p>
-        Dr Karol Nedza is a psychologist and data analyst focused on helping organisations use data more effectively.
-      </p>
-      <p>
-        With a background in behavioural science and experience across sport, health, education, and corporate environments, Dr Nedza understands both how data reveals performance and why organisations struggle to act on it.
-      </p>
-    </section>
-
-    <section aria-labelledby="studio-title">
-      <h2 id="studio-title">The Studio</h2>
-      <p>
-        E Analytics Studio was created to bridge the gap between data and real-world performance.
-      </p>
-      <p>
-        Too many organisations collect data but don't understand it. Dashboards exist but don't support decisions. Metrics are measured but not trusted. The issue is rarely a lack of numbers. It's the gap between what is measured, what is understood, and what can realistically be done with the results.
-      </p>
-      <p>
-        The studio works carefully, ethically, and with a commitment to clarity over complexity.
-      </p>
+    <section aria-labelledby="founder-title" class="about-grid">
+      <div class="about-bio">
+        <h2 id="founder-title">Dr Karol Nedza</h2>
+        <p>Dr Karol Nedza built E Analytics Studio around a simple idea: most organisations already have data, but very few are using it to understand behaviour, performance, and decision-making properly.</p>
+        <p>Karol’s background combines PhD-level behavioural science, applied data analysis, research methods, and international consultancy. He has taught psychology, research methods, and data analysis for nearly a decade, completed multiple applied research and consultancy projects, and worked with organisations across healthcare, education, business, and performance settings.</p>
+        <p>His strength is translating complex human problems into measurable systems — and translating data back into clear, practical insight for decision-makers.</p>
+        <p>Outside of work, Karol is driven by movement, challenge, and curiosity — from coastal running, lifting, hiking, and surfing to writing philosophical essays and poetry about modern life, identity, and human behaviour. His work is grounded in the belief that the best decisions come from combining rigorous thinking with a life fully lived.</p>
+      </div>
+      <div class="about-photo-screen" aria-label="Karol Nedza photo gallery">
+        <img class="active" src="assets/img/IMG_6303.jpg" alt="Dr Karol Nedza" />
+        <img src="assets/img/IMG_8639.JPG" alt="Dr Karol Nedza" />
+        <img src="assets/img/IMG_9394.jpg" alt="Dr Karol Nedza" />
+        <img src="assets/img/IMG_1395.HEIC" alt="Dr Karol Nedza" />
+        <img src="assets/img/IMG_5371.HEIC" alt="Dr Karol Nedza" />
+      </div>
     </section>
 
     <section aria-labelledby="philosophy-title">
       <h2 id="philosophy-title">Philosophy</h2>
-      <p>
-        Data should not only describe what happened.
-      </p>
-      <p>
-        It should help organisations understand what to do next.
-      </p>
-      <p>
-        That requires more than numbers. It requires clarity of thinking, understanding of context, and systems that remain useful over time.
-      </p>
+      <p>Data should not only describe what happened.</p>
+      <p>It should help organisations understand what to do next.</p>
+      <p>That requires more than numbers. It requires clarity of thinking, understanding of context, and systems that remain useful over time.</p>
     </section>
   </main>
 
@@ -104,9 +140,9 @@
       <nav aria-label="Footer">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">Services</a></li>
+          <li><a href="services.html">How It Works</a></li>
           <li><a href="survey.html">Survey</a></li>
-          <li><a href="about.html">About</a></li>
+          <li><a href="mailto:karol@eanalyticsstudio.com?subject=E%20Analytics%20Studio%20Enquiry">Contact</a></li>
         </ul>
       </nav>
       <small>© <span>2026</span> E Analytics Studio.</small>
@@ -122,6 +158,22 @@
         this.setAttribute('aria-expanded', String(!expanded));
         nav.classList.toggle('open');
       });
+    })();
+
+    (function(){
+      var gallery = document.querySelectorAll('.about-photo-screen img');
+      if (!gallery.length) return;
+      var current = 0;
+      function showImage(index) {
+        gallery.forEach(function(img, i){
+          img.classList.toggle('active', i === index);
+        });
+      }
+      setInterval(function(){
+        current = (current + 1) % gallery.length;
+        showImage(current);
+      }, 4000);
+      showImage(current);
     })();
   </script>
 </body>

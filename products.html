@@ -1,0 +1,952 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Products — E Analytics Studio</title>
+  <meta name="description" content="Products from E Analytics Studio: data assessments, behavioural insight reports, and data systems that help leaders decide with confidence." />
+  <meta name="theme-color" content="#F6F7F8" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      background: #F7F8FA;
+      color: #111827;
+    }
+    .nav-contact {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--accent-blue);
+      border: 1px solid var(--accent-blue);
+      color: #fff !important;
+      font-weight: 600;
+    }
+    .nav-contact:hover {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      color: #fff !important;
+    }
+    .hero-page {
+      max-width: 860px;
+      margin: 0 auto 44px;
+      text-align: left;
+      padding: 46px 0 0;
+    }
+    .hero-page h1 {
+      margin: 0;
+      font-size: clamp(3rem, 4.5vw, 4.6rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      color: #0B1F3A;
+      max-width: 10ch;
+    }
+    .hero-page p {
+      margin: 24px 0 0;
+      max-width: 62ch;
+      color: #334155;
+      font-size: 1.05rem;
+      line-height: 1.85;
+    }
+    .product-explorer {
+      margin-top: 12px;
+      padding-bottom: 8px;
+    }
+    .section-header {
+      max-width: 860px;
+      margin-bottom: 28px;
+    }
+    .section-header .eyebrow {
+      margin: 0 0 18px;
+      color: #475569;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .section-header .section-copy {
+      margin: 16px 0 0;
+      color: #475569;
+      line-height: 1.9;
+      max-width: 64ch;
+    }
+    .product-explorer-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+      gap: 32px;
+      align-items: start;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .product-card {
+      position: relative;
+      background: #fff;
+      border: 1px solid rgba(17, 24, 39, 0.10);
+      border-radius: 24px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+      transition: transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+      min-height: 320px;
+      aspect-ratio: 1 / 1;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--accent, #2563EB);
+    }
+    .product-card.active {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      box-shadow: 0 24px 52px rgba(15, 23, 42, 0.12);
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 52px rgba(15, 23, 42, 0.12);
+    }
+    .product-select {
+      all: unset;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      height: 100%;
+      width: 100%;
+      text-align: left;
+      gap: 26px;
+    }
+    .product-select:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.30);
+      outline-offset: 4px;
+    }
+    .product-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .product-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.06);
+      color: var(--accent, #2563EB);
+      font-size: 0.95rem;
+      font-weight: 700;
+      min-width: 44px;
+    }
+    .product-title {
+      margin: 0;
+      font-size: 1.15rem;
+      line-height: 1.2;
+      color: #0B1F3A;
+      font-weight: 700;
+      max-width: 220px;
+    }
+    .product-copy {
+      display: grid;
+      gap: 14px;
+    }
+    .product-icp,
+    .product-outcome {
+      margin: 0;
+      color: #475569;
+      line-height: 1.8;
+    }
+    .product-icp {
+      font-weight: 700;
+      color: #334155;
+    }
+    .product-outcome {
+      color: #64748B;
+    }
+    .product-prompt {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: auto;
+      padding: 14px 18px;
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.04);
+      color: #0B1F3A;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      width: fit-content;
+    }
+    .product-card.active .product-prompt {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+    .product-detail-panel {
+      background: #fff;
+      border: 1px solid rgba(17, 24, 39, 0.10);
+      border-radius: 28px;
+      box-shadow: 0 24px 52px rgba(15, 23, 42, 0.10);
+      padding: 36px;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 260ms ease, transform 260ms ease;
+      width: 100%;
+      display: none;
+      align-self: start;
+    }
+    .product-detail-panel.visible {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .product-panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+    .product-panel-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.05);
+      color: #0B1F3A;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .product-panel-title {
+      margin: 0;
+      font-size: 1.55rem;
+      line-height: 1.18;
+      color: #0B1F3A;
+      max-width: 40rem;
+    }
+    .product-panel-close {
+      all: unset;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #0B1F3A;
+      background: rgba(17, 24, 39, 0.05);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .product-panel-close:hover {
+      background: rgba(17, 24, 39, 0.12);
+    }
+    .product-panel-copy {
+      display: grid;
+      gap: 22px;
+    }
+    .product-panel-copy > div {
+      display: grid;
+      gap: 12px;
+    }
+    .product-panel-copy p {
+      margin: 0;
+      color: #334155;
+      line-height: 1.8;
+    }
+    .product-panel-copy .panel-label {
+      margin: 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #475569;
+      font-weight: 700;
+    }
+    .product-panel-copy h4 {
+      margin: 0;
+      font-size: 1rem;
+      color: #0B1F3A;
+    }
+    .product-panel-copy ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #475569;
+      line-height: 1.9;
+    }
+    .product-panel-copy li {
+      margin-bottom: 10px;
+    }
+    .product-panel-copy .result {
+      margin: 0;
+      font-weight: 700;
+      color: #0B1F3A;
+    }
+    .product-panel-cta {
+      margin-top: 26px;
+      display: inline-flex;
+    }
+    .custom-work {
+      background: #fff;
+      border: 1px solid rgba(17, 24, 39, 0.10);
+      border-radius: 28px;
+      box-shadow: 0 24px 52px rgba(15, 23, 42, 0.08);
+      padding: 42px 38px;
+      margin-top: 34px;
+    }
+    .custom-work p {
+      margin: 20px 0 0;
+      max-width: 74ch;
+      color: #475569;
+      line-height: 1.85;
+    }
+    .custom-work .button {
+      margin-top: 24px;
+    }
+    .experience-section .section-header {
+      margin-bottom: 28px;
+    }
+    .experience-carousel {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      margin-top: 24px;
+    }
+    .carousel-button {
+      all: unset;
+      cursor: pointer;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border: 1px solid rgba(17, 24, 39, 0.10);
+      box-shadow: 0 15px 30px rgba(15, 23, 42, 0.08);
+      color: #0B1F3A;
+      font-size: 1.25rem;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+    .carousel-button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(17, 24, 39, 0.15);
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+    }
+    .carousel-track-wrap {
+      overflow: hidden;
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 300ms ease;
+      width: 800%;
+    }
+    .experience-slide {
+      min-width: 100%;
+      padding: 32px;
+      box-sizing: border-box;
+      display: none;
+    }
+    .experience-slide.active {
+      display: block;
+    }
+    .experience-slide h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: #0B1F3A;
+      font-size: 1.25rem;
+      line-height: 1.2;
+    }
+    .experience-slide ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #475569;
+      line-height: 1.8;
+    }
+    .experience-slide li {
+      margin-bottom: 10px;
+    }
+    .experience-slide.cta {
+      border: 1px solid rgba(37, 99, 235, 0.20);
+      background: rgba(37, 99, 235, 0.05);
+    }
+    .experience-slide.cta h3 {
+      color: #0B1F3A;
+    }
+    .experience-slide.cta p {
+      margin: 0 0 20px;
+      color: #334155;
+    }
+    .experience-slide.cta .button {
+      margin-top: 12px;
+      border-color: #2563EB;
+      background: #2563EB;
+    }
+    .carousel-status {
+      margin-top: 18px;
+      text-align: right;
+      color: #475569;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .carousel-status strong {
+      color: #0B1F3A;
+      font-weight: 700;
+    }
+    .survey-footer {
+      margin-top: 36px;
+      padding: 44px 34px;
+      background: #fff;
+      border: 1px solid rgba(17, 24, 39, 0.10);
+      border-radius: 28px;
+      box-shadow: 0 24px 52px rgba(15, 23, 42, 0.10);
+      text-align: center;
+    }
+    .survey-footer h2 {
+      margin-top: 0;
+      font-size: 2rem;
+      color: #0B1F3A;
+      max-width: 12ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .survey-footer p {
+      margin: 20px auto 0;
+      max-width: 64ch;
+      color: #475569;
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+    .survey-footer .survey-note {
+      display: block;
+      margin-top: 18px;
+      color: #64748B;
+      font-size: 0.95rem;
+    }
+    .survey-footer .button {
+      margin-top: 26px;
+    }
+    @media (max-width: 900px) {
+      .product-explorer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 760px) {
+      .hero-page {
+        padding: 24px 18px 0;
+      }
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+      .product-card {
+        min-height: auto;
+        aspect-ratio: auto;
+      }
+      .product-detail-panel,
+      .custom-work {
+        padding: 28px 22px;
+        border-radius: 22px;
+      }
+      .product-prompt {
+        width: fit-content;
+      }
+      .carousel-button {
+        width: 46px;
+        height: 46px;
+      }
+      .experience-carousel {
+        grid-template-columns: 1fr;
+      }
+      .carousel-status {
+        text-align: left;
+      }
+      .survey-footer {
+        padding: 34px 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="header-inner container">
+      <a href="index.html" class="site-brand" aria-label="E Analytics Studio home">
+        <img src="assets/img/logo.svg" alt="E Analytics Studio logo" class="site-logo" height="34" />
+        <span class="site-title">E Analytics Studio</span>
+      </a>
+
+      <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+
+      <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">How It Works</a></li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a class="nav-contact" href="mailto:karol@eanalyticsstudio.com?subject=E%20Analytics%20Studio%20Enquiry">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero-page" aria-labelledby="page-title">
+      <h1 id="page-title">Products</h1>
+      <p>Three ways to turn unclear data into better decisions.</p>
+      <p>Start with clarity, add market or behavioural insight where useful, and build dashboards only when they support real decisions.</p>
+    </section>
+
+    <section class="product-explorer" aria-labelledby="products-title">
+      <div class="section-header">
+        <p class="eyebrow">Three ways to turn unclear data into better decisions</p>
+        <h2 id="products-title">Product pathways for better data decisions</h2>
+        <p class="section-copy">Choose the product that matches your current need: clarity first, insight next, or systems when you are ready to track change over time.</p>
+      </div>
+
+      <div class="product-explorer-grid">
+        <div class="product-grid">
+          <article class="product-card active" data-product="1" style="--accent: #2563EB;">
+            <button class="product-select" type="button" aria-expanded="true" aria-controls="product-panel">
+              <div class="product-card-top">
+                <span class="product-badge">1</span>
+                <h3 class="product-title">Data Assessment Report</h3>
+              </div>
+              <div class="product-copy">
+                <p class="product-icp">For organisations with data everywhere but insight nowhere.</p>
+                <p class="product-outcome">Know what data you have, what you can trust, and what to fix first.</p>
+              </div>
+              <span class="product-prompt">Click to explore</span>
+            </button>
+          </article>
+
+          <article class="product-card" data-product="2" style="--accent: #D99A00;">
+            <button class="product-select" type="button" aria-expanded="false" aria-controls="product-panel">
+              <div class="product-card-top">
+                <span class="product-badge">2</span>
+                <h3 class="product-title">Market &amp; Behavioural Insight Report</h3>
+              </div>
+              <div class="product-copy">
+                <p class="product-icp">For product and service businesses looking for their next growth opportunity.</p>
+                <p class="product-outcome">Understand your audience, category, positioning, and what to test next.</p>
+              </div>
+              <span class="product-prompt">Click to explore</span>
+            </button>
+          </article>
+
+          <article class="product-card" data-product="3" style="--accent: #0F766E;">
+            <button class="product-select" type="button" aria-expanded="false" aria-controls="product-panel">
+              <div class="product-card-top">
+                <span class="product-badge">3</span>
+                <h3 class="product-title">Behavioural Data System &amp; Dashboard</h3>
+              </div>
+              <div class="product-copy">
+                <p class="product-icp">For leaders who need to track performance, change, and impact over time.</p>
+                <p class="product-outcome">Build a system that shows what is changing and what to do next.</p>
+              </div>
+              <span class="product-prompt">Click to explore</span>
+            </button>
+          </article>
+        </div>
+
+        <aside class="product-detail-panel visible" id="product-panel" aria-live="polite">
+          <div class="product-panel-header">
+            <div>
+              <span class="product-panel-tag">Data Assessment Report</span>
+              <h3 class="product-panel-title">A precise review of your current data position.</h3>
+            </div>
+            <button class="product-panel-close" type="button" aria-label="Close product details">×</button>
+          </div>
+          <div class="product-panel-copy">
+            <div>
+              <p class="panel-label">Best for</p>
+              <p class="product-panel-best">Founder-led organisations, SMBs, consultants, agencies, and growing teams that already collect data but do not know how to use it.</p>
+            </div>
+            <div>
+              <p class="panel-label">Problem</p>
+              <p class="product-panel-problem">You have spreadsheets, CRM data, website analytics, reports, or dashboards, but you are not sure what can be trusted, what is missing, or what decisions the data should support.</p>
+            </div>
+            <div>
+              <p class="panel-label">What we do</p>
+              <ul class="product-panel-do"></ul>
+            </div>
+            <div>
+              <p class="panel-label">What you gain</p>
+              <ul class="product-panel-gain"></ul>
+            </div>
+            <div>
+              <p class="panel-label">Result</p>
+              <p class="product-panel-result result"></p>
+            </div>
+          </div>
+          <a class="button product-panel-cta" href="survey.html">Start with a Data Assessment</a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="custom-work" aria-labelledby="custom-title">
+      <h2 id="custom-title">Custom work is part of the model</h2>
+      <p>These products are starting points, not limits. E Analytics Studio specialises in custom projects where data, behaviour, performance, and decision-making need to be connected. If your challenge does not fit neatly into one product, we can scope the right approach together.</p>
+      <a class="button" href="mailto:karol@eanalyticsstudio.com?subject=Custom%20Data%20Project%20Enquiry">Discuss a Custom Project</a>
+    </section>
+
+    <section class="experience-section" aria-labelledby="experience-title">
+      <div class="section-header">
+        <h2 id="experience-title">Relevant Experience &amp; Project Work</h2>
+        <p>Across previous and ongoing work, E Analytics Studio draws on experience across data assessment, survey design, behavioural analysis, reporting, market insight, dashboards, and applied research.</p>
+      </div>
+
+      <div class="experience-carousel" aria-roledescription="carousel">
+        <button class="carousel-button prev" type="button" aria-label="Previous experience item">←</button>
+        <div class="carousel-track-wrap" tabindex="0" aria-label="Experience carousel">
+          <div class="carousel-track">
+            <article class="experience-slide active" data-index="1">
+              <h3>Data Assessment &amp; Data Quality</h3>
+              <ul>
+                <li>Reviewing existing data sources across spreadsheets, dashboards, surveys, CRM exports, operational records, and performance reports</li>
+                <li>Assessing data completeness, consistency, accessibility, reliability, duplication, and missing fields</li>
+                <li>Identifying whether existing data is suitable for decision-making, reporting, or dashboard development</li>
+                <li>Recommending improvements to data structure, collection processes, and reporting systems</li>
+              </ul>
+            </article>
+            <article class="experience-slide" data-index="2">
+              <h3>Survey Design, Testing &amp; Validation</h3>
+              <ul>
+                <li>Designing and refining behavioural and organisational survey measures</li>
+                <li>Testing questionnaire clarity, usability, structure, and completion burden</li>
+                <li>Shortening survey tools while preserving diagnostic value</li>
+                <li>Conducting user experience testing for survey completion</li>
+                <li>Producing evidence summaries to support credibility and client-facing use</li>
+              </ul>
+            </article>
+            <article class="experience-slide" data-index="3">
+              <h3>Behavioural &amp; Performance Analysis</h3>
+              <ul>
+                <li>Analysing behavioural patterns linked to team performance, communication, customer interaction, and operational outcomes</li>
+                <li>Connecting performance data with human factors such as decision-making, motivation, trust, confidence, communication, and consistency</li>
+                <li>Supporting intervention planning through data-informed behavioural insight</li>
+                <li>Measuring whether changes, training, or interventions produce observable improvements</li>
+              </ul>
+            </article>
+            <article class="experience-slide" data-index="4">
+              <h3>Reporting, Insight &amp; Communication</h3>
+              <ul>
+                <li>Producing clear reports covering methods, results, insights, and recommendations</li>
+                <li>Translating complex data into plain-English summaries for non-technical stakeholders</li>
+                <li>Creating tables, charts, and visual summaries for leadership, professional groups, and organisational audiences</li>
+                <li>Preparing findings for presentations, conferences, internal reports, and publication-style outputs</li>
+              </ul>
+            </article>
+            <article class="experience-slide" data-index="5">
+              <h3>Market, Category &amp; Growth Research</h3>
+              <ul>
+                <li>Reviewing market/category opportunities for growth-focused businesses</li>
+                <li>Analysing potential customer segments and ICP expansion opportunities</li>
+                <li>Connecting internal data with external market insight</li>
+                <li>Identifying website, positioning, marketing, or product changes that can be tested and tracked</li>
+                <li>Producing recommendations linked to growth, investment priorities, and potential ROI</li>
+              </ul>
+            </article>
+            <article class="experience-slide" data-index="6">
+              <h3>Dashboard &amp; Data System Development</h3>
+              <ul>
+                <li>Supporting the design of dashboards for performance, impact, team, and organisational reporting</li>
+                <li>Translating stakeholder needs into trackable data points and dashboard features</li>
+                <li>Working with developers and stakeholders to shape dashboard requirements</li>
+                <li>Creating data structures that allow performance, change, and impact to be monitored over time</li>
+                <li>Building the foundations for ongoing data systems rather than one-off reports</li>
+              </ul>
+            </article>
+            <article class="experience-slide" data-index="7">
+              <h3>Research &amp; Evaluation</h3>
+              <ul>
+                <li>Designing and analysing applied behavioural research projects</li>
+                <li>Supporting observational, pre-post, survey-based, and intervention evaluation work</li>
+                <li>Cleaning, structuring, and analysing data across multiple research contexts</li>
+                <li>Producing brief reports, technical summaries, and scientific outputs</li>
+                <li>Applying research methods to real-world organisational and performance questions</li>
+              </ul>
+            </article>
+            <article class="experience-slide cta" data-index="8">
+              <h3>Want to see relevant examples?</h3>
+              <p>Specific anonymised examples of previous work are available upon request. If you would like to see examples that match your organisation, project, or sector, get in touch.</p>
+              <a class="button" href="mailto:karol@eanalyticsstudio.com?subject=Request%20Relevant%20Examples%20of%20Work">Request Relevant Examples</a>
+            </article>
+          </div>
+        </div>
+        <button class="carousel-button next" type="button" aria-label="Next experience item">→</button>
+      </div>
+      <div class="carousel-status"><strong class="current-slide">1</strong> / <span class="total-slides">8</span></div>
+    </section>
+
+    <section class="survey-footer" aria-labelledby="survey-cta-title">
+      <h2 id="survey-cta-title">Start with a clearer view of your data</h2>
+      <p>The Data Use &amp; Performance Survey is a short first step. It helps identify how your organisation currently collects, understands, and uses data — and whether a Data Assessment could save time, reduce guesswork, or reveal gaps worth fixing.</p>
+      <span class="survey-note">Takes around 2–3 minutes.</span>
+      <a class="button" href="survey.html">Take the Survey</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        <strong>E Analytics Studio</strong><br>
+        Plymouth, United Kingdom<br>
+        <a href="mailto:karol@eanalyticsstudio.com">karol@eanalyticsstudio.com</a>
+      </p>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">How It Works</a></li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a href="mailto:karol@eanalyticsstudio.com?subject=E%20Analytics%20Studio%20Enquiry">Contact</a></li>
+        </ul>
+      </nav>
+      <small>© <span>2026</span> E Analytics Studio.</small>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      var btn = document.querySelector('.nav-toggle');
+      var nav = document.getElementById('primary-nav');
+      btn && btn.addEventListener('click', function(){
+        var expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', String(!expanded));
+        nav.classList.toggle('open');
+      });
+    })();
+
+    (function(){
+      var cards = document.querySelectorAll('.product-card');
+      var productPanel = document.getElementById('product-panel');
+      var productSelectButtons = document.querySelectorAll('.product-select');
+      var productExplorerGrid = document.querySelector('.product-explorer-grid');
+      var closeButton = productPanel && productPanel.querySelector('.product-panel-close');
+      var panelTag = productPanel && productPanel.querySelector('.product-panel-tag');
+      var panelTitle = productPanel && productPanel.querySelector('.product-panel-title');
+      var panelBest = productPanel && productPanel.querySelector('.product-panel-best');
+      var panelProblem = productPanel && productPanel.querySelector('.product-panel-problem');
+      var panelDo = productPanel && productPanel.querySelector('.product-panel-do');
+      var panelGain = productPanel && productPanel.querySelector('.product-panel-gain');
+      var panelResult = productPanel && productPanel.querySelector('.product-panel-result');
+      var panelCta = productPanel && productPanel.querySelector('.product-panel-cta');
+
+      var products = {
+        '1': {
+          name: 'Data Assessment Report',
+          title: 'A precise review of your current data position.',
+          best: 'Founder-led organisations, SMBs, consultants, agencies, and growing teams that already collect data but do not know how to use it.',
+          problem: 'You have spreadsheets, CRM data, website analytics, reports, or dashboards, but you are not sure what can be trusted, what is missing, or what decisions the data should support.',
+          do: [
+            'Review available data sources',
+            'Assess data quality',
+            'Identify gaps and risks',
+            'Speak with key people where needed',
+            'Provide a short report and next-step roadmap'
+          ],
+          gain: [
+            'Clarity on what data exists',
+            'Confidence in what can be trusted',
+            'Understanding of gaps and risks',
+            'Better decisions about what to fix first',
+            'Reduced risk of paying for the wrong dashboard or system'
+          ],
+          result: 'A clear picture of your current data position and a practical roadmap for what should happen next.',
+          cta: 'Start with a Data Assessment',
+          ctaLink: 'survey.html'
+        },
+        '2': {
+          name: 'Market & Behavioural Insight Report',
+          title: 'A practical insight report for your next growth decision.',
+          best: 'Product businesses, e-commerce brands, service companies, and growth-focused founders planning website, marketing, positioning, or customer expansion decisions.',
+          problem: 'You want to grow, but you are not sure which audience to target, what your market is showing, which assumptions are limiting you, or what changes should be tested next.',
+          do: [
+            'Review available internal data',
+            'Analyse customer and audience signals',
+            'Review market/category opportunities',
+            'Identify possible ICPs',
+            'Recommend website, positioning, or campaign changes',
+            'Suggest metrics to track future performance'
+          ],
+          gain: [
+            'Clearer ICP',
+            'Stronger positioning',
+            'Market/category insight',
+            'Behavioural interpretation of customer needs',
+            'Growth opportunities to test',
+            'Clearer next steps for marketing or website changes'
+          ],
+          result: 'A practical insight report that helps you decide where to focus growth effort and what changes to test.',
+          cta: 'Explore Market Insight',
+          ctaLink: 'mailto:karol@eanalyticsstudio.com?subject=Market%20and%20Behavioural%20Insight%20Enquiry'
+        },
+        '3': {
+          name: 'Behavioural Data System & Dashboard',
+          title: 'A custom system that shows what is changing and what to do next.',
+          best: 'Leadership teams, programme leads, team managers, professional groups, and organisations that need ongoing measurement, intervention tracking, or impact reporting.',
+          problem: 'You do not just need a one-off report. You need a system that shows what is changing over time, whether interventions are working, and where leaders should focus attention.',
+          do: [
+            'Design measurement around your decision needs',
+            'Improve data structure and collection',
+            'Create or adapt behavioural metrics',
+            'Build a dashboard unique to your context',
+            'Add insight panels and interpretation',
+            'Support ongoing updates or reporting'
+          ],
+          gain: [
+            'Repeated measurement',
+            'Dashboard visibility',
+            'Intervention tracking',
+            'Clearer leadership decisions',
+            'Evidence of change',
+            'Ongoing performance insight'
+          ],
+          result: 'A custom data system or dashboard that helps you track what matters and decide what to improve next.',
+          cta: 'Build a Data System',
+          ctaLink: 'mailto:karol@eanalyticsstudio.com?subject=Behavioural%20Data%20System%20Enquiry'
+        }
+      };
+
+      var activeCard = cards.length ? cards[0] : null;
+
+      function populateList(container, items) {
+        if (!container) return;
+        container.innerHTML = items.map(function(item){
+          return '<li>' + item + '</li>';
+        }).join('');
+      }
+
+      function renderPanel(productId) {
+        if (!productPanel || !products[productId]) return;
+        var product = products[productId];
+        if (panelTag) panelTag.textContent = product.name;
+        if (panelTitle) panelTitle.textContent = product.title;
+        if (panelBest) panelBest.textContent = product.best;
+        if (panelProblem) panelProblem.textContent = product.problem;
+        populateList(panelDo, product.do);
+        populateList(panelGain, product.gain);
+        if (panelResult) panelResult.textContent = product.result;
+        if (panelCta) {
+          panelCta.textContent = product.cta;
+          panelCta.href = product.ctaLink;
+        }
+      }
+
+      function movePanel(card) {
+        if (!productPanel || !productExplorerGrid || !card) return;
+        if (window.innerWidth <= 900) {
+          card.parentNode.insertBefore(productPanel, card.nextSibling);
+        } else {
+          productExplorerGrid.appendChild(productPanel);
+        }
+      }
+
+      function setActiveCard(card) {
+        if (!productPanel) return;
+        cards.forEach(function(item) {
+          item.classList.toggle('active', item === card);
+          var button = item.querySelector('.product-select');
+          if (button) button.setAttribute('aria-expanded', item === card ? 'true' : 'false');
+        });
+
+        if (!card) {
+          productPanel.classList.remove('visible');
+          activeCard = null;
+          return;
+        }
+
+        activeCard = card;
+        productPanel.classList.add('visible');
+        movePanel(card);
+        renderPanel(card.dataset.product);
+      }
+
+      productSelectButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+          var card = this.closest('.product-card');
+          setActiveCard(card);
+        });
+      });
+
+      if (closeButton) {
+        closeButton.addEventListener('click', function() {
+          setActiveCard(null);
+        });
+      }
+
+      window.addEventListener('resize', function() {
+        if (activeCard) movePanel(activeCard);
+      });
+
+      if (activeCard) {
+        setActiveCard(activeCard);
+      }
+
+      var carousel = document.querySelector('.experience-carousel');
+      if (carousel) {
+        var slides = carousel.querySelectorAll('.experience-slide');
+        var prevButton = carousel.querySelector('.carousel-button.prev');
+        var nextButton = carousel.querySelector('.carousel-button.next');
+        var statusCurrent = document.querySelector('.current-slide');
+        var statusTotal = document.querySelector('.total-slides');
+        var trackWrap = carousel.querySelector('.carousel-track-wrap');
+        var currentIndex = 0;
+
+        function updateCarousel(index) {
+          if (!slides.length) return;
+          currentIndex = (index + slides.length) % slides.length;
+          slides.forEach(function(slide, idx) {
+            var isActive = idx === currentIndex;
+            slide.classList.toggle('active', isActive);
+            slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+          });
+          if (statusCurrent) statusCurrent.textContent = String(currentIndex + 1);
+          if (statusTotal) statusTotal.textContent = String(slides.length);
+        }
+
+        if (prevButton) {
+          prevButton.addEventListener('click', function() {
+            updateCarousel(currentIndex - 1);
+          });
+        }
+        if (nextButton) {
+          nextButton.addEventListener('click', function() {
+            updateCarousel(currentIndex + 1);
+          });
+        }
+        if (trackWrap) {
+          trackWrap.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+              event.preventDefault();
+              nextButton && nextButton.click();
+            }
+            if (event.key === 'ArrowLeft') {
+              event.preventDefault();
+              prevButton && prevButton.click();
+            }
+          });
+        }
+
+        updateCarousel(0);
+      }
+    })();
+  </script>
+</body>
+</html>
