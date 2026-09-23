@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Page not found | E Analytics Studio</title>
+<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#12172B" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#12172B; --surface:#1B2139; --line:#2A3150; --line-2:#39416B;
+  --fg:#E8ECF7; --fg-2:#9BA5C0; --fg-3:#6D7899;
+  --accent:#FF7A59; --accent-ink:#2A0E05; --warn:#F0B44A;
+  --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.6;
+  padding:2rem 1.5rem;-webkit-font-smoothing:antialiased;}
+.card{max-width:34rem;width:100%;}
+.eyebrow{font-family:var(--mono);font-size:.68rem;letter-spacing:.17em;text-transform:uppercase;color:var(--accent);margin:0 0 1rem;}
+h1{font-size:clamp(1.9rem,5vw,2.8rem);letter-spacing:-.04em;font-weight:600;line-height:1.14;margin:0 0 .6em;}
+p{color:var(--fg-2);margin:0 0 1.1rem;}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.4rem;margin:1.6rem 0;}
+.fig svg{display:block;width:100%;height:auto;}
+.fig figcaption{font-family:var(--mono);font-size:.7rem;color:var(--fg-3);margin-top:.9rem;padding-top:.8rem;border-top:1px solid var(--line);line-height:1.6;}
+.btns{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem;}
+.btn{display:inline-flex;align-items:center;padding:.75rem 1.3rem;border-radius:8px;font-size:.92rem;
+  font-weight:600;text-decoration:none;border:1.5px solid transparent;}
+.btn--solid{background:var(--accent);color:var(--accent-ink);}
+.btn--line{border-color:var(--line-2);color:var(--fg);}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="eyebrow">404</p>
+  <h1>This page was not found.</h1>
+  <p>
+    The link is broken, or the page has moved. Either way, the measurement failed
+    at capture.
+  </p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 420 110" role="img" aria-label="A chain of six links with the first one missing.">
+      <g font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="0.8">
+        <rect x="6" y="30" width="58" height="42" rx="6" fill="none" stroke="#F0B44A" stroke-dasharray="4 4"/>
+        <text x="35" y="55" text-anchor="middle" fill="#F0B44A">?</text>
+        <text x="35" y="88" text-anchor="middle" fill="#6D7899">CAPTURE</text>
+
+        <rect x="76" y="30" width="58" height="42" rx="6" fill="#1B2139" stroke="#2A3150"/>
+        <text x="105" y="88" text-anchor="middle" fill="#6D7899">TRUST</text>
+        <rect x="146" y="30" width="58" height="42" rx="6" fill="#1B2139" stroke="#2A3150"/>
+        <text x="175" y="88" text-anchor="middle" fill="#6D7899">MEANING</text>
+        <rect x="216" y="30" width="58" height="42" rx="6" fill="#1B2139" stroke="#2A3150"/>
+        <text x="245" y="88" text-anchor="middle" fill="#6D7899">BELIEF</text>
+        <rect x="286" y="30" width="58" height="42" rx="6" fill="#1B2139" stroke="#2A3150"/>
+        <text x="315" y="88" text-anchor="middle" fill="#6D7899">ACTION</text>
+        <rect x="356" y="30" width="58" height="42" rx="6" fill="#1B2139" stroke="#2A3150"/>
+        <text x="385" y="88" text-anchor="middle" fill="#6D7899">CONSEQ.</text>
+      </g>
+    </svg>
+    <figcaption>Everything downstream inherits the error.</figcaption>
+  </figure>
+
+  <div class="btns">
+    <a class="btn btn--solid" href="/">Back to the homepage</a>
+    <a class="btn btn--line" href="/diagnostic.html">Score your chain</a>
+  </div>
+</div>
+</body>
+</html>

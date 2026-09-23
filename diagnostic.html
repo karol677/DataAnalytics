@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Score your Decision Chain | E Analytics Studio</title>
+<meta name="description" content="Twelve statements, two minutes. Find out which of the six links between data and behaviour breaks first in your organisation." />
+<link rel="canonical" href="https://eanalyticsstudio.com/diagnostic.html" />
+<meta property="og:title" content="Which link in your measurement chain breaks first?" />
+<meta property="og:description" content="Twelve statements, two minutes, six scores. No email needed to see your result." />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#253244" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+
+<style>
+/* ===== PALETTE B: SLATE & TERRACOTTA =====
+   To switch: replace this :root block only.
+   A  Ink & Brass      --ink:#16233A --accent:#A67C2E --ok:#2E6B5E --paper:#FAF7F2 --line:#E2DAD0
+   C  Aubergine & Sage --ink:#33223D --accent:#5C4166 --ok:#6E8A63 --paper:#FAF8FA --line:#E4DCE6
+*/
+:root{
+  --bg:#12172B; --surface:#1B2139; --surface-2:#232B47;
+  --line:#2A3150; --line-2:#39416B;
+  --ink:#E8ECF7; --ink-2:#9BA5C0; --ink-3:#6D7899;
+  --accent:#FF7A59; --accent-ink:#2A0E05; --accent-wash:#2B1B22;
+  --ok:#6FD8B0; --ok-wash:#152E31;
+  --warn:#F0B44A; --warn-wash:#2E2718;
+  --bad:#FF7A59;
+  --paper:#12172B; --white:#1B2139;
+  --line-soft:#2A3150;
+  --display:"Source Serif 4",Georgia,serif;
+  --body:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --measure:40rem; --wide:62rem;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.03rem;line-height:1.6;}
+h1,h2,h3{font-family:var(--display);line-height:1.12;letter-spacing:-.022em;font-weight:600;margin:0 0 .5em;}
+h1{font-size:clamp(2rem,5.4vw,3.1rem);letter-spacing:-.032em;}
+h2{font-size:clamp(1.35rem,3vw,1.85rem);}
+h3{font-size:1.05rem;}
+p{margin:0 0 1em;} p:last-child{margin-bottom:0;}
+a{color:var(--accent);text-underline-offset:3px;}
+a:focus-visible,button:focus-visible,input:focus-visible,label:focus-within{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:4px;}
+.skip{position:absolute;left:-9999px;}
+.skip:focus{left:12px;top:12px;background:var(--accent);color:var(--accent-ink);padding:10px 16px;z-index:99;border-radius:6px;}
+
+.wrap{width:100%;max-width:var(--wide);margin:0 auto;padding:0 clamp(1.25rem,5vw,2.4rem);}
+.col{max-width:var(--measure);}
+.eyebrow{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 1rem;}
+
+.site-head{position:sticky;top:0;z-index:20;background:rgba(18,23,43,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+.head-inner{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0;flex-wrap:wrap;gap:1rem;}
+.brand{font-family:var(--display);font-weight:600;font-size:1rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:.55rem;}
+.brand .dot{width:9px;height:9px;border-radius:2px;background:var(--accent);display:block;}
+.head-nav a.lnk{font-family:var(--mono);font-size:.76rem;color:var(--ink-2);text-decoration:none;margin-left:1.1rem;}
+.head-nav a.lnk:hover{color:var(--ink);}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:.78rem 1.35rem;border-radius:8px;
+  font-family:var(--body);font-size:.93rem;font-weight:600;text-decoration:none;border:1.5px solid transparent;cursor:pointer;
+  transition:background .16s,border-color .16s;}
+.btn--solid{background:var(--accent);color:var(--accent-ink);} .btn--solid:hover{background:#FF9075;}
+.btn--line{border-color:var(--line-2);color:var(--ink);} .btn--line:hover{border-color:var(--ink-2);background:var(--surface-2);}
+.btn--sm{padding:.5rem 1rem;font-size:.85rem;}
+.btn[disabled]{opacity:.4;cursor:not-allowed;}
+.btn-row{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem;}
+
+.intro{padding:clamp(2.4rem,6vw,4rem) 0 clamp(1.4rem,3vw,2rem);}
+.lede{font-size:clamp(1.02rem,2vw,1.16rem);color:var(--ink-2);}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:0 12px 12px 0;
+  padding:1rem 1.2rem;font-size:.92rem;color:var(--ink-2);margin-top:1.6rem;}
+
+form.dx{padding-bottom:3rem;}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:.8rem;max-width:50rem;}
+.q .lk{font-family:var(--mono);font-size:.61rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:.4rem;}
+.q p{font-size:1rem;margin:0 0 .9rem;}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:.35rem;}
+.scale label{display:flex;flex-direction:column;align-items:center;gap:.4rem;cursor:pointer;padding:.5rem .2rem;
+  border-radius:8px;border:1px solid transparent;font-family:var(--mono);font-size:.59rem;letter-spacing:.03em;
+  text-transform:uppercase;color:var(--ink-3);text-align:center;}
+.scale label:hover{background:var(--surface-2);}
+.scale input{accent-color:var(--accent);width:1.1rem;height:1.1rem;margin:0;}
+.scale label:has(input:checked){border-color:var(--accent);background:var(--accent-wash);color:var(--accent);}
+
+.progress{position:sticky;bottom:0;background:rgba(247,246,244,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);
+  padding:.85rem 0;z-index:15;}
+.progress .wrap{display:flex;align-items:center;gap:1rem;justify-content:space-between;flex-wrap:wrap;}
+.track{flex:1 1 10rem;height:5px;background:var(--line);border-radius:99px;overflow:hidden;min-width:7rem;}
+.track i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s;}
+.cnt{font-family:var(--mono);font-size:.73rem;color:var(--ink-2);}
+
+#res{display:none;padding:clamp(2rem,5vw,3.4rem) 0 4rem;}
+#res.on{display:block;}
+.verdict{background:var(--surface-2);color:#E4E9EF;border:1px solid var(--line-2);border-radius:18px;padding:clamp(1.5rem,3.5vw,2.3rem);}
+.verdict .lab{font-family:var(--mono);font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ok);}
+.verdict h2{color:#fff;margin:.5rem 0 .45rem;}
+.verdict p{color:var(--ink-2);font-size:1rem;margin:0;}
+.bars{display:grid;gap:.65rem;margin-top:1.5rem;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.4rem 1.5rem;}
+.br{display:grid;grid-template-columns:6.5rem 1fr 3rem;gap:.85rem;align-items:center;}
+.br .nm{font-family:var(--mono);font-size:.73rem;color:var(--ink-2);}
+.br .v{text-align:right;font-family:var(--mono);font-size:.73rem;}
+.br .t{height:7px;background:var(--line-soft);border-radius:99px;overflow:hidden;}
+.br .t i{display:block;height:100%;width:0;border-radius:99px;transition:width .8s ease;}
+.s-ok i{background:var(--ok);} .s-ok .v{color:var(--ok);}
+.s-mid i{background:var(--warn);} .s-mid .v{color:var(--warn);}
+.s-bad i{background:var(--bad);} .s-bad .v{color:var(--bad);}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.5rem 1.6rem;margin-top:1rem;}
+.panel h3{margin-bottom:.5rem;}
+.panel p{font-size:.97rem;color:var(--ink-2);}
+
+.capture{background:var(--ok-wash);border:1px solid #2F6B5C;border-radius:18px;padding:1.6rem 1.7rem;margin-top:1rem;}
+.capture h3{color:var(--ok);}
+.capture p{font-size:.96rem;color:var(--ink-2);}
+.fields{display:grid;gap:.8rem;max-width:30rem;margin-top:1.2rem;}
+label.fl{display:block;font-family:var(--mono);font-size:.65rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ok);margin-bottom:.3rem;}
+input[type=text],input[type=email]{width:100%;font:inherit;font-size:.97rem;padding:.72rem .9rem;border:1px solid var(--line-2);border-radius:9px;background:var(--bg);color:var(--ink);}
+.consent{display:flex;gap:.75rem;align-items:flex-start;font-size:.88rem;color:var(--ink-2);margin-top:1rem;line-height:1.5;}
+.consent input{margin-top:.25rem;accent-color:var(--ok);width:1.05rem;height:1.05rem;flex:none;}
+.sent{display:none;margin-top:1rem;font-family:var(--mono);font-size:.82rem;color:var(--ok);}
+.sent.on{display:block;}
+.err{color:var(--bad);font-family:var(--mono);font-size:.78rem;margin-top:.8rem;display:none;}
+.err.on{display:block;}
+
+.site-foot{background:var(--surface);border-top:1px solid var(--line);color:var(--ink-3);padding:2.4rem 0;font-family:var(--mono);font-size:.78rem;}
+.site-foot a{color:var(--ink-2);text-decoration:none;}
+.foot-inner{display:flex;flex-wrap:wrap;gap:1rem 2.4rem;justify-content:space-between;line-height:1.9;}
+</style>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="brand" href="index.html"><span class="dot"></span>E Analytics Studio</a>
+    <nav class="head-nav">
+      <a class="lnk" href="index.html">Home</a>
+      <a class="lnk" href="index.html#audit">The audit</a>
+      <a class="lnk" href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="intro">
+  <div class="wrap col">
+    <p class="eyebrow">Two minutes · twelve statements · no email required</p>
+    <h1>Which link breaks first?</h1>
+    <p class="lede">
+      Information becomes valuable by travelling six links, from being captured to changing
+      what someone does. In most organisations at least one is broken, and it is rarely the
+      one they assume.
+    </p>
+    <p class="lede">
+      Answer for one initiative you have shipped or rolled out. Not your best one. A typical one.
+    </p>
+    <div class="note">
+      A structured self-assessment, not a validated instrument. It reflects the questions we
+      would ask in a first conversation, scored consistently so your answers are comparable
+      over time. We would rather tell you that than let you discover it later.
+    </div>
+  </div>
+</section>
+
+<form class="dx" id="dxf" novalidate>
+  <div class="wrap">
+    <div id="items"></div>
+    <p class="err" id="err">Please answer every statement before viewing your result.</p>
+  </div>
+  <div class="progress">
+    <div class="wrap">
+      <span class="cnt" id="cnt">0 / 12 answered</span>
+      <span class="track"><i id="bar"></i></span>
+      <button class="btn btn--solid" type="submit" id="go">Show my result</button>
+    </div>
+  </div>
+</form>
+
+<section id="res" aria-live="polite">
+  <div class="wrap">
+    <div class="verdict">
+      <span class="lab">Weakest link</span>
+      <h2 id="vh">-</h2>
+      <p id="vp">-</p>
+    </div>
+
+    <div class="bars" id="bars"></div>
+
+    <div class="panel">
+      <h3>What we would do first</h3>
+      <div id="fix"></div>
+    </div>
+
+    <div class="capture">
+      <h3>Send me the full interpretation</h3>
+      <p>
+        Your scores above are yours to keep, no email needed. If you want the longer written
+        version, covering what each score means for this initiative and the order we would
+        fix things in, leave your details and we will send it.
+      </p>
+      <div class="fields">
+        <div><label class="fl" for="c-name">Name</label><input id="c-name" type="text" autocomplete="name" /></div>
+        <div><label class="fl" for="c-org">Company</label><input id="c-org" type="text" autocomplete="organization" /></div>
+        <div><label class="fl" for="c-email">Email</label><input id="c-email" type="email" autocomplete="email" /></div>
+      </div>
+      <label class="consent">
+        <input type="checkbox" id="c-consent" />
+        <span>Send me the written interpretation. I understand E Analytics Studio will store
+        my details and answers in order to produce it, and may follow up once about my
+        result. I can ask for my data to be deleted at any time.
+        <a href="privacy.html">Privacy notice</a>.</span>
+      </label>
+      <div class="btn-row">
+        <button class="btn btn--solid" type="button" id="send" disabled>Send it to me</button>
+        <a class="btn btn--line" href="index.html#audit">See the Behaviour Impact Audit</a>
+      </div>
+      <p class="sent" id="sent">Thank you. We will come back to you within two working days.</p>
+    </div>
+
+    <div class="btn-row">
+      <a class="btn btn--line" href="index.html">Back to home</a>
+      <button class="btn btn--line" type="button" id="again">Start again</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <div>E ANALYTICS STUDIO<br />Plymouth, United Kingdom<br />
+      <a href="mailto:karol@eanalyticsstudio.com">karol@eanalyticsstudio.com</a></div>
+    <div><a href="index.html">Home</a> · <a href="index.html#audit">The audit</a> ·
+      <a href="privacy.html">Privacy</a> · <a href="index.html#contact">Contact</a></div>
+    <div>© 2026</div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   REPLACE THIS with your Google Apps Script web app URL.
+   Setup instructions are in google-sheet-setup.md
+   Until it is set, the button falls back to opening an email.
+   ============================================================ */
+var SHEET_ENDPOINT = '';
+
+var LINKS = [
+  {k:'capture',n:'Capture'},{k:'trust',n:'Trust'},{k:'meaning',n:'Meaning'},
+  {k:'belief',n:'Belief'},{k:'action',n:'Action'},{k:'consequence',n:'Consequence'}
+];
+
+var ITEMS = [
+  {k:'capture', t:"What we measure represents the behaviour we actually care about, not the thing that was easiest to log."},
+  {k:'capture', t:"The measure was chosen before delivery began, not assembled afterwards from whatever the system recorded."},
+  {k:'trust', t:"Definitions are consistent across teams, and we would notice quickly if a pipeline broke silently."},
+  {k:'trust', t:"Two people asked the same question would come back with the same number."},
+  {k:'meaning', t:"A non-technical decision maker could read our reporting and correctly say what it means."},
+  {k:'meaning', t:"Our analysis states what it does not show, as well as what it does."},
+  {k:'belief', t:"When findings contradict a senior person's intuition, the findings usually survive."},
+  {k:'belief', t:"Decision makers act on our analysis rather than using it to confirm a decision already made."},
+  {k:'action', t:"There is a clear route from a finding to someone with the authority to change something."},
+  {k:'action', t:"We could name a decision made differently in the last quarter because of our data."},
+  {k:'consequence', t:"Before a change ships, we record a baseline on the outcome we expect it to move."},
+  {k:'consequence', t:"We could show that a change we made caused an effect, beyond the fact that a number moved."}
+];
+
+var SCALE = ['Never','Rarely','Sometimes','Mostly','Always'];
+
+var COPY = {
+  capture:{
+    bad:"You are measuring a proxy. Everything downstream inherits that error, and no amount of analytical rigour corrects for having instrumented the wrong thing in the first place.",
+    mid:"Some measures represent the behaviour you care about and others were chosen because they were available. The mixture is difficult to reason about.",
+    ok:"Your instrumentation reflects what you actually care about, which is rarer than it sounds.",
+    fix:"Define the construct before touching the data. Agree what behaviour should change, then design the measure, then decide where it lives. In that order."},
+  trust:{
+    bad:"Numbers disagree depending on who produces them. Until that is settled every meeting is about the data rather than the decision it was meant to inform.",
+    mid:"Definitions mostly hold but drift between teams, and breakage tends to be found late.",
+    ok:"Your data is reliable enough to argue from, which is the actual bar.",
+    fix:"One agreed definition per metric, owned by a named person, with a test that fails loudly when the pipeline changes underneath it."},
+  meaning:{
+    bad:"The analysis is correct and unreadable to the people it is for. It is being produced for an audience of other analysts.",
+    mid:"Reporting lands with some audiences and not others, and rarely states its own limits.",
+    ok:"Your reporting is legible outside the data function.",
+    fix:"Rewrite one recurring report for the person who was not in the room. State the claim, the strength of it, and what it does not support."},
+  belief:{
+    bad:"Findings lose to intuition. The work is treated as a formality, which is demoralising for the team and expensive for the business.",
+    mid:"Evidence wins sometimes, usually when it agrees with what was already believed.",
+    ok:"Evidence carries weight even when unwelcome. That is a genuine cultural asset, and unusual.",
+    fix:"Work backwards through two findings that changed nothing. The failure is almost never in the analysis, and naming where it actually happened is the whole intervention."},
+  action:{
+    bad:"There is no route from a finding to a decision. Analysis accumulates and nothing changes because of it.",
+    mid:"Findings sometimes reach someone who can act, mostly through informal relationships rather than by design.",
+    ok:"There is a working path from evidence to decision.",
+    fix:"Name the decision each recurring analysis is meant to inform, and the person authorised to make it. If neither exists, stop producing it."},
+  consequence:{
+    bad:"No baselines, so change cannot be demonstrated. This is the only break on this list that cannot be fixed retrospectively.",
+    mid:"Some before-readings exist, but attribution is assumed rather than argued.",
+    ok:"You can show what changed and make a case that you caused it.",
+    fix:"Record a baseline on the next thing you ship, before it ships. One measure, written down, with a date. It costs an hour and it is the only thing here that expires."}
+};
+
+function band(p){ return p>=75?'ok':(p>=40?'mid':'bad'); }
+
+var f = document.getElementById('dxf');
+var box = document.getElementById('items');
+
+ITEMS.forEach(function(it,i){
+  var d=document.createElement('div'); d.className='q';
+  var s=SCALE.map(function(l,v){return '<label><input type="radio" name="i'+i+'" value="'+v+'" />'+l+'</label>';}).join('');
+  d.innerHTML='<span class="lk">'+it.k+'</span><p>'+it.t+'</p><div class="scale">'+s+'</div>';
+  box.appendChild(d);
+});
+
+function answered(){var n=0;for(var i=0;i<ITEMS.length;i++){if(f.querySelector('input[name="i'+i+'"]:checked'))n++;}return n;}
+
+f.addEventListener('change',function(){
+  var n=answered();
+  document.getElementById('cnt').textContent=n+' / '+ITEMS.length+' answered';
+  document.getElementById('bar').style.width=(n/ITEMS.length*100)+'%';
+  if(n===ITEMS.length) document.getElementById('err').classList.remove('on');
+});
+
+f.addEventListener('submit',function(e){
+  e.preventDefault();
+  if(answered()<ITEMS.length){
+    document.getElementById('err').classList.add('on');
+    document.getElementById('err').scrollIntoView({block:'center'});
+    return;
+  }
+  var sums={},den={};
+  LINKS.forEach(function(l){sums[l.k]=0;den[l.k]=0;});
+  ITEMS.forEach(function(it,i){
+    var sel=f.querySelector('input[name="i'+i+'"]:checked');
+    sums[it.k]+=parseInt(sel.value,10); den[it.k]+=4;
+  });
+  var pct={}; LINKS.forEach(function(l){pct[l.k]=Math.round(sums[l.k]/den[l.k]*100);});
+
+  var weak=LINKS[0].k;
+  LINKS.forEach(function(l){ if(pct[l.k]<pct[weak]) weak=l.k; });
+  var weakName=LINKS.filter(function(l){return l.k===weak;})[0].n;
+
+  document.getElementById('vh').textContent=weakName;
+  document.getElementById('vp').textContent=COPY[weak][band(pct[weak])];
+
+  document.getElementById('bars').innerHTML=LINKS.map(function(l){
+    return '<div class="br s-'+band(pct[l.k])+'"><span class="nm">'+l.n+'</span>'
+      +'<span class="t"><i data-w="'+pct[l.k]+'"></i></span>'
+      +'<span class="v">'+pct[l.k]+'%</span></div>';
+  }).join('');
+
+  var fix='<p>'+COPY[weak].fix+'</p>';
+  var others=LINKS.filter(function(l){return l.k!==weak && band(pct[l.k])!=='ok';});
+  if(others.length){
+    fix+='<p style="margin-top:.9rem;"><strong>Then, in order:</strong></p><ul style="margin:.4rem 0 0;padding-left:1.1rem;">'
+      +others.map(function(l){return '<li style="margin-bottom:.45rem;color:var(--ink-2);font-size:.95rem;">'+COPY[l.k].fix+'</li>';}).join('')+'</ul>';
+  }
+  document.getElementById('fix').innerHTML=fix;
+
+  window.__result={scores:pct,weakest:weak,weakestName:weakName};
+
+  document.getElementById('res').classList.add('on');
+  setTimeout(function(){
+    document.querySelectorAll('.br .t i').forEach(function(el){el.style.width=el.getAttribute('data-w')+'%';});
+  },60);
+  document.getElementById('res').scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+var consent=document.getElementById('c-consent');
+var email=document.getElementById('c-email');
+var send=document.getElementById('send');
+function check(){ send.disabled=!(consent.checked && /\S+@\S+\.\S+/.test(email.value)); }
+consent.addEventListener('change',check);
+email.addEventListener('input',check);
+
+send.addEventListener('click',function(){
+  var r=window.__result||{scores:{},weakest:'',weakestName:''};
+  var payload={
+    timestamp:new Date().toISOString(),
+    name:document.getElementById('c-name').value.trim(),
+    company:document.getElementById('c-org').value.trim(),
+    email:email.value.trim(),
+    consent:'yes',
+    consentText:'Agreed to storage and one follow-up about the result.',
+    weakest:r.weakestName,
+    capture:r.scores.capture, trust:r.scores.trust, meaning:r.scores.meaning,
+    belief:r.scores.belief, action:r.scores.action, consequence:r.scores.consequence,
+    source:'diagnostic.html'
+  };
+
+  if(SHEET_ENDPOINT){
+    send.disabled=true;
+    fetch(SHEET_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(payload)
+    }).then(function(){
+      document.getElementById('sent').classList.add('on');
+    }).catch(function(){
+      document.getElementById('sent').textContent='Something went wrong. Please email karol@eanalyticsstudio.com and we will send it over.';
+      document.getElementById('sent').classList.add('on');
+      send.disabled=false;
+    });
+  } else {
+    var b='Please send me the full interpretation.%0D%0A%0D%0A'
+      +'Name: '+payload.name+'%0D%0ACompany: '+payload.company
+      +'%0D%0A%0D%0AWeakest link: '+payload.weakest
+      +'%0D%0ACapture: '+payload.capture+'%25'
+      +'%0D%0ATrust: '+payload.trust+'%25'
+      +'%0D%0AMeaning: '+payload.meaning+'%25'
+      +'%0D%0ABelief: '+payload.belief+'%25'
+      +'%0D%0AAction: '+payload.action+'%25'
+      +'%0D%0AConsequence: '+payload.consequence+'%25';
+    window.location.href='mailto:karol@eanalyticsstudio.com?subject='
+      +encodeURIComponent('Decision Chain result - interpretation request')+'&body='+b;
+  }
+});
+
+document.getElementById('again').addEventListener('click',function(){
+  f.reset();
+  document.getElementById('res').classList.remove('on');
+  document.getElementById('cnt').textContent='0 / '+ITEMS.length+' answered';
+  document.getElementById('bar').style.width='0%';
+  document.getElementById('sent').classList.remove('on');
+  send.disabled=true;
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+</script>
+</body>
+</html>

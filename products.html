@@ -7,6 +7,7 @@
   <meta name="description" content="Products from E Analytics Studio: data assessments, behavioural insight reports, and data systems that help leaders decide with confidence." />
   <meta name="theme-color" content="#F6F7F8" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="assets/js/scroll-reveal.js" defer></script>
   <style>
     body {
       background: #F7F8FA;
@@ -88,7 +89,7 @@
       border: 1px solid rgba(17, 24, 39, 0.10);
       border-radius: 24px;
       box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
-      transition: transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+      transition: opacity 600ms ease, transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
       min-height: 320px;
       aspect-ratio: 1 / 1;
       padding: 28px;
@@ -497,9 +498,6 @@
 
       <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">How It Works</a></li>
-          <li><a href="survey.html">Survey</a></li>
           <li><a class="nav-contact" href="mailto:karol@eanalyticsstudio.com?subject=E%20Analytics%20Studio%20Enquiry">Contact</a></li>
         </ul>
       </nav>
@@ -510,10 +508,10 @@
     <section class="hero-page" aria-labelledby="page-title">
       <h1 id="page-title">Products</h1>
       <p>Three ways to turn unclear data into better decisions.</p>
-      <p>Start with clarity, add market or behavioural insight where useful, and build dashboards only when they support real decisions.</p>
+      <p>Start with clarity, add market or behavioural insight where useful, and build dashboards or decision systems only when they support real decisions.</p>
     </section>
 
-    <section class="product-explorer" aria-labelledby="products-title">
+    <section class="product-explorer reveal-section reveal-up" aria-labelledby="products-title">
       <div class="section-header">
         <p class="eyebrow">Three ways to turn unclear data into better decisions</p>
         <h2 id="products-title">Product pathways for better data decisions</h2>
@@ -522,7 +520,7 @@
 
       <div class="product-explorer-grid">
         <div class="product-grid">
-          <article class="product-card active" data-product="1" style="--accent: #2563EB;">
+          <article class="product-card reveal-card active" data-product="1" style="--accent: #2563EB;">
             <button class="product-select" type="button" aria-expanded="true" aria-controls="product-panel">
               <div class="product-card-top">
                 <span class="product-badge">1</span>
@@ -536,7 +534,7 @@
             </button>
           </article>
 
-          <article class="product-card" data-product="2" style="--accent: #D99A00;">
+          <article class="product-card reveal-card" data-product="2" style="--accent: #D99A00;">
             <button class="product-select" type="button" aria-expanded="false" aria-controls="product-panel">
               <div class="product-card-top">
                 <span class="product-badge">2</span>
@@ -550,11 +548,11 @@
             </button>
           </article>
 
-          <article class="product-card" data-product="3" style="--accent: #0F766E;">
+          <article class="product-card reveal-card" data-product="3" style="--accent: #0F766E;">
             <button class="product-select" type="button" aria-expanded="false" aria-controls="product-panel">
               <div class="product-card-top">
                 <span class="product-badge">3</span>
-                <h3 class="product-title">Behavioural Data System &amp; Dashboard</h3>
+                <h3 class="product-title">Behavioural Decision System</h3>
               </div>
               <div class="product-copy">
                 <p class="product-icp">For leaders who need to track performance, change, and impact over time.</p>
@@ -600,13 +598,13 @@
       </div>
     </section>
 
-    <section class="custom-work" aria-labelledby="custom-title">
+    <section class="custom-work reveal-section reveal-up" aria-labelledby="custom-title">
       <h2 id="custom-title">Custom work is part of the model</h2>
       <p>These products are starting points, not limits. E Analytics Studio specialises in custom projects where data, behaviour, performance, and decision-making need to be connected. If your challenge does not fit neatly into one product, we can scope the right approach together.</p>
       <a class="button" href="mailto:karol@eanalyticsstudio.com?subject=Custom%20Data%20Project%20Enquiry">Discuss a Custom Project</a>
     </section>
 
-    <section class="experience-section" aria-labelledby="experience-title">
+    <section class="experience-section reveal-section reveal-fade" aria-labelledby="experience-title">
       <div class="section-header">
         <h2 id="experience-title">Relevant Experience &amp; Project Work</h2>
         <p>Across previous and ongoing work, E Analytics Studio draws on experience across data assessment, survey design, behavioural analysis, reporting, market insight, dashboards, and applied research.</p>
@@ -621,7 +619,7 @@
               <ul>
                 <li>Reviewing existing data sources across spreadsheets, dashboards, surveys, CRM exports, operational records, and performance reports</li>
                 <li>Assessing data completeness, consistency, accessibility, reliability, duplication, and missing fields</li>
-                <li>Identifying whether existing data is suitable for decision-making, reporting, or dashboard development</li>
+                <li>Identifying whether existing data is suitable for decision-making, reporting, or decision-system development</li>
                 <li>Recommending improvements to data structure, collection processes, and reporting systems</li>
               </ul>
             </article>
@@ -664,11 +662,11 @@
               </ul>
             </article>
             <article class="experience-slide" data-index="6">
-              <h3>Dashboard &amp; Data System Development</h3>
+              <h3>Decision System &amp; Data Infrastructure</h3>
               <ul>
-                <li>Supporting the design of dashboards for performance, impact, team, and organisational reporting</li>
-                <li>Translating stakeholder needs into trackable data points and dashboard features</li>
-                <li>Working with developers and stakeholders to shape dashboard requirements</li>
+                <li>Designing dashboards and decision systems for performance, impact, team, and organisational reporting</li>
+                <li>Translating stakeholder needs into trackable data points and decision-support features</li>
+                <li>Working with developers and stakeholders to shape decision-system requirements</li>
                 <li>Creating data structures that allow performance, change, and impact to be monitored over time</li>
                 <li>Building the foundations for ongoing data systems rather than one-off reports</li>
               </ul>
@@ -695,7 +693,7 @@
       <div class="carousel-status"><strong class="current-slide">1</strong> / <span class="total-slides">8</span></div>
     </section>
 
-    <section class="survey-footer" aria-labelledby="survey-cta-title">
+    <section class="survey-footer reveal-section reveal-up" aria-labelledby="survey-cta-title">
       <h2 id="survey-cta-title">Start with a clearer view of your data</h2>
       <p>The Data Use &amp; Performance Survey is a short first step. It helps identify how your organisation currently collects, understands, and uses data — and whether a Data Assessment could save time, reduce guesswork, or reveal gaps worth fixing.</p>
       <span class="survey-note">Takes around 2–3 minutes.</span>
@@ -766,7 +764,7 @@
             'Confidence in what can be trusted',
             'Understanding of gaps and risks',
             'Better decisions about what to fix first',
-            'Reduced risk of paying for the wrong dashboard or system'
+            'Reduced risk of paying for the wrong tool or system'
           ],
           result: 'A clear picture of your current data position and a practical roadmap for what should happen next.',
           cta: 'Start with a Data Assessment',
@@ -798,7 +796,7 @@
           ctaLink: 'mailto:karol@eanalyticsstudio.com?subject=Market%20and%20Behavioural%20Insight%20Enquiry'
         },
         '3': {
-          name: 'Behavioural Data System & Dashboard',
+          name: 'Behavioural Decision System',
           title: 'A custom system that shows what is changing and what to do next.',
           best: 'Leadership teams, programme leads, team managers, professional groups, and organisations that need ongoing measurement, intervention tracking, or impact reporting.',
           problem: 'You do not just need a one-off report. You need a system that shows what is changing over time, whether interventions are working, and where leaders should focus attention.',
@@ -806,19 +804,19 @@
             'Design measurement around your decision needs',
             'Improve data structure and collection',
             'Create or adapt behavioural metrics',
-            'Build a dashboard unique to your context',
+            'Build a dashboard or decision interface unique to your context',
             'Add insight panels and interpretation',
             'Support ongoing updates or reporting'
           ],
           gain: [
             'Repeated measurement',
-            'Dashboard visibility',
+            'Decision visibility',
             'Intervention tracking',
             'Clearer leadership decisions',
             'Evidence of change',
             'Ongoing performance insight'
           ],
-          result: 'A custom data system or dashboard that helps you track what matters and decide what to improve next.',
+          result: 'A custom data system or decision interface that helps you track what matters and decide what to improve next.',
           cta: 'Build a Data System',
           ctaLink: 'mailto:karol@eanalyticsstudio.com?subject=Behavioural%20Data%20System%20Enquiry'
         }

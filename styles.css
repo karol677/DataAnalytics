@@ -20,6 +20,74 @@ body{
   line-height:1.6;
 }
 
+/* Scroll reveal and section focus */
+.reveal-ready .reveal-section,
+.reveal-ready .reveal-card,
+.reveal-ready .reveal-left,
+.reveal-ready .reveal-right,
+.reveal-ready .reveal-up,
+.reveal-ready .reveal-fade {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition: opacity 600ms ease, transform 600ms ease;
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal-ready .reveal-left {
+  transform: translate3d(-28px, 0, 0);
+}
+
+.reveal-ready .reveal-right {
+  transform: translate3d(28px, 0, 0);
+}
+
+.reveal-ready .reveal-fade {
+  transform: none;
+}
+
+.reveal-ready .is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.reveal-ready .reveal-section.is-visible.is-past {
+  opacity: 0.48;
+  transform: scale(0.985);
+  transition-delay: 0ms;
+}
+
+@media (max-width: 768px) {
+  .reveal-ready .reveal-section,
+  .reveal-ready .reveal-card,
+  .reveal-ready .reveal-left,
+  .reveal-ready .reveal-right,
+  .reveal-ready .reveal-up {
+    transform: translate3d(0, 16px, 0);
+  }
+
+  .reveal-ready .is-visible {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .reveal-ready .reveal-section.is-visible.is-past {
+    transform: scale(0.992);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-section,
+  .reveal-card,
+  .reveal-left,
+  .reveal-right,
+  .reveal-up,
+  .reveal-fade {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
 a{color:var(--text); text-decoration:none}
 a:hover{color:var(--accent-blue)}
 
@@ -141,14 +209,14 @@ nav > a{
 }
 .site-nav a:hover { color: #4F6D7A; }
 
-/* Mobile: hide nav by default and show toggle */
+/* Mobile: keep the simplified contact nav visible */
 .nav-toggle { display: none; background: transparent; border: 0; font-weight:600; cursor:pointer }
 .site-nav.open { display: block; }
 
 @media (max-width: 820px) {
-  .nav-toggle { display: inline-flex; }
-  .site-nav { display: none; position: absolute; left: 0; right: 0; top: 64px; background: var(--panel); padding: 12px 18px; border-bottom: 1px solid var(--line); }
-  .site-nav ul { flex-direction: column; gap: 12px; }
+  .nav-toggle { display: none; }
+  .site-nav { display: block; position: static; background: transparent; padding: 0; border-bottom: 0; }
+  .site-nav ul { flex-direction: row; gap: 12px; }
   .site-title { font-size: 0.95rem; }
   .header-inner { padding: 12px 16px; }
 }
