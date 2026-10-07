@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>From Activity to Evidence | E Analytics Studio</title>
+<meta name="description" content="The company thesis: why organisations that build, ship and roll things out cannot tell whether anything changed, and the formula that fixes it." />
+<link rel="canonical" href="https://eanalyticsstudio.com/thesis.html" />
+<meta property="og:title" content="From Activity to Evidence" />
+<meta property="og:description" content="Impact is not a feeling about whether something went well. It is a quantity with three parts." />
+<meta property="og:type" content="article" />
+<meta name="theme-color" content="#12172B" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#12172B; --surface:#1B2139; --surface-2:#232B47;
+  --line:#2A3150; --line-2:#39416B;
+  --fg:#E8ECF7; --fg-2:#9BA5C0; --fg-3:#6D7899;
+  --accent:#FF7A59; --accent-ink:#2A0E05;
+  --ok:#6FD8B0; --ok-wash:#152E31; --warn:#F0B44A; --warn-wash:#2E2718;
+  --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --measure:40rem; --wide:64rem;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);
+  font-size:1.05rem;line-height:1.68;-webkit-font-smoothing:antialiased;}
+h1,h2,h3{letter-spacing:-.03em;font-weight:600;line-height:1.16;margin:0 0 .55em;}
+h1{font-size:clamp(2.1rem,5.4vw,3.4rem);letter-spacing:-.042em;}
+h2{font-size:clamp(1.4rem,3.2vw,2rem);}
+h3{font-size:1.1rem;}
+p{margin:0 0 1.15em;} p:last-child{margin-bottom:0;}
+a{color:var(--accent);text-underline-offset:3px;}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px;}
+.skip{position:absolute;left:-9999px;}
+.skip:focus{left:12px;top:12px;background:var(--accent);color:var(--accent-ink);padding:10px 16px;z-index:99;border-radius:6px;}
+
+.wrap{width:100%;max-width:var(--wide);margin:0 auto;padding:0 clamp(1.25rem,5vw,2.4rem);}
+.col{max-width:var(--measure);}
+.eyebrow{font-family:var(--mono);font-size:.68rem;letter-spacing:.17em;text-transform:uppercase;color:var(--accent);margin:0 0 1rem;}
+
+.site-head{position:sticky;top:0;z-index:20;background:rgba(18,23,43,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+.head-inner{display:flex;align-items:center;justify-content:space-between;padding:.8rem clamp(1.25rem,5vw,2.4rem);max-width:70rem;margin:0 auto;gap:1rem;flex-wrap:wrap;}
+.brand{font-weight:600;font-size:1rem;letter-spacing:-.025em;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:.6rem;}
+.brand .dot{width:9px;height:9px;border-radius:2px;background:var(--accent);display:block;}
+.head-nav a.lnk{font-family:var(--mono);font-size:.76rem;color:var(--fg-2);text-decoration:none;margin-left:1.1rem;}
+.head-nav a.lnk:hover{color:var(--fg);}
+
+.btn{display:inline-flex;align-items:center;padding:.76rem 1.3rem;border-radius:8px;font-size:.92rem;font-weight:600;
+  text-decoration:none;border:1.5px solid transparent;}
+.btn--solid{background:var(--accent);color:var(--accent-ink);}
+.btn--line{border-color:var(--line-2);color:var(--fg);}
+.btn-row{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.7rem;}
+
+.band{padding:clamp(2.8rem,6vw,4.6rem) 0;border-top:1px solid var(--line);}
+.band--first{border-top:none;}
+.band--raised{background:var(--surface);}
+
+.cover{padding:clamp(3rem,7vw,5.5rem) 0 clamp(2rem,4vw,3rem);}
+.kicker{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ok);margin:0 0 1.6rem;}
+.standfirst{font-size:clamp(1.08rem,2.1vw,1.26rem);color:var(--fg-2);max-width:38rem;}
+.byline{margin-top:2.2rem;padding-top:1.5rem;border-top:1px solid var(--line);max-width:38rem;
+  font-family:var(--mono);font-size:.78rem;color:var(--fg-3);line-height:1.8;}
+.byline b{color:var(--fg);font-weight:600;font-family:var(--sans);font-size:.92rem;display:block;margin-bottom:.2rem;}
+
+.toc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.4rem 1.6rem;max-width:38rem;margin-top:2rem;}
+.toc ol{margin:0;padding-left:1.3rem;}
+.toc li{margin-bottom:.42rem;}
+.toc a{font-size:.95rem;text-decoration:none;color:var(--fg);}
+.toc a:hover{color:var(--accent);}
+
+.secno{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:.9rem;}
+.pull{font-size:clamp(1.2rem,2.6vw,1.55rem);line-height:1.34;letter-spacing:-.025em;font-weight:600;
+  border-left:3px solid var(--ok);padding-left:1.4rem;margin:2rem 0;max-width:36rem;}
+.callout{background:var(--warn-wash);border-left:3px solid var(--warn);border-radius:0 14px 14px 0;
+  padding:1.2rem 1.4rem;margin:1.8rem 0;font-size:.99rem;max-width:40rem;color:var(--fg-2);}
+.callout strong{color:var(--fg);}
+ul.plain{margin:0 0 1.2em;padding-left:1.2rem;}
+ul.plain li{margin-bottom:.55rem;color:var(--fg-2);}
+
+figure.viz{background:var(--surface-2);border:1px solid var(--line);border-radius:18px;
+  padding:1.8rem 1.6rem 1.3rem;margin:2rem 0;max-width:48rem;}
+figure.viz svg{display:block;width:100%;height:auto;}
+figure.viz figcaption{font-family:var(--mono);font-size:.74rem;line-height:1.6;color:var(--fg-3);
+  margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--line);}
+
+.legend3{display:grid;gap:1rem;margin-top:1.8rem;}
+@media (min-width:780px){.legend3{grid-template-columns:repeat(3,1fr);}}
+.lg{border-top:2px solid var(--line);padding-top:.9rem;}
+.lg--a{border-top-color:var(--ok);} .lg--b{border-top-color:var(--warn);} .lg--c{border-top-color:var(--accent);}
+.lg b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.45rem;}
+.lg--a b{color:var(--ok);} .lg--b b{color:var(--warn);} .lg--c b{color:var(--accent);}
+.lg p{font-size:.92rem;color:var(--fg-2);margin:0;}
+
+table.cmp{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.95rem;max-width:44rem;}
+table.cmp th,table.cmp td{text-align:left;padding:.72rem .8rem;border-bottom:1px solid var(--line);vertical-align:top;color:var(--fg-2);}
+table.cmp th{font-family:var(--mono);font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;color:var(--fg-3);font-weight:500;}
+table.cmp td:last-child{color:var(--fg);}
+
+.levels{display:grid;gap:1rem;margin-top:1.7rem;}
+@media (min-width:820px){.levels{grid-template-columns:repeat(3,1fr);}}
+.lv{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:1.3rem;}
+.lv .n{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ok);}
+.lv h3{margin:.4rem 0 .35rem;font-size:1rem;}
+.lv p{font-size:.89rem;color:var(--fg-2);margin:0;}
+
+.flow{display:grid;gap:.5rem;margin-top:1.6rem;}
+@media (min-width:860px){.flow{grid-template-columns:repeat(4,1fr);gap:.45rem;}}
+.fl{background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:1rem;}
+.fl .n{font-family:var(--mono);font-size:.58rem;letter-spacing:.13em;color:var(--fg-3);}
+.fl h3{font-size:.93rem;margin:.3rem 0 .25rem;}
+.fl p{font-size:.8rem;color:var(--fg-2);margin:0;line-height:1.45;}
+.fl--end{border-color:#2F6B5C;background:var(--ok-wash);}
+.fl--end .n{color:var(--ok);}
+
+.stage{border-top:1px solid var(--line);padding:1.7rem 0;max-width:44rem;}
+.stage:last-of-type{border-bottom:1px solid var(--line);}
+.stage .tk{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);}
+.stage h3{margin:.4rem 0 .5rem;font-size:1.15rem;}
+.stage p{color:var(--fg-2);font-size:.99rem;}
+.stage .out{background:var(--ok-wash);border-radius:11px;padding:.85rem 1.05rem;font-size:.9rem;color:#B6E6D6;margin-top:.9rem;}
+
+.site-foot{background:var(--surface);border-top:1px solid var(--line);padding:2.4rem 0;
+  font-family:var(--mono);font-size:.76rem;color:var(--fg-3);}
+.site-foot a{color:var(--fg-2);text-decoration:none;}
+.foot-inner{display:flex;flex-wrap:wrap;gap:1rem 2.4rem;justify-content:space-between;line-height:1.9;}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="site-head">
+  <div class="head-inner">
+    <a class="brand" href="index.html"><span class="dot"></span>E Analytics Studio</a>
+    <nav class="head-nav">
+      <a class="lnk" href="index.html">Home</a>
+      <a class="lnk" href="index.html#services">Engagements</a>
+      <a class="lnk" href="diagnostic.html">Diagnostic</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="cover">
+  <div class="wrap">
+    <p class="kicker">A company thesis &middot; about 15 minutes</p>
+    <h1>From Activity to Evidence</h1>
+    <p class="standfirst">
+      Why organisations that build, ship and roll things out cannot tell whether anything
+      changed, what impact actually means as a quantity, and what has to exist before the
+      question can be answered at all.
+    </p>
+    <div class="byline">
+      <b>Dr Karol Nedza</b>
+      Chartered Psychologist &middot; E Analytics Studio &middot; Plymouth, United Kingdom
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="eyebrow">Contents</p>
+      <ol>
+        <li><a href="#s1">The thesis</a></li>
+        <li><a href="#s2">Delivered is not the same as changed</a></li>
+        <li><a href="#s3">Impact, as a quantity</a></li>
+        <li><a href="#s4">The three components</a></li>
+        <li><a href="#s5">The rule that holds both halves together</a></li>
+        <li><a href="#s6">What can be evaluated</a></li>
+        <li><a href="#s7">How the work runs</a></li>
+        <li><a href="#s8">Where it ends up</a></li>
+        <li><a href="#s9">What this is not</a></li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- 1 -->
+<section class="band band--raised" id="s1">
+  <div class="wrap col">
+    <span class="secno">Section 1</span>
+    <h2>The thesis</h2>
+    <p class="pull">
+      Organisations are not short of data. They are short of evidence that anything they did
+      made a difference, and they are short of it at the exact moment somebody asks.
+    </p>
+    <p>
+      The infrastructure problem is solved. Ingestion, warehousing, orchestration, modelling
+      and presentation are mature, competitive and getting cheaper every year. An organisation
+      of almost any size can now collect more information about what people do than anyone in
+      it can hold in mind.
+    </p>
+    <p>
+      What has not improved at the same rate is the ability to answer one question: did any of
+      it change what people do? That question is not technical. It is a question about
+      measurement design, about causal reasoning, and about human behaviour, and those are
+      different disciplines from the ones that built the pipeline.
+    </p>
+    <p>
+      So the gap widens. More is collected, less is concluded, and the moment of reckoning
+      arrives on a schedule nobody controls: a renewal, a budget round, a board meeting, a
+      funder's report.
+    </p>
+    <div class="callout">
+      <strong>Core belief.</strong> Evidence is only valuable if it holds up in a room you are
+      not in. Everything else is reassurance.
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="band" id="s2">
+  <div class="wrap">
+    <div class="col">
+      <span class="secno">Section 2</span>
+      <h2>Delivered is not the same as changed</h2>
+      <p>
+        The same failure appears in three costumes. In each case the thing being counted is
+        the effort rather than the effect.
+      </p>
+      <table class="cmp">
+        <thead><tr><th>They built</th><th>They measure</th><th>They cannot answer</th></tr></thead>
+        <tbody>
+          <tr><td>A product or feature</td><td>Usage, adoption, funnel metrics</td><td>Whether behaviour changed, or a metric moved</td></tr>
+          <tr><td>A platform or system</td><td>Licences, logins, dashboards built</td><td>Whether anyone works or decides differently</td></tr>
+          <tr><td>A programme or service</td><td>Attendance, completion, satisfaction</td><td>Whether anything is different afterwards</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Satisfaction data deserves particular attention, because it is the most widely
+        collected and the most routinely mistaken for evidence. It is gathered in the room, at
+        the end, by the people who delivered the thing, from participants who know what answer
+        is expected. It is cheap, immediate and almost always positive. It tells you the
+        session landed. It cannot tell you anything happened afterwards.
+      </p>
+      <p class="pull">
+        Feedback is produced by people with an interest in the answer. That does not make it
+        dishonest. It makes it inadmissible.
+      </p>
+    </div>
+
+    <div class="col">
+      <p>
+        Underneath all three sits a structural problem rather than a lazy one. Measurement is
+        almost always specified after the thing has been designed, and frequently after it has
+        already run. By then the starting point no longer exists to be measured, and the only
+        honest answer to "did it work" is that nobody can tell.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="band band--raised" id="s3">
+  <div class="wrap">
+    <div class="col">
+      <span class="secno">Section 3</span>
+      <h2>Impact, as a quantity</h2>
+      <p>
+        Impact is not a feeling about whether something went well. It is a quantity, and
+        writing it down makes the missing parts obvious.
+      </p>
+    </div>
+
+    <figure class="viz">
+      <svg viewBox="0 0 920 272" role="img" aria-label="I equals open bracket b sub 2 minus b sub 1 close bracket times r, all over e. Where I is impact, b sub 1 is behaviour before, b sub 2 is behaviour after, r is repetition, and e is effort or cost.">
+        <!-- equation -->
+        <text x="36" y="156" font-family="IBM Plex Serif, Georgia, serif" font-style="italic" font-size="58" fill="#E8ECF7">I</text>
+        <text x="84" y="156" font-family="IBM Plex Serif, Georgia, serif" font-size="44" fill="#6D7899">=</text>
+
+        <!-- numerator -->
+        <g>
+          <text x="146" y="120" font-family="IBM Plex Serif, Georgia, serif" font-size="50" fill="#6D7899">(</text>
+          <text x="170" y="120" font-family="IBM Plex Serif, Georgia, serif" font-style="italic" font-size="46" fill="#6FD8B0">b</text>
+          <text x="198" y="132" font-family="IBM Plex Serif, Georgia, serif" font-size="25" fill="#6FD8B0">2</text>
+          <text x="222" y="120" font-family="IBM Plex Serif, Georgia, serif" font-size="38" fill="#6D7899">&#8722;</text>
+          <text x="262" y="120" font-family="IBM Plex Serif, Georgia, serif" font-style="italic" font-size="46" fill="#6FD8B0">b</text>
+          <text x="290" y="132" font-family="IBM Plex Serif, Georgia, serif" font-size="25" fill="#6FD8B0">1</text>
+          <text x="308" y="120" font-family="IBM Plex Serif, Georgia, serif" font-size="50" fill="#6D7899">)</text>
+        </g>
+        <g>
+          <text x="338" y="120" font-family="IBM Plex Serif, Georgia, serif" font-size="30" fill="#6D7899">&#183;</text>
+          <text x="362" y="120" font-family="IBM Plex Serif, Georgia, serif" font-style="italic" font-size="46" fill="#F0B44A">r</text>
+        </g>
+
+        <!-- vinculum -->
+        <line x1="136" y1="146" x2="398" y2="146" stroke="#8A94AD" stroke-width="2.5" stroke-linecap="round"/>
+
+        <!-- denominator -->
+        <text x="256" y="208" font-family="IBM Plex Serif, Georgia, serif" font-style="italic" font-size="46" fill="#FF7A59">e</text>
+
+        <!-- divider -->
+        <line x1="470" y1="34" x2="470" y2="238" stroke="#2A3150" stroke-width="1.5"/>
+
+        <!-- legend -->
+        <text x="508" y="52" font-family="IBM Plex Mono, monospace" font-size="13" letter-spacing="2.6" fill="#6D7899">WHERE</text>
+
+        <g>
+          <text x="508" y="96" font-family="IBM Plex Serif, Georgia, serif" font-style="italic" font-size="26" fill="#E8ECF7">I</text>
+          <text x="556" y="96" font-family="IBM Plex Sans, sans-serif" font-size="17" fill="#9BA5C0">impact, the change you can claim</text>
+        </g>
+        <g>
+          <text x="508" y="134" font-family="IBM Plex Serif, Georgia, serif" font-style="italic" font-size="26" fill="#6FD8B0">b</text>
+          <text x="524" y="141" font-family="IBM Plex Serif, Georgia, serif" font-size="15" fill="#6FD8B0">1</text>
+          <text x="556" y="134" font-family="IBM Plex Sans, sans-serif" font-size="17" fill="#9BA5C0">behaviour before</text>
+        </g>
+        <g>
+          <text x="508" y="172" font-family="IBM Plex Serif, Georgia, serif" font-style="italic" font-size="26" fill="#6FD8B0">b</text>
+          <text x="524" y="179" font-family="IBM Plex Serif, Georgia, serif" font-size="15" fill="#6FD8B0">2</text>
+          <text x="556" y="172" font-family="IBM Plex Sans, sans-serif" font-size="17" fill="#9BA5C0">behaviour after</text>
+        </g>
+        <g>
+          <text x="508" y="210" font-family="IBM Plex Serif, Georgia, serif" font-style="italic" font-size="26" fill="#F0B44A">r</text>
+          <text x="556" y="210" font-family="IBM Plex Sans, sans-serif" font-size="17" fill="#9BA5C0">repetition: how often, how many, how long</text>
+        </g>
+        <g>
+          <text x="508" y="248" font-family="IBM Plex Serif, Georgia, serif" font-style="italic" font-size="26" fill="#FF7A59">e</text>
+          <text x="556" y="248" font-family="IBM Plex Sans, sans-serif" font-size="17" fill="#9BA5C0">effort or cost to produce it</text>
+        </g>
+      </svg>
+      <figcaption>The behavioural impact formula. Miss any one term and the number reported does not mean what it appears to mean.</figcaption>
+    </figure>
+
+    <div class="legend3">
+      <div class="lg lg--a"><b>b&#8322; &minus; b&#8321;</b>
+        <p>The measured difference on the behaviour that matters, and the only component that cannot be recovered after the fact.</p></div>
+      <div class="lg lg--b"><b>r &middot; repetition</b>
+        <p>How often it recurs, across how many people, and for how long it holds. A change that happens once is an anecdote.</p></div>
+      <div class="lg lg--c"><b>e &middot; effort</b>
+        <p>What it took to produce. The denominator is what turns a result into a decision about whether to do it again.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="band" id="s4">
+  <div class="wrap col">
+    <span class="secno">Section 4</span>
+    <h2>The three components</h2>
+
+    <h3>post minus pre, and the problem of attribution</h3>
+    <p>
+      A single reading describes a state. It cannot demonstrate change, because change is a
+      comparison and a comparison needs two points. This is why a missing baseline is the most
+      expensive gap in measurement: every other failure can be corrected later, and this one
+      cannot.
+    </p>
+    <p>
+      But a before and an after are not sufficient either. Organisations are not laboratories.
+      While a programme runs, restructures happen, managers change, seasons turn and markets
+      move. A metric that rose after an intervention may have been rising already.
+    </p>
+    <p>
+      Attribution does not require eliminating those explanations, which is rarely possible
+      outside a trial. It requires naming them and showing why they do not account for what
+      was observed. A delayed-start group, a non-participating team, or a pre-existing trend
+      line is usually enough to make the argument stand.
+    </p>
+
+    <h3>repetition, and why one result is not a finding</h3>
+    <p>
+      A change observed once in one group is an anecdote with a number attached. Impact
+      accumulates through recurrence: how many people, how often, and whether it survives
+      beyond the period when everyone was paying attention.
+    </p>
+    <p>
+      This is where most claims quietly fail. Effects that look strong at week two frequently
+      disappear by week eight, because what was measured was novelty rather than behaviour
+      change. Any serious measure has to be collected more than once, and the interval matters
+      as much as the instrument.
+    </p>
+
+    <h3>effort, and the denominator nobody reports</h3>
+    <p>
+      Almost every impact claim stops at the numerator. But a modest change produced cheaply
+      can be worth considerably more than a large one that consumed a year, and a decision
+      about whether to continue cannot be made without both halves.
+    </p>
+    <p>
+      Including cost also does something useful to the conversation. It moves the question from
+      "did this work" to "was this worth doing, compared with what else we could have done,"
+      which is the question the person holding the budget was asking all along.
+    </p>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="band band--raised" id="s5">
+  <div class="wrap col">
+    <span class="secno">Section 5</span>
+    <h2>The rule that holds both halves together</h2>
+    <p class="pull">
+      Evaluation without data is gut feeling with a chart attached. Data without evaluation is
+      numbers that drive nothing.
+    </p>
+    <p>
+      These two failures look like opposites and are usually found in the same building.
+    </p>
+    <p>
+      The first belongs to people who understand their domain deeply and have never been asked
+      to prove it. They know their programme works, and they are often right, but their
+      evidence is testimony. It survives a friendly reader and collapses under a sceptical one.
+    </p>
+    <p>
+      The second belongs to organisations that have invested heavily in infrastructure and
+      report diligently every month. The numbers are accurate, well presented and change
+      nobody's mind, because no one ever specified what question they were meant to answer or
+      what decision would follow from the answer.
+    </p>
+    <p>
+      Both are solvable, and the solution is the same: decide what should change, decide how
+      you would know, and record the starting point before anything happens.
+    </p>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="band" id="s6">
+  <div class="wrap">
+    <div class="col">
+      <span class="secno">Section 6</span>
+      <h2>What can be evaluated</h2>
+      <p>
+        Three levels. The method is identical at each; the unit of analysis and the people
+        involved are what change.
+      </p>
+    </div>
+    <div class="levels">
+      <div class="lv"><span class="n">Level 01</span><h3>A product or feature</h3>
+        <p>Something shipped. Did it change what users do, or did a metric move while behaviour stayed where it was?</p></div>
+      <div class="lv"><span class="n">Level 02</span><h3>A project or programme</h3>
+        <p>Something delivered to people over time. Training, onboarding, a service change, a funded intervention. Did it hold, and for whom?</p></div>
+      <div class="lv"><span class="n">Level 03</span><h3>A team</h3>
+        <p>How a team decides, challenges and acts on what it knows. The most under-measured thing in any data-rich organisation.</p></div>
+    </div>
+    <div class="col" style="margin-top:1.8rem;">
+      <p>
+        The third level is the one organisations arrive at last and need most. An organisation
+        can have excellent instrumentation, accurate reporting and a capable analytics team,
+        and still change nothing, because findings lose to seniority, arrive without narrative,
+        or land on someone with no authority to act. That is a behavioural problem with a
+        substantial research literature behind it and almost no commercial practice.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="band band--raised" id="s7">
+  <div class="wrap">
+    <div class="col">
+      <span class="secno">Section 7</span>
+      <h2>How the work runs</h2>
+      <p>
+        Three engagements. Not a sequence everyone travels; most organisations start at
+        whichever point matches where they already are.
+      </p>
+    </div>
+
+    <div class="stage">
+      <span class="tk">01 &middot; Diagnose</span>
+      <h3>Find out what is true</h3>
+      <p>
+        Something has already run. We examine one initiative and establish what can honestly be
+        claimed about it, what cannot, and where the measurement breaks. No access to client
+        data is required, which means nothing waits on a security review.
+      </p>
+      <div class="out">A written assessment, a recorded walkthrough that can be forwarded, and one working session.</div>
+    </div>
+
+    <div class="stage">
+      <span class="tk">02 &middot; Design</span>
+      <h3>Build what is missing</h3>
+      <p>
+        Nothing has been designed yet, which is the best possible moment. We define the outcome,
+        build the logic model, design and test the measures, and specify the baseline to be
+        recorded before delivery starts. Measurement built in advance is worth several times
+        measurement bolted on afterwards.
+      </p>
+      <div class="out">Outcome definition, up to three tested measures, baseline specification, and reporting built for the person who will not be in the room.</div>
+    </div>
+
+    <div class="stage">
+      <span class="tk">03 &middot; Track</span>
+      <h3>Keep it running</h3>
+      <p>
+        The definitions exist and now have to keep answering, on the cycle the organisation
+        actually runs on rather than one we invent. This is where measurement stops being a
+        project and becomes infrastructure.
+      </p>
+      <div class="out">Collection running across existing systems, readings on your renewal or board cycle, and reporting others can read without us.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="band" id="s8">
+  <div class="wrap">
+    <div class="col">
+      <span class="secno">Section 8</span>
+      <h2>Where it ends up</h2>
+      <p>
+        The end state is not a report somebody waits for. It is a system the organisation owns
+        and its own analyst runs.
+      </p>
+    </div>
+    <div class="flow">
+      <div class="fl"><span class="n">01</span><h3>Ingest</h3><p>Sources connected and flowing automatically. No manual exports, no monthly scramble.</p></div>
+      <div class="fl"><span class="n">02</span><h3>Store</h3><p>A warehouse holding the history, so that a before and an after both exist by default.</p></div>
+      <div class="fl"><span class="n">03</span><h3>Model</h3><p>Preprocessing and the behavioural definitions that make the numbers mean something specific.</p></div>
+      <div class="fl fl--end"><span class="n">04</span><h3>Ask</h3><p>A portal or agent the team questions directly, without waiting on an analyst to produce a chart.</p></div>
+    </div>
+    <div class="col" style="margin-top:1.8rem;">
+      <p>
+        None of that infrastructure is ours, and that is deliberate. Ingestion, warehousing and
+        presentation are solved problems served by excellent vendors, and inventing a worse
+        version would be a poor use of everyone's money.
+      </p>
+      <p>
+        What we contribute is the layer across the top: what gets measured, how it is defined,
+        how behavioural signals combine, what gets surfaced and what decision it is meant to
+        trigger. The components underneath are replaceable. That layer is not.
+      </p>
+      <p>
+        We set it up alongside your own analyst rather than becoming one. A system that depends
+        on us is a system we have failed to hand over.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="band band--raised" id="s9">
+  <div class="wrap col">
+    <span class="secno">Section 9</span>
+    <h2>What this is not</h2>
+    <p>
+      It is not a research project. The standard is commercial defensibility rather than
+      academic certainty, which is a lower bar than publication and a far higher one than
+      satisfaction scores. The test is whether a sceptical finance lead, reading alone and
+      looking for a reason to cut, would come away persuaded.
+    </p>
+    <p>
+      It is not a rebuild of your stack. Your engineers are better at that, and if the
+      infrastructure genuinely does not work, that is the first problem and we will say so
+      rather than measure on top of it.
+    </p>
+    <p>
+      It is not guaranteed to tell you what you hoped. Measurement designed properly can show
+      that something championed internally changed nothing. The value is finding out early
+      enough to redesign it, and an engagement where that outcome would be unwelcome is one we
+      should not start.
+    </p>
+
+    <div class="callout">
+      <strong>On evidence of our own.</strong> Previous client results sit under
+      confidentiality, and publishing figures that cannot be attributed would contradict the
+      argument this document makes. Design-partner work with publication rights agreed at the
+      outset is under way, and results will appear when they are real, attributable and
+      permitted. A document arguing for defensible evidence should be held to its own standard.
+    </div>
+
+    <div class="btn-row">
+      <a class="btn btn--solid" href="diagnostic.html">Find where you are</a>
+      <a class="btn btn--line" href="index.html#services">See the engagements</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <div>E ANALYTICS STUDIO<br />Plymouth, United Kingdom<br />
+      <a href="mailto:karol@eanalyticsstudio.com">karol@eanalyticsstudio.com</a></div>
+    <div><a href="index.html">Home</a> &middot; <a href="index.html#services">Engagements</a> &middot;
+      <a href="diagnostic.html">Diagnostic</a> &middot; <a href="worksheet.html">Worksheet</a> &middot;
+      <a href="privacy.html">Privacy</a></div>
+    <div>&copy; 2026</div>
+  </div>
+</footer>
+</body>
+</html>

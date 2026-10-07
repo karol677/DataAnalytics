@@ -11,6 +11,26 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://eanalyticsstudio.com/diagnostic-3.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eanalyticsstudio.com/index-e-2.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://eanalyticsstudio.com/thesis-2.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://eanalyticsstudio.com/worksheet.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://eanalyticsstudio.com/karol-nedza.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
